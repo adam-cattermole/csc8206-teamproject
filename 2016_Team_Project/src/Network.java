@@ -16,8 +16,6 @@ public interface Network
 		UP, DOWN, SIDE;
 	}
 	
-	
-	
 	/**
 	 * Method to add a new section to the network
 	 * @param addTo - the block to which the new Section will be added to
