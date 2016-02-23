@@ -32,7 +32,7 @@ public interface Network
 	 * @param up - 	True if the point will be added in the "up" direction,
 	 * 				false if added in the "down" direction
 	 */
-	public void addPoint(Block addToBlock, BlockLink addToLink, Point.PointOrientation orientation);
+	public void addPoint(Block addToBlock, BlockLink addToLink, Point.Orientation orientation);
 	
 	/**
 	 * Removes a block from the network.
