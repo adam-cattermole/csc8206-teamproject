@@ -9,12 +9,9 @@
  * If you need to add more functionality, at this stage, feel free
  *
  */
-public interface Network
-{
-	enum BlockLink
-	{
-		UP, DOWN, SIDE;
-	}
+public interface Network {
+
+    enum BlockLink { UP, DOWN, SIDE }
 	
 	
 	

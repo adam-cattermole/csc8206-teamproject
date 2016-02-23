@@ -4,42 +4,36 @@
  * @author chris_curry
  *
  */
-public abstract class Block
-{
-	private static int blockID = 0;
-	private final int ID;
-	private Block up;
-	private Block down;
-	
-	public Block(Block up, Block down)
-	{
+public abstract class Block {
+
+    private static int blockID = 0;
+    private final int ID;
+    private Block up;
+    private Block down;
+
+	public Block(Block up, Block down) {
 		ID = blockID++;
 		this.up = up;
 		this.down = down;
 	}
 	
-	protected int getID()
-	{
+	protected int getID() {
 		return ID;
 	}
 	
-	protected Block getUp()
-	{
+	protected Block getUp() {
 		return up;
 	}
 	
-	protected Block getDown()
-	{
+	protected Block getDown() {
 		return down;
 	}
 	
-	protected void setUp(Block up)
-	{
+	protected void setUp(Block up) {
 		this.up = up;
 	}
 	
-	protected void setDown(Block down)
-	{
+	protected void setDown(Block down) {
 		this.down = down;
 	}
 }

@@ -1,15 +1,12 @@
 
-public class Section extends Block
-{	
-	public Section(Block up, Block down)
-	{
+public class Section extends Block {
+
+	public Section(Block up, Block down) {
 		super(up, down);
 	}
 
-	public boolean addUp(Block newBlock)
-	{
-		if(getUp() == null)
-		{
+	public boolean addUp(Block newBlock) {
+		if (getUp() == null) {
 			setUp(newBlock);
 			return true;
 		}
@@ -17,10 +14,8 @@ public class Section extends Block
 		return false;		
 	}
 	
-	public boolean addDown(Block newBlock)
-	{
-		if(getDown() == null)
-		{
+	public boolean addDown(Block newBlock) {
+		if (getDown() == null) {
 			setDown(newBlock);
 			return true;
 		}

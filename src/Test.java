@@ -1,10 +1,10 @@
 
-public class Test
-{
+public class Test {
+
 	// Class for testing random shit to see if it works
 	// Eventually used for actual testing
-	public static void main(String[] args)
-	{
+
+	public static void main(String[] args) {
 		Point p = new Point(null,null,null, null);
 		Section s = new Section(null,null);
 		
@@ -16,7 +16,6 @@ public class Test
 		castS.setUp(p);
 		
 		System.out.println(bS.getUp());
-		
-		
+
 	}
 }
