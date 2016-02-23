@@ -28,18 +28,15 @@ public abstract class Block
 		this.ID = id;
 	}
 	
-	protected int getID()
-	{
+	protected int getID() {
 		return ID;
 	}
 	
-	protected Block getUp()
-	{
+	protected Block getUp() {
 		return up;
 	}
 	
-	protected Block getDown()
-	{
+	protected Block getDown() {
 		return down;
 	}
 	

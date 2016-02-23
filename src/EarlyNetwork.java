@@ -9,72 +9,55 @@ import java.util.ArrayList;
  *         enough to build on
  *
  */
-public class EarlyNetwork implements Network
-{
+public class EarlyNetwork implements Network {
 
 	private List<Block> blocks;
 
-	public EarlyNetwork()
-	{
+	public EarlyNetwork() {
 		blocks = new ArrayList<Block>();
 		blocks.add(new Section(null, null));
 	}
 
 	@Override
-	public void removeBlock(Block toRemove)
-	{
+	public void removeBlock(Block toRemove) {
 		Block b;
-		for (int i = 0; i < blocks.size(); i++)
-		{
+		for (int i = 0; i < blocks.size(); i++) {
 			b = blocks.get(i);
-			if (b.equals(toRemove))
-			{
-				if (b instanceof Section)
-				{
-					if (b.getUp() != null)
-					{
+			if (b.equals(toRemove)) {
+				if (b instanceof Section) {
+					if (b.getUp() != null) {
 						b.getUp().setDown(null);
 					}
 
-					if (b.getDown() != null)
-					{
+					if (b.getDown() != null) {
 						b.getDown().setUp(null);
 					}
 
 					blocks.remove(i);
 				}
 
-				if (b instanceof Point)
-				{
+				if (b instanceof Point) {
 					Point p = (Point) b;
 					
-					if (p.getUp() != null)
-					{
+					if (p.getUp() != null) {
 						p.getUp().setDown(null);
 					}
 
-					if (p.getDown() != null)
-					{
+					if (p.getDown() != null) {
 						p.getDown().setUp(null);
 					}
 
-					if (p.getSideline() != null)
-					{
-						if (p.getSideline() instanceof Section)
-						{
+					if (p.getSideline() != null) {
+						if (p.getSideline() instanceof Section) {
 							Section s = (Section) p.getSideline();
-							if(p.getOrientation() == Point.PointOrientation.UP)
-							{
+							if (p.getOrientation() == Point.PointOrientation.UP) {
 								s.setDown(null);
-							}
-							else if(p.getOrientation() == Point.PointOrientation.DOWN)
-							{
+							} else if (p.getOrientation() == Point.PointOrientation.DOWN) {
 								s.setUp(null);
 							}
 						}
 
-						if(p.getSideline() instanceof Point)
-						{
+						if (p.getSideline() instanceof Point) {
 							Point sideP = (Point) p.getSideline();
 							sideP.setSideline(null, sideP.getOrientation());
 						}
@@ -89,58 +72,46 @@ public class EarlyNetwork implements Network
 	}
 
 	@Override
-	public boolean validNetwork()
-	{
+	public boolean validNetwork() {
 		// Don't know rules, so...
 		return true;
 	}
 
-	public List<Block> getNetworkList()
-	{
+	public List<Block> getNetworkList() {
 		return blocks;
 	}
 
 	@Override
-	public void addSection(Block addToBlock, BlockLink addToLink)
-	{
-		if(addToBlock instanceof Section && addToLink == BlockLink.SIDE)
-		{
+	public void addSection(Block addToBlock, BlockLink addToLink) {
+		if (addToBlock instanceof Section && addToLink == BlockLink.SIDE) {
 			throw new IllegalArgumentException("Section blocks do not have a SIDE link");
 		}
 		
-		switch (addToLink)
-		{
+		switch (addToLink) {
 			case UP:
-				if (addToBlock.getUp() != null)
-				{
+				if (addToBlock.getUp() != null) {
 					addToBlock.setUp(new Section(null, addToBlock));
-				} else
-				{
-					throw new IllegalStateException("There is already track attatched to the UP link of this block");
+				} else {
+					throw new IllegalStateException("There is already track attached to the UP link of this block");
 				}
 				break;
 			case DOWN:
-				if (addToBlock.getDown() != null)
-				{
+				if (addToBlock.getDown() != null) {
 					addToBlock.setDown(new Section(addToBlock, null));
-				} else
-				{
-					throw new IllegalStateException("There is already track attatched to the DOWN link of this block");
+				} else {
+					throw new IllegalStateException("There is already track attached to the DOWN link of this block");
 				}
 				break;
 			case SIDE:
 				Point p = (Point) addToBlock;
 				
-				if(p.getOrientation() == null)
-				{
+				if (p.getOrientation() == null) {
 					throw new IllegalStateException("Points must have an orientation before their SIDE link may be used");
 				}
 				
-				if(p.getOrientation() == Point.PointOrientation.UP)
-				{
+				if (p.getOrientation() == Point.PointOrientation.UP) {
 					p.setSideline(new Section(null,p), p.getOrientation());
 				}
-				
 				
 				break;
 			default:
@@ -150,8 +121,7 @@ public class EarlyNetwork implements Network
 	}
 
 	@Override
-	public void addPoint(Block addToBlock, BlockLink addToLink, Point.PointOrientation orientation)
-	{
+	public void addPoint(Block addToBlock, BlockLink addToLink, Point.PointOrientation orientation) {
 
 	}
 
