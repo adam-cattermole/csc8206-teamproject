@@ -19,8 +19,6 @@ public abstract class Block
 	private Signal signalDown;
 	private Direction direction = Direction.UP;
 	
-	public boolean explored = false;
-	
 	protected Block(Block up, Block down, int id)
 	{
 		this.up = up;
@@ -114,7 +112,7 @@ public abstract class Block
 			neighbours = new HashSet<Block>(3);
 		}
 		
-		//fix it
+		//TODO don't clear and add elements every time, just add elements that were not added yet
 		neighbours.clear();
 		
 		if (up != null)

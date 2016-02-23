@@ -2,7 +2,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class SimpleNetwork
+public class SimpleNetwork implements Network
 {
 	Set<Block> blocks = new HashSet<Block>();
 	

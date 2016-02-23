@@ -11,38 +11,24 @@
  */
 public interface Network {
 
-    enum BlockLink { UP, DOWN, SIDE }
-	
-	
-	
 	/**
-	 * Method to add a new section to the network
-	 * @param addTo - the block to which the new Section will be added to
-	 * @param up - 	True if the new section will be added in the "up" direction, 
-	 * 				false if added in the "down" direction
+	 * Method to add a new block to the network
+	 * @param block - block which will now be in the network set
+	 * @return Network - return itself to allow for chaining
 	 */
-	public void addSection(Block addToBlock, BlockLink addToLink);
-	
-	/**
-	 * Method to add a new point to the network
-	 * @param addTo - Block to which the new Point block will be added to
-	 * @param up - 	True if the point will be added in the "up" direction,
-	 * 				false if added in the "down" direction
-	 */
-	public void addPoint(Block addToBlock, BlockLink addToLink, Point.Orientation orientation);
+	public Network addBlock(Block block);
 	
 	/**
 	 * Removes a block from the network.
 	 * Does not guarantee that the network will be valid after removal.
-	 * @param toRemove - the block to remove from the network
+	 * @param block - the block to remove from the network
+	 * @return Network - return itself to allow for chaining
 	 */
-	public void removeBlock(Block toRemove);
+	public Network removeBlock(Block block);
 	
 	/**
 	 * Checks the networks validity according to rules we haven't really decided yet
 	 * @return True if the network is valid, False otherwise
 	 */
-	public boolean validNetwork();
-	
-	
+	public boolean isValid();
 }
