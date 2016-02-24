@@ -1,0 +1,110 @@
+{
+  "type" : "SimpleNetwork",
+  "blocks" : [ {
+    "blockType" : "Section",
+    "id" : 1,
+    "up" : {
+      "blockType" : "Section",
+      "id" : 2
+    },
+    "down" : null,
+    "signalUp" : null,
+    "signalDown" : null
+  }, {
+    "blockType" : "Point",
+    "id" : 1,
+    "up" : {
+      "blockType" : "Section",
+      "id" : 4
+    },
+    "down" : {
+      "blockType" : "Section",
+      "id" : 2
+    },
+    "sideline" : {
+      "blockType" : "Section",
+      "id" : 3
+    },
+    "orientation" : "UP",
+    "setting" : "PLUS"
+  }, {
+    "blockType" : "Section",
+    "id" : 2,
+    "up" : {
+      "blockType" : "Point",
+      "id" : 1
+    },
+    "down" : {
+      "blockType" : "Section",
+      "id" : 1
+    },
+    "signalUp" : null,
+    "signalDown" : null
+  }, {
+    "blockType" : "Section",
+    "id" : 3,
+    "up" : {
+      "blockType" : "Point",
+      "id" : 2
+    },
+    "down" : {
+      "blockType" : "Point",
+      "id" : 1
+    },
+    "signalUp" : null,
+    "signalDown" : null
+  }, {
+    "blockType" : "Point",
+    "id" : 2,
+    "up" : {
+      "blockType" : "Section",
+      "id" : 5
+    },
+    "down" : {
+      "blockType" : "Section",
+      "id" : 4
+    },
+    "sideline" : {
+      "blockType" : "Section",
+      "id" : 3
+    },
+    "orientation" : "DOWN",
+    "setting" : "PLUS"
+  }, {
+    "blockType" : "Section",
+    "id" : 4,
+    "up" : {
+      "blockType" : "Point",
+      "id" : 2
+    },
+    "down" : {
+      "blockType" : "Point",
+      "id" : 1
+    },
+    "signalUp" : null,
+    "signalDown" : null
+  }, {
+    "blockType" : "Section",
+    "id" : 5,
+    "up" : {
+      "blockType" : "Section",
+      "id" : 6
+    },
+    "down" : {
+      "blockType" : "Point",
+      "id" : 2
+    },
+    "signalUp" : null,
+    "signalDown" : null
+  }, {
+    "blockType" : "Section",
+    "id" : 6,
+    "up" : null,
+    "down" : {
+      "blockType" : "Section",
+      "id" : 5
+    },
+    "signalUp" : null,
+    "signalDown" : null
+  } ]
+}
