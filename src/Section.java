@@ -1,14 +1,39 @@
 
 public class Section extends Block
 {
+	protected Signal signalUp;
+	protected Signal signalDown;
+	
 	public Section()
 	{
 		super(null, null, Identifiers.getSectionID());
 	}
 	
-	public Section(Block up, Block down)
+	public Section(int id)
 	{
-		super(up, down, Identifiers.getSectionID());
+		super(null, null, id);
+	}
+	
+	public Section setSignalUp(Signal signalUp)
+	{
+		this.signalUp = signalUp;
+		return this;
+	}
+	
+	public Section setSignalDown(Signal signalDown)
+	{
+		this.signalDown = signalDown;
+		return this;
+	}
+	
+	public Signal getSignalUp()
+	{
+		return signalUp;
+	}
+	
+	public Signal getSignalDown()
+	{
+		return signalDown;
 	}
 	
 	public String toString()

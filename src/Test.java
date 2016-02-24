@@ -1,30 +1,31 @@
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonGenerationException;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Test
 {
 	// Class for testing random shit to see if it works
 	// Eventually used for actual testing
-	public static void main(String[] args)
+	public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException
 	{
-		/*Point p = new Point(null,null,null, null);
-		Section s = new Section(null,null);
+		/*Network network = new SimpleNetwork();
 		
-		Block bP = new Point(null,null,null, null);
-		Block bS = new Section(null,null);
-		
-		Section castS = (Section) bS;
-		
-		castS.setUp(p);
-		
-		System.out.println(bS.getUp());*/
-		
-		Section b1 = new Section();
-		Section b2 = new Section();
-		Point p1 = new Point(Point.Orientation.UP);
-		Section b3 = new Section();
-		Section b4 = new Section();
-		Point p2 = new Point(Point.Orientation.DOWN);
-		Section b5 = new Section();
-		Section b6 = new Section();
+		Section b1 = network.makeSection();
+		Section b2 = network.makeSection();
+		Point p1 = network.makePoint(Point.Orientation.UP);
+		Section b3 = network.makeSection();
+		Section b4 = network.makeSection();
+		Point p2 = network.makePoint(Point.Orientation.DOWN);
+		Section b5 = network.makeSection();
+		Section b6 = network.makeSection();
 		
 		b1.setUp(b2);
 		b2.setUp(p1);
@@ -36,18 +37,38 @@ public class Test
 		p2.setUp(b5);
 		p2.setDown(b4);
 		
-		b5.setUp(b6);
+		b5.setUp(b6);*/
 		
-		SimpleNetwork network = new SimpleNetwork();
+		//b3.setSignalDown(new Signal());
+		//b3.setSignalUp(new Signal());
 		
-		network.addBlock(b1).addBlock(b2).addBlock(p1).addBlock(b3).addBlock(b4);
-		network.addBlock(p2).addBlock(b5).addBlock(b6);
+		try {
+			FileInputStream in = new FileInputStream("network.txt");
+	        //FileOutputStream out = new FileOutputStream("network.txt");
+			//network.save(out);
+			
+			Network testNetwork = Network.load(in);
+			
+			System.out.println(testNetwork);
+			
+			//System.out.println(network);
+			
+			//out.flush();
+			//out.close();
+			
+			in.close();
+			
+		//} catch (NetworkSerializationException e) {
+		//	e.getReason().printStackTrace();
+		//}
+		} catch (NetworkDeserializationException e) {
+			e.getReason().printStackTrace();
+		}
 		
-		System.out.println("network valid: " + network.isValid());
+		/*System.out.println("network valid: " + network.isValid());
 		
 		network.removeBlock(p2);
 		
-		System.out.println("network valid: " + network.isValid());
-				
+		System.out.println("network valid: " + network.isValid());*/
 	}
 }

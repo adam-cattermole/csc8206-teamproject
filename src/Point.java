@@ -15,8 +15,18 @@ public class Point extends Block
 	}
 	
 	private Block sideline;
-	private final Orientation orientation;
+	private Orientation orientation;
 	private Setting setting = Setting.PLUS;
+	
+	public Point()
+	{
+		super(null, null, Identifiers.getPointID());
+	}
+	
+	public Point(int id)
+	{
+		super(null, null, id);
+	}
 	
 	public Point(Orientation orientation)
 	{
@@ -33,6 +43,8 @@ public class Point extends Block
 	
 	public void setSideline(Block sideline)
 	{
+		System.out.println("Add sideline " + sideline + " to " + this);
+		
 		this.sideline = sideline;
 		if (orientation == Orientation.UP)
 		{
@@ -52,9 +64,16 @@ public class Point extends Block
 		return orientation;
 	}
 	
-	public void setSetting(Setting setting)
+	public Point setOrientation(Orientation orientation)
+	{
+		this.orientation = orientation;
+		return this;
+	}
+	
+	public Point setSetting(Setting setting)
 	{
 		this.setting = setting;
+		return this;
 	}
 	
 	public Setting getSetting()
@@ -87,5 +106,14 @@ public class Point extends Block
 	public String toString()
 	{
 		return "Point[" + super.toString() + "]";
+	}
+	
+	public int hashCode()
+	{
+		final int prime = 31;
+		int result = super.hashCode();
+	    result = (int) (prime * result + ((sideline == null) ? 0 : sideline.getID()));
+	    result = (int) (prime * result + 2);
+	    return result;
 	}
 }

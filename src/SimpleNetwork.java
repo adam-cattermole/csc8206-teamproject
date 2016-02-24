@@ -1,10 +1,20 @@
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class SimpleNetwork implements Network
 {
-	Set<Block> blocks = new HashSet<Block>();
+	private Set<Block> blocks = new HashSet<Block>();
 	
 	public SimpleNetwork()
 	{
@@ -23,10 +33,12 @@ public class SimpleNetwork implements Network
 	
 	public SimpleNetwork removeBlock(Block block)
 	{
+		//get block neighbours
 		Set<Block> neighbours = block.getNeighbours();
 		
 		for (Block neighbour : neighbours)
 		{
+			//detach the block from its neighbours
 			neighbour.deleteBlock(block);
 		}
 		
@@ -36,10 +48,25 @@ public class SimpleNetwork implements Network
 		return this;
 	}
 	
+	public Point makePoint(Point.Orientation orientation)
+	{
+		Point point = new Point(orientation);
+		blocks.add(point);
+		return point;
+	}
+	
+	public Section makeSection()
+	{
+		Section section = new Section();
+		blocks.add(section);
+		return section;
+	}
+	
 	/* 
 	 * Need to add validation of each section and point:
 	 * A track section may have 1 or 2 neighbouring blocks (a section at the end of a line will only have one neighbour); a point has 3 neighbouring blocks
 	 */
+	@JsonIgnore
 	public boolean isValid()
 	{
 		Set<Block> traversed = traverse();
@@ -50,6 +77,19 @@ public class SimpleNetwork implements Network
 		}
 		
 		return false;
+	}
+	
+	public SimpleNetwork save(OutputStream stream) throws NetworkSerializationException
+	{
+		ObjectMapper jsonMapper = new ObjectMapper();
+		jsonMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		
+		try {
+			jsonMapper.writerWithDefaultPrettyPrinter().writeValue(stream, this);
+			return this;
+		} catch (IOException e) {
+			throw new NetworkSerializationException(e);
+		}
 	}
 	
 	public String toString()

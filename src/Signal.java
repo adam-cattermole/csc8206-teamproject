@@ -1,17 +1,22 @@
 
 public class Signal
 {
-	private final int ID;
+	private final int id;
 	private Direction direction = Direction.UP;
 	
 	public Signal()
 	{
-		ID = Identifiers.getSignalID();
+		id = Identifiers.getSignalID();
+	}
+	
+	public Signal(int id)
+	{
+		this.id = id;
 	}
 	
 	public int getID()
 	{
-		return ID; 
+		return id; 
 	}
 	
 	public void setDirection(Direction direction)
