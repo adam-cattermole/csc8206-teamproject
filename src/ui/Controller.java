@@ -11,12 +11,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
-import ui.utilities.Block;
-import ui.utilities.PointBackward;
-import ui.utilities.PointForward;
-import ui.utilities.Section;
+import ui.utilities.*;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -24,9 +22,7 @@ public class Controller implements Initializable {
     @FXML private Group grid;
     @FXML private GridPane palette;
 
-    @FXML private ImageView section;
-    @FXML private ImageView pointForward;
-    @FXML private ImageView pointBackward;
+    @FXML private List<Block> blockList;
 
     @FXML private ScrollPane scrollPane;
 
@@ -50,10 +46,11 @@ public class Controller implements Initializable {
             }
         }
         System.out.println(grid.getChildren().size());
+        palette.setVgap(5);
         palette.setPrefSize(60, 60);
-        addPaletteListener(section);
-        addPaletteListener(pointForward);
-        addPaletteListener(pointBackward);
+        for (Block b: blockList) {
+            addPaletteListener(b);
+        }
         scrollPane.setMaxSize(750, 750);
     }
 
@@ -117,6 +114,12 @@ public class Controller implements Initializable {
                             break;
                         case "PointBackward":
                             block = new PointBackward(target.getX(), target.getY());
+                            break;
+                        case "PointForwardU":
+                            block = new PointForwardU(target.getX(), target.getY());
+                            break;
+                        case "PointBackwardU":
+                            block = new PointBackwardU(target.getX(), target.getY());
                             break;
                         default:
                             block = null;

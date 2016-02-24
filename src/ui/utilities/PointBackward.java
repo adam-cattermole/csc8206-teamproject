@@ -3,7 +3,7 @@ package ui.utilities;
 import javafx.scene.image.Image;
 
 /**
- * Created by Adam Cattermole
+ * @author Adam Cattermole
  * 24/02/2016
  */
 
