@@ -1,3 +1,4 @@
+package backend;
 import com.fasterxml.jackson.core.JsonGenerationException;
 
 import java.io.FileInputStream;
@@ -38,7 +39,7 @@ public class Test
 		//b3.setSignalUp(new Signal());
 		
 		try {
-			FileInputStream in = new FileInputStream("network.txt");
+			FileInputStream in = new FileInputStream("network.json");
 	        //FileOutputStream out = new FileOutputStream("network.txt");
 			//network.save(out);
 			

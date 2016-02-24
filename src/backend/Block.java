@@ -1,3 +1,4 @@
+package backend;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.node.IntNode;
+
+import backend.Point.Orientation;
+import backend.Point.Setting;
 
 /**
  * Top level abstract class for Blocks, components of a network
@@ -38,7 +42,7 @@ public abstract class Block
 	protected Block down;
 	
 	protected Set<Block> neighbours;
-	//protected Direction direction = Direction.UP;
+	protected Direction direction = Direction.UP;
 	
 	protected Block(int id)
 	{

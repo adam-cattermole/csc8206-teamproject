@@ -1,9 +1,10 @@
+package backend;
 
-public class NetworkSerializationException extends Exception {
+public class NetworkDeserializationException extends Exception {
 	private static final long serialVersionUID = 1L;
 	private Exception reason;
 	
-	public NetworkSerializationException(Exception reason) {
+	public NetworkDeserializationException(Exception reason) {
 		this.reason = reason;
 	}
 	

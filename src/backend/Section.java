@@ -1,8 +1,8 @@
-
+package backend;
 public class Section extends Block
 {
-	protected Signal signalUp;
-	protected Signal signalDown;
+	protected Signal signalUp; //Signal on the right side of a section
+	protected Signal signalDown; //Signal on the left side of a section
 	
 	public Section()
 	{
@@ -12,6 +12,16 @@ public class Section extends Block
 	public Section(int id)
 	{
 		super(null, null, id);
+	}
+	
+	public void setUp(Block up, boolean reverse)
+	{
+		super.setUp(up, reverse);
+	}
+	
+	public void setDown(Block down, boolean reverse)
+	{
+		super.setDown(down, reverse);
 	}
 	
 	public Section setSignalUp(Signal signalUp)

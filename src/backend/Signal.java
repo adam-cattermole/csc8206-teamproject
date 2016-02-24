@@ -1,8 +1,15 @@
+package backend;
 
 public class Signal
 {
+	enum Setting
+	{
+		CLEAR, STOP
+	}
+	
 	private final int id;
 	private Direction direction = Direction.UP;
+	private Setting setting = Setting.STOP;
 	
 	public Signal()
 	{
@@ -27,5 +34,15 @@ public class Signal
 	public Direction getDirection()
 	{
 		return direction;
+	}
+	
+	public void setSetting(Setting setting)
+	{
+		this.setting = setting;
+	}
+	
+	public Setting getSetting()
+	{
+		return setting;
 	}
 }
