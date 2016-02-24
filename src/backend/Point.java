@@ -1,4 +1,5 @@
 package backend;
+import java.util.Arrays;
 import java.util.Set;
 
 public class Point extends Block
@@ -107,15 +108,34 @@ public class Point extends Block
 		return "Point[" + super.toString() + "]";
 	}
 	
-	//TODO implement proper hashCode and equal methods, needed for the serialization (Set<T> uses hashCode/equals)
-	/*public int hashCode()
+	public int compareTo(Block b)
 	{
-		final int prime = 31;
-		int result = super.hashCode();
-	    result = (int) (prime * result + ((sideline == null) ? 0 : sideline.getID()));
-	    result = (int) (prime * result + 2);
-	    return result;
-	}*/
+		if (getID() > b.getID())
+		{
+			return +1;
+		} else if (getID() < b.getID()) {
+			return -1;
+		} else {
+			if (b instanceof Point)
+			{
+				return 0;
+			} else {
+				return +1;
+			}
+		}
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		return (other != null && other instanceof Point && ((Point)other).getID() == getID());
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return Arrays.hashCode(new Object[]{new Integer(getID()), new Integer(2)}); //1 - Point
+	}
 	
 	/**
 	 * Point is valid if:

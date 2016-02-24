@@ -52,7 +52,16 @@ public class Test
 		
 		b2.setDown(b1);*/
 		
-		//System.out.println(network);
+		System.out.println(network);
+
+		network.removeBlock(b2);
+		
+		Section s = network.makeSection();
+		b1.setUp(s);
+		s.setUp(p1);
+		
+		System.out.println(network);
+		
 		
 		//b3.setSignalDown(new Signal());
 		//b3.setSignalUp(new Signal());

@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.node.IntNode;
 })
 @JsonSerialize(using=Block.Serializer.class)
 @JsonDeserialize(using=Block.Deserializer.class)
-public abstract class Block
+public abstract class Block implements Comparable<Block>
 {
 	protected final int id;
 	protected Block up;
@@ -159,17 +159,6 @@ public abstract class Block
 	{
 		return String.valueOf(id);
 	}
-	
-	//TODO implement proper hashCode and equal methods, needed for the serialization (Set<T> uses hashCode/equals)
-	/*public int hashCode()
-	{
-	    final int prime = 31;
-	    int result = 1;
-	    result = (int) (prime * result + id);
-	    result = (int) (prime * result + ((up == null) ? 0 : up.getID()));
-	    result = (int) (prime * result + ((down == null) ? 0 : down.getID()));
-	    return result;
-	}*/
 	
 	/**
 	 * Each subclass needs to define rules of validation.

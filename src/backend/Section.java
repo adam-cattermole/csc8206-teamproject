@@ -1,5 +1,6 @@
 package backend;
 
+import java.util.Arrays;
 
 public class Section extends Block
 {
@@ -74,6 +75,35 @@ public class Section extends Block
 	public String toString()
 	{
 		return "Section[" + super.toString() + "]";
+	}
+	
+	public int compareTo(Block b)
+	{
+		if (getID() > b.getID())
+		{
+			return +1;
+		} else if (getID() < b.getID()) {
+			return -1;
+		} else {
+			if (b instanceof Section)
+			{
+				return 0;
+			} else {
+				return +1;
+			}
+		}
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		return (other != null && other instanceof Section && ((Section)other).getID() == getID());
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return Arrays.hashCode(new Object[]{new Integer(getID()), new Integer(1)}); //1 - Section
 	}
 	
 	/**

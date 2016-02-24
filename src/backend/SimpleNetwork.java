@@ -4,6 +4,8 @@ import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SimpleNetwork implements Network
 {
-	private Set<Block> blocks = new HashSet<Block>();
+	private SortedSet<Block> blocks = new TreeSet<Block>();
 	
 	public SimpleNetwork()
 	{
