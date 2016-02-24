@@ -7,7 +7,7 @@ public class Signal
 		CLEAR, STOP
 	}
 	
-	private int id = Identifiers.getSignalID();
+	private int id = 0;
 	private Setting setting = Setting.STOP;
 	
 	public Signal()

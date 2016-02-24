@@ -23,7 +23,9 @@ public class Identifiers
 	{
 		if (!sectionIDPool.isEmpty())
 		{
-			return sectionIDPool.first();
+			int id = sectionIDPool.first();
+			sectionIDPool.remove(id);
+			return id;
 		}
 		
 		sectionID++;
@@ -34,7 +36,9 @@ public class Identifiers
 	{
 		if (!pointIDPool.isEmpty())
 		{
-			return pointIDPool.first();
+			int id = pointIDPool.first();
+			pointIDPool.remove(id);
+			return id;
 		}
 		
 		pointID++;
@@ -45,7 +49,9 @@ public class Identifiers
 	{
 		if (!signalIDPool.isEmpty())
 		{
-			return signalIDPool.first();
+			int id = signalIDPool.first();
+			signalIDPool.remove(id);
+			return id;
 		}
 		
 		signalID++;
