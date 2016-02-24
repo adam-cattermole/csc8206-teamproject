@@ -6,14 +6,18 @@
 <?import javafx.scene.Group?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.control.ScrollPane?>
 <GridPane fx:controller="ui.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
     <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
-
-    <Group fx:id="grid"
-        GridPane.columnIndex="0" GridPane.rowIndex="0"
-        GridPane.columnSpan="3">
-    </Group>
+    <ScrollPane fx:id="scrollPane">
+        <content>
+            <Group fx:id="grid"
+                GridPane.columnIndex="0" GridPane.rowIndex="0"
+                GridPane.columnSpan="3">
+            </Group>
+        </content>
+    </ScrollPane>
     <GridPane fx:id="palette"
         GridPane.columnIndex="4" GridPane.rowIndex="0">
         <ImageView fx:id="section" GridPane.columnIndex="0" GridPane.rowIndex="0">

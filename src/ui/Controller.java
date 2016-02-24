@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -24,20 +25,28 @@ public class Controller implements Initializable {
     @FXML private ImageView pointForward;
     @FXML private ImageView pointBackward;
 
+    @FXML private ScrollPane scrollPane;
+
+    public final int GRID_HEIGHT = 50;
+    public final int GRID_WIDTH = 50;
+    public final int CELL_SIZE = 30;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        for (int i = 0; i < 800; i+=30) {
-            for (int j = 0; j < 800; j += 30) {
-                Rectangle r1 = new Rectangle(i, j, 30, 30);
+        Rectangle[][] rectangles = new Rectangle[GRID_WIDTH][GRID_HEIGHT];
+        for (int i = 0; i < GRID_WIDTH; i++) {
+            for (int j = 0; j < GRID_HEIGHT; j++) {
+                Rectangle r1 = new Rectangle(i*CELL_SIZE, j*CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 r1.setStroke(Color.DARKBLUE);
                 r1.setStrokeType(StrokeType.INSIDE);
                 r1.setStrokeWidth(0.5);
                 r1.setFill(Color.LIGHTGRAY);
+                rectangles[i][j] = r1;
                 grid.getChildren().add(r1);
                 addGridListener(r1);
             }
         }
+        System.out.println(grid.getChildren().size());
         section.setId("section");
         pointForward.setId("pointForward");
         pointBackward.setId("pointBackward");
@@ -45,6 +54,7 @@ public class Controller implements Initializable {
         addPaletteListener(section);
         addPaletteListener(pointForward);
         addPaletteListener(pointBackward);
+        scrollPane.setMaxSize(750, 750);
     }
 
     private void addGridListener(final Rectangle target) {
