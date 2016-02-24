@@ -5,13 +5,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
+import ui.utilities.Block;
+import ui.utilities.PointBackward;
+import ui.utilities.PointForward;
+import ui.utilities.Section;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,8 +30,8 @@ public class Controller implements Initializable {
 
     @FXML private ScrollPane scrollPane;
 
-    public final int GRID_HEIGHT = 50;
-    public final int GRID_WIDTH = 50;
+    public final int GRID_HEIGHT = 150;
+    public final int GRID_WIDTH = 150;
     public final int CELL_SIZE = 30;
 
     @Override
@@ -47,9 +50,6 @@ public class Controller implements Initializable {
             }
         }
         System.out.println(grid.getChildren().size());
-        section.setId("section");
-        pointForward.setId("pointForward");
-        pointBackward.setId("pointBackward");
         palette.setPrefSize(60, 60);
         addPaletteListener(section);
         addPaletteListener(pointForward);
@@ -106,12 +106,25 @@ public class Controller implements Initializable {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (db.hasString()) {
-                    /* Do something with this imageview */
-                    Image img = new Image(db.getString());
-                    ImageView imgView = new ImageView(img);
-                    imgView.setX(target.getX());
-                    imgView.setY(target.getY());
-                    grid.getChildren().add(imgView);
+                    String type = db.getString();
+                    Block block;
+                    switch(type) {
+                        case "Section":
+                            block = new Section(target.getX(), target.getY());
+                            break;
+                        case "PointForward":
+                            block = new PointForward(target.getX(), target.getY());
+                            break;
+                        case "PointBackward":
+                            block = new PointBackward(target.getX(), target.getY());
+                            break;
+                        default:
+                            block = null;
+                    }
+                    if (block != null) {
+                        // Here we handle block with the backend
+                        grid.getChildren().add(block);
+                    }
 
                     success = true;
                 }
@@ -134,22 +147,9 @@ public class Controller implements Initializable {
                 Dragboard db = source.startDragAndDrop(TransferMode.ANY);
                 /* put a string on dragboard */
                 ClipboardContent content = new ClipboardContent();
-                String url;
-                switch(source.getId()) {
-                    case "section":
-                        url = "ui/resources/section.png";
-                        break;
-                    case "pointForward":
-                        url = "ui/resources/point_forward.png";
-                        break;
-                    case "pointBackward":
-                        url = "ui/resources/point_backward.png";
-                        break;
-                    default:
-                        url = "";
-                }
-                System.out.println(url);
-                content.putString(url);
+                String type = source.getClass().getSimpleName();
+                System.out.println(type);
+                content.putString(type);
                 db.setContent(content);
 
                 event.consume();
