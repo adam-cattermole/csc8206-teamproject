@@ -137,13 +137,13 @@ public class Controller implements Initializable {
                 String url;
                 switch(source.getId()) {
                     case "section":
-                        url = "ui/images/section.png";
+                        url = "ui/resources/section.png";
                         break;
                     case "pointForward":
-                        url = "ui/images/point_forward.png";
+                        url = "ui/resources/point_forward.png";
                         break;
                     case "pointBackward":
-                        url = "ui/images/point_backward.png";
+                        url = "ui/resources/point_backward.png";
                         break;
                     default:
                         url = "";

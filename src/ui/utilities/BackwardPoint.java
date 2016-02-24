@@ -1,4 +1,4 @@
-package ui.images;
+package ui.utilities;
 
 /**
  * Created by Adam Cattermole

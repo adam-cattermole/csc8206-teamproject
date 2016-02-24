@@ -1,9 +1,9 @@
-package ui.images;
+package ui.utilities;
 
 /**
  * Created by Adam Cattermole
  * 24/02/2016
  */
 
-public class Point {
+public class Section {
 }

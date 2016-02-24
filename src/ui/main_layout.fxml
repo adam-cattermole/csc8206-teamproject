@@ -21,13 +21,13 @@
     <GridPane fx:id="palette"
         GridPane.columnIndex="4" GridPane.rowIndex="0">
         <ImageView fx:id="section" GridPane.columnIndex="0" GridPane.rowIndex="0">
-            <Image url="@images/section.png"/>
+            <Image url="@resources/section.png"/>
         </ImageView>
         <ImageView fx:id="pointForward" GridPane.columnIndex="0" GridPane.rowIndex="1">
-            <Image url="@images/point_forward.png"/>
+            <Image url="@resources/point_forward.png"/>
         </ImageView>
         <ImageView fx:id="pointBackward" GridPane.columnIndex="0" GridPane.rowIndex="2">
-            <Image url="@images/point_backward.png"/>
+            <Image url="@resources/point_backward.png"/>
         </ImageView>
     </GridPane>
 </GridPane>
