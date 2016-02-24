@@ -2,6 +2,7 @@ package backend;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -40,6 +41,12 @@ public interface Network {
 	 * @return Network - return itself to allow for chaining
 	 */
 	public Network removeBlock(Block block);
+	
+	/**
+	 * Returns all blocks in the network.
+	 * @return Set<Block> - the set of blocks that make up this network.
+	 */
+	public Set<Block> getBlocks();
 	
 	/**
 	 * Creates new Point block and adds it to this network

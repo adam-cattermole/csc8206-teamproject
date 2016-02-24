@@ -40,10 +40,18 @@ public class SimpleNetwork implements Network
 			neighbour.deleteBlock(block);
 		}
 		
+		//release the IDs held by the block
+		Identifiers.addToBlockPool(block);
+		
 		//finally remove the block from blocks set
 		blocks.remove(block);
 		
 		return this;
+	}
+	
+	public Set<Block> getBlocks()
+	{
+		return blocks;
 	}
 	
 	public Point makePoint(Point.Orientation orientation)
@@ -60,10 +68,6 @@ public class SimpleNetwork implements Network
 		return section;
 	}
 	
-	/* 
-	 * Need to add validation of each section and point:
-	 * A track section may have 1 or 2 neighbouring blocks (a section at the end of a line will only have one neighbour); a point has 3 neighbouring blocks
-	 */
 	@JsonIgnore
 	public boolean isValid()
 	{
@@ -101,7 +105,7 @@ public class SimpleNetwork implements Network
 			
 			if (block instanceof Section)
 			{
-				sb.append("Section[" + block.getID() + "] neighbours: " + block.getNeighbours() + "\n");
+				sb.append("Section[" + block.getID() + "] neighbours: " + block.getNeighbours() + ", signals: " + ((Section)block).getSignals() + "\n");
 			} else {
 				sb.append("Point[" + block.getID() + "] neighbours: " + block.getNeighbours() + "\n");
 			}

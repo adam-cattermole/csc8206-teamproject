@@ -107,12 +107,39 @@ public class Point extends Block
 		return "Point[" + super.toString() + "]";
 	}
 	
-	public int hashCode()
+	//TODO implement proper hashCode and equal methods, needed for the serialization (Set<T> uses hashCode/equals)
+	/*public int hashCode()
 	{
 		final int prime = 31;
 		int result = super.hashCode();
 	    result = (int) (prime * result + ((sideline == null) ? 0 : sideline.getID()));
 	    result = (int) (prime * result + 2);
 	    return result;
+	}*/
+	
+	/**
+	 * Point is valid if:
+	 * it has 3 neighbours, those neighbours must be Sections
+	 */
+	public boolean isValid()
+	{
+		Set<Block> neighbours = getNeighbours();
+		
+		//check if we have 3 neighbours
+		if (neighbours.size() != 3)
+		{
+			return false;
+		}
+		
+		//check if all of the neighbours are of type Section
+		for (Block b : neighbours)
+		{
+			if (!(b instanceof Section))
+			{
+				return false;
+			}
+		}
+		
+		return false;
 	}
 }

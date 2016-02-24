@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Set;
+
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class Test
@@ -12,7 +15,7 @@ public class Test
 	// Eventually used for actual testing
 	public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException
 	{
-		/*Network network = new SimpleNetwork();
+		Network network = new SimpleNetwork();
 		
 		Section b1 = network.makeSection();
 		Section b2 = network.makeSection();
@@ -23,6 +26,7 @@ public class Test
 		Section b5 = network.makeSection();
 		Section b6 = network.makeSection();
 		
+		//left to right set up
 		b1.setUp(b2);
 		b2.setUp(p1);
 		
@@ -33,34 +37,57 @@ public class Test
 		p2.setUp(b5);
 		p2.setDown(b4);
 		
-		b5.setUp(b6);*/
+		b5.setUp(b6);
+		
+		//right to left set up
+		/*b6.setDown(b5);
+		
+		b5.setDown(p2);
+		p2.setSideline(b3);
+		p2.setDown(b4);
+		
+		b4.setDown(p1);
+		p1.setSideline(b3);
+		p1.setDown(b2);
+		
+		b2.setDown(b1);*/
+		
+		//System.out.println(network);
 		
 		//b3.setSignalDown(new Signal());
 		//b3.setSignalUp(new Signal());
 		
-		try {
-			FileInputStream in = new FileInputStream("network.json");
-	        //FileOutputStream out = new FileOutputStream("network.txt");
-			//network.save(out);
+		//try {
+			//FileInputStream in = new FileInputStream("network.json");
+	        //FileOutputStream out = new FileOutputStream("network.json");
+			//network.save(System.out);
 			
-			Network testNetwork = Network.load(in);
-
+			/*Network testNetwork = Network.load(System.in);
 			
 			System.out.println(testNetwork);
 			
+			Set<Block> blocks = testNetwork.getBlocks();
+			Iterator<Block> iterator = blocks.iterator();
+			iterator.next();
+			testNetwork.removeBlock(iterator.next());
+			
+			Section s = testNetwork.makeSection();
+			
+			System.out.println(testNetwork);*/
+
 			//System.out.println(network);
 			
 			//out.flush();
 			//out.close();
 			
-			in.close();
+			//in.close();
 			
-		//} catch (NetworkSerializationException e) {
-		//	e.getReason().printStackTrace();
-		//}
-		} catch (NetworkDeserializationException e) {
+		/*} catch (NetworkSerializationException e) {
 			e.getReason().printStackTrace();
-		}
+		}*/
+		/*} catch (NetworkDeserializationException e) {
+			e.getReason().printStackTrace();
+		}*/
 		
 		/*System.out.println("network valid: " + network.isValid());
 		

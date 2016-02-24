@@ -18,9 +18,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.node.IntNode;
 
-import backend.Point.Orientation;
-import backend.Point.Setting;
-
 /**
  * Top level abstract class for Blocks, components of a network
  * Allows for abstraction of components in networks
@@ -54,6 +51,8 @@ public abstract class Block
 		this.up = up;
 		this.down = down;
 		this.id = id;
+		
+		Identifiers.setMaxBlockID(this);
 	}
 	
 	protected int getID() {
@@ -68,16 +67,6 @@ public abstract class Block
 		return down;
 	}
 	
-	/*protected void setDirection(Direction direction)
-	{
-		this.direction = direction;
-	}
-	
-	protected Direction getDirection()
-	{
-		return direction;
-	}*/
-	
 	protected void setUp(Block up)
 	{
 		setUp(up, true);
@@ -89,13 +78,17 @@ public abstract class Block
 	}
 	
 	protected void setUp(Block up, boolean reverse)
-	{
+	{	
 		if (this.up == null)
-		{
+		{	
 			this.up = up;
 			if (reverse)
 			{
 				up.setDown(this, false);
+			} else {
+				if (this instanceof Section) {
+					((Section)this).getSignalUp();
+				}	
 			}
 		}
 	}
@@ -108,8 +101,22 @@ public abstract class Block
 			if (reverse)
 			{
 				down.setUp(this, false);
+			} else {
+				if (this instanceof Section) {
+					((Section)this).getSignalDown();
+				}
 			}
 		}
+	}
+	
+	protected void setDirection(Direction direction)
+	{
+		this.direction = direction;
+	}
+	
+	protected Direction getDirection()
+	{
+		return direction;
 	}
 	
 	protected void deleteBlock(Block block)
@@ -153,7 +160,8 @@ public abstract class Block
 		return String.valueOf(id);
 	}
 	
-	public int hashCode()
+	//TODO implement proper hashCode and equal methods, needed for the serialization (Set<T> uses hashCode/equals)
+	/*public int hashCode()
 	{
 	    final int prime = 31;
 	    int result = 1;
@@ -161,7 +169,14 @@ public abstract class Block
 	    result = (int) (prime * result + ((up == null) ? 0 : up.getID()));
 	    result = (int) (prime * result + ((down == null) ? 0 : down.getID()));
 	    return result;
-	}
+	}*/
+	
+	/**
+	 * Each subclass needs to define rules of validation.
+	 * @return true if the block is valid according to the rules, false otherwise
+	 */
+	public abstract boolean isValid();
+	
 	
 	/**
 	 * Custom JSON serializer for Jackson
@@ -173,12 +188,12 @@ public abstract class Block
 		{
 			//firstly serialize fields common to all Blocks
 			json.writeNumberField("id", block.id);
-			//json.writeObjectField("direction", block.direction);
+			json.writeObjectField("direction", block.direction);
 			
 			if (block.up != null)
 			{
 				json.writeObjectFieldStart("up");
-				json.writeStringField("blockType", block.up.getClass().getName());
+				json.writeStringField("blockType", block.up.getClass().getSimpleName());
 				json.writeNumberField("id", block.up.getID());
 				json.writeEndObject();
 			} else {
@@ -188,7 +203,7 @@ public abstract class Block
 			if (block.down != null)
 			{
 				json.writeObjectFieldStart("down");
-				json.writeStringField("blockType", block.down.getClass().getName());
+				json.writeStringField("blockType", block.down.getClass().getSimpleName());
 				json.writeNumberField("id", block.down.getID());
 				json.writeEndObject();
 			} else {
@@ -202,7 +217,7 @@ public abstract class Block
 				if (p.getSideline() != null)
 				{
 					json.writeObjectFieldStart("sideline");
-					json.writeStringField("blockType", p.getSideline().getClass().getName());
+					json.writeStringField("blockType", p.getSideline().getClass().getSimpleName());
 					json.writeNumberField("id", p.getSideline().getID());
 					json.writeEndObject();
 				} else {
@@ -217,8 +232,8 @@ public abstract class Block
 			if (block instanceof Section) {
 				Section s = (Section) block;
 				
-				json.writeObjectField("signalUp", s.getSignalUp());
 				json.writeObjectField("signalDown", s.getSignalDown());
+				json.writeObjectField("signalUp", s.getSignalUp());
 			}
 		}
 		
@@ -247,6 +262,9 @@ public abstract class Block
 			Block block = BlockFactory.getBlock(
 					node.get("blockType").asText(),
 					(Integer) ((IntNode) node.get("id")).numberValue());
+			
+			//extract the direction
+			block.setDirection(Direction.valueOf(node.get("direction").asText()));
 			
 			// Extract the up block
 			if (node.hasNonNull("up"))
@@ -281,18 +299,24 @@ public abstract class Block
 				Signal signalUp = null;
 				Signal signalDown = null;
 				
-				if (node.hasNonNull("signalUp"))
-				{
-					JsonNode signalNode = node.get("signalUp");
-					signalUp = new Signal((Integer) ((IntNode) signalNode.get("id")).numberValue());
-					signalUp.setDirection(Direction.valueOf(signalNode.get("direction").asText()));
-				}
-				
 				if (node.hasNonNull("signalDown"))
 				{
 					JsonNode signalNode = node.get("signalDown");
+					/*signalDown = new Signal(
+							(Integer) ((IntNode) signalNode.get("id")).numberValue(),
+							Direction.valueOf(signalNode.get("direction").asText()));*/
 					signalDown = new Signal((Integer) ((IntNode) signalNode.get("id")).numberValue());
-					signalDown.setDirection(Direction.valueOf(signalNode.get("direction").asText()));
+					signalDown.setSetting(Signal.Setting.valueOf(signalNode.get("setting").asText()));
+				}
+				
+				if (node.hasNonNull("signalUp"))
+				{
+					JsonNode signalNode = node.get("signalUp");
+					/*signalUp = new Signal(
+							(Integer) ((IntNode) signalNode.get("id")).numberValue(),
+							Direction.valueOf(signalNode.get("direction").asText()));*/
+					signalUp = new Signal((Integer) ((IntNode) signalNode.get("id")).numberValue());
+					signalUp.setSetting(Signal.Setting.valueOf(signalNode.get("setting").asText()));
 				}
 				
 				((Section) block).setSignalUp(signalUp).setSignalDown(signalDown);

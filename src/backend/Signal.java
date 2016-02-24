@@ -7,8 +7,7 @@ public class Signal
 		CLEAR, STOP
 	}
 	
-	private final int id;
-	private Direction direction = Direction.UP;
+	private int id = Identifiers.getSignalID();
 	private Setting setting = Setting.STOP;
 	
 	public Signal()
@@ -19,21 +18,12 @@ public class Signal
 	public Signal(int id)
 	{
 		this.id = id;
+		Identifiers.setMaxSignalID(id);
 	}
 	
 	public int getID()
 	{
 		return id; 
-	}
-	
-	public void setDirection(Direction direction)
-	{
-		this.direction = direction;
-	}
-	
-	public Direction getDirection()
-	{
-		return direction;
 	}
 	
 	public void setSetting(Setting setting)
@@ -44,5 +34,10 @@ public class Signal
 	public Setting getSetting()
 	{
 		return setting;
+	}
+	
+	public String toString()
+	{
+		return "s" + getID() + "-" + setting.toString();
 	}
 }
