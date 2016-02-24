@@ -43,8 +43,6 @@ public class Point extends Block
 	
 	public void setSideline(Block sideline)
 	{
-		System.out.println("Add sideline " + sideline + " to " + this);
-		
 		this.sideline = sideline;
 		if (orientation == Orientation.UP)
 		{

@@ -1,14 +1,9 @@
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonGenerationException;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Test
 {
@@ -48,6 +43,7 @@ public class Test
 			//network.save(out);
 			
 			Network testNetwork = Network.load(in);
+
 			
 			System.out.println(testNetwork);
 			

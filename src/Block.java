@@ -1,25 +1,16 @@
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -97,8 +88,6 @@ public abstract class Block
 	{
 		if (this.up == null)
 		{
-			System.out.println("Add up " + up + " to " + this);
-			
 			this.up = up;
 			if (reverse)
 			{
@@ -110,9 +99,7 @@ public abstract class Block
 	protected void setDown(Block down, boolean reverse)
 	{	
 		if (this.down == null)
-		{
-			System.out.println("Add down " + up + " to " + this);
-			
+		{	
 			this.down = down;
 			if (reverse)
 			{
@@ -265,7 +252,10 @@ public abstract class Block
 						up.get("blockType").asText(),
 						(Integer) ((IntNode) up.get("id")).numberValue());
 				
-				block.setUp(upBlock, upBlock instanceof Section);
+				if (upBlock instanceof Section)
+				{
+					block.setUp(upBlock);
+				}
 			}
 			
 			// Extract the down block
@@ -276,7 +266,10 @@ public abstract class Block
 						down.get("blockType").asText(),
 						(Integer) ((IntNode) down.get("id")).numberValue());
 				
-				block.setDown(downBlock, downBlock instanceof Section);
+				if (downBlock instanceof Section)
+				{
+					block.setDown(downBlock);
+				}
 			}
 
 			if (block instanceof Section)
@@ -302,6 +295,12 @@ public abstract class Block
 			} else if (block instanceof Point) {
 				Point p = (Point) block;
 				
+				//extract orientation
+				p.setOrientation(Point.Orientation.valueOf(node.get("orientation").asText()));
+				
+				//extract setting
+				p.setSetting(Point.Setting.valueOf(node.get("setting").asText()));
+				
 				// Extract the sideline block
 				if (node.hasNonNull("sideline"))
 				{
@@ -311,12 +310,6 @@ public abstract class Block
 							(Integer) ((IntNode) sideline.get("id")).numberValue());
 					p.setSideline(sidelineBlock);
 				}
-
-				//extract orientation
-				p.setOrientation(Point.Orientation.valueOf(node.get("orientation").asText()));
-				
-				//extract setting
-				p.setSetting(Point.Setting.valueOf(node.get("setting").asText()));
 			}
 
 			return block;
