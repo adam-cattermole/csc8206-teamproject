@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 import ui.utilities.*;
+import javafx.event.ActionEvent;
 
 import java.net.URL;
 import java.util.List;
@@ -85,5 +86,10 @@ public class Controller implements Initializable {
                 event.consume();
             }
         });
+
+    }
+
+    @FXML private void onDeleteAction(ActionEvent event) {
+
     }
 }

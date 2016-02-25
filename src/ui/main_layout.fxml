@@ -11,6 +11,7 @@
 <?import ui.utilities.PointForwardU?>
 <?import ui.utilities.PointBackwardU?>
 <?import java.util.ArrayList?>
+<?import javafx.scene.control.Button?>
 <GridPane fx:controller="ui.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
     <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
@@ -41,4 +42,7 @@
             </ArrayList>
         </fx:define>
     </GridPane>
+    <HBox GridPane.columnIndex="4" GridPane.rowIndex="1">
+        <Button text="Delete" onAction="#onDeleteAction"/>
+    </HBox>
 </GridPane>
