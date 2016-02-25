@@ -10,16 +10,16 @@ import javafx.scene.input.MouseEvent;
  * 24/02/2016
  */
 
-public abstract class Block extends ImageView {
+public abstract class UiBlock extends ImageView {
 
     boolean selected = false;
     
-    public Block(Image image) {
+    public UiBlock(Image image) {
         super(image);
         addBlockListeners();
     }
 
-    public Block(double x, double y, Image image) {
+    public UiBlock(double x, double y, Image image) {
         this(image);
         setX(x);
         setY(y);

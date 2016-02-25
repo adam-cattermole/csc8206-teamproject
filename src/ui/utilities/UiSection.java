@@ -7,15 +7,15 @@ import javafx.scene.image.Image;
  * 24/02/2016
  */
 
-public class Section extends Block {
+public class UiSection extends UiBlock {
 
     private static Image image = new Image("ui/resources/section.png");
 
-    public Section() {
+    public UiSection() {
         super(image);
     }
 
-    public Section(double x, double y) {
+    public UiSection(double x, double y) {
         super(x, y, image);
     }
 }

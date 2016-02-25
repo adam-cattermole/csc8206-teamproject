@@ -8,9 +8,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.StrokeType;
 import ui.utilities.*;
 import javafx.event.ActionEvent;
 
@@ -24,7 +21,7 @@ public class Controller implements Initializable {
     @FXML private Group grid;
     @FXML private GridPane palette;
 
-    @FXML private List<Block> blockList;
+    @FXML private List<UiBlock> blockList;
 
     @FXML private ScrollPane scrollPane;
 
@@ -49,7 +46,7 @@ public class Controller implements Initializable {
         palette.setVgap(5);
 
         palette.setPrefSize(60, 60);
-        for (Block b: blockList) {
+        for (UiBlock b: blockList) {
             addPaletteListener(b);
         }
         scrollPane.setMaxSize(750, 750);

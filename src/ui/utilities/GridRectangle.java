@@ -7,8 +7,6 @@ package ui.utilities;
 
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -96,7 +94,7 @@ public class GridRectangle extends Rectangle
                 boolean success = false;
                 if (db.hasString()) {
                     String type = db.getString();
-                    Block block;
+                    UiBlock UiBlock;
                     
                     if (!isPlacementValid(type))
                     {
@@ -108,27 +106,27 @@ public class GridRectangle extends Rectangle
                         switch(type) 
                         {
                         case "Section":
-                            block = new Section(getX(), getY());
+                            UiBlock = new UiSection(getX(), getY());
                             break;
                         case "PointForward":
-                            block = new PointForward(getX(), getY());
+                            UiBlock = new UiPointUp(getX(), getY());
                             break;
                         case "PointBackward":
-                            block = new PointBackward(getX(), getY());
+                            UiBlock = new UiPointDown(getX(), getY());
                             break;
                         case "PointForwardU":
-                            block = new PointForwardU(getX(), getY());
+                            UiBlock = new UiPointUpInverse(getX(), getY());
                             break;
                         case "PointBackwardU":
-                            block = new PointBackwardU(getX(), getY());
+                            UiBlock = new UiPointDownInverse(getX(), getY());
                             break;
                         default:
-                            block = null;
+                            UiBlock = null;
                         }
-                        if (block != null) 
+                        if (UiBlock != null)
                         {
                             // Here we handle block with the backend
-                            grid.getChildren().add(block);
+                            grid.getChildren().add(UiBlock);
                         }
                         success = true;                        
                     }

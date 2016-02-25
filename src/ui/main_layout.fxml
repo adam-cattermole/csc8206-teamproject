@@ -5,11 +5,11 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.ScrollPane?>
-<?import ui.utilities.Section?>
-<?import ui.utilities.PointForward?>
-<?import ui.utilities.PointBackward?>
-<?import ui.utilities.PointForwardU?>
-<?import ui.utilities.PointBackwardU?>
+<?import ui.utilities.UiSection?>
+<?import ui.utilities.UiPointUp?>
+<?import ui.utilities.UiPointDown?>
+<?import ui.utilities.UiPointUpInverse?>
+<?import ui.utilities.UiPointDownInverse?>
 <?import java.util.ArrayList?>
 <?import javafx.scene.control.Button?>
 <GridPane fx:controller="ui.Controller"
@@ -26,12 +26,12 @@
     <GridPane fx:id="palette"
         GridPane.columnIndex="4" GridPane.rowIndex="0">
         <padding><Insets bottom="5"/></padding>
-        <Section fx:id="section" GridPane.columnIndex="0" GridPane.rowIndex="0"
-            GridPane.rowSpan="2"/>
-        <PointForward fx:id="pointForward" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <PointForwardU fx:id="pointForwardU" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <PointBackward fx:id="pointBackward" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <PointBackwardU fx:id="pointBackwardU" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <UiSection fx:id="section" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                   GridPane.rowSpan="2"/>
+        <UiPointUp fx:id="pointForward" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <UiPointUpInverse fx:id="pointForwardU" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <UiPointDown fx:id="pointBackward" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <UiPointDownInverse fx:id="pointBackwardU" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
         <fx:define>
             <ArrayList fx:id="blockList">
                 <fx:reference source="section"/>
