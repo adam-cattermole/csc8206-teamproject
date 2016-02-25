@@ -12,6 +12,7 @@ import ui.utilities.*;
 import javafx.event.ActionEvent;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import ui.utilities.GridRectangle;
@@ -25,7 +26,8 @@ public class Controller implements Initializable {
 
     @FXML private ScrollPane scrollPane;
 
-
+    public static List<UiBlock> blocks;
+    
     public final int GRID_HEIGHT = 50;
     public final int GRID_WIDTH = 50;
     public static final int CELL_SIZE = 30;
@@ -33,6 +35,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         GridRectangle[][] rectangles = new GridRectangle[GRID_WIDTH][GRID_HEIGHT];
+        blocks = new ArrayList<UiBlock>();
         for (int i = 0; i < GRID_WIDTH; i++) {
             for (int j = 0; j < GRID_HEIGHT; j++) {
                 GridRectangle r1 = new GridRectangle(i*CELL_SIZE, j*CELL_SIZE, CELL_SIZE, CELL_SIZE, grid, rectangles);
@@ -86,7 +89,18 @@ public class Controller implements Initializable {
 
     }
 
-    @FXML private void onDeleteAction(ActionEvent event) {
-
+    @FXML private void onDeleteAction(ActionEvent event) 
+    {
+        System.out.println(blocks.size());
+        ArrayList<UiBlock> found = new ArrayList<UiBlock>();
+        for (UiBlock b : blocks)
+        {
+            if (b.isSelected())
+            {
+                grid.getChildren().remove(b);
+                found.add(b);
+            }
+        }
+        blocks.removeAll(found);
     }
 }

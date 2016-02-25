@@ -105,19 +105,19 @@ public class GridRectangle extends Rectangle
                         prepareForPlacement(type);
                         switch(type) 
                         {
-                        case "Section":
+                        case "UiSection":
                             UiBlock = new UiSection(getX(), getY());
                             break;
-                        case "PointForward":
+                        case "UiPointUp":
                             UiBlock = new UiPointUp(getX(), getY());
                             break;
-                        case "PointBackward":
+                        case "UiPointDown":
                             UiBlock = new UiPointDown(getX(), getY());
                             break;
-                        case "PointForwardU":
+                        case "UiPointUpInverse":
                             UiBlock = new UiPointUpInverse(getX(), getY());
                             break;
-                        case "PointBackwardU":
+                        case "UiPointDownInverse":
                             UiBlock = new UiPointDownInverse(getX(), getY());
                             break;
                         default:
@@ -127,6 +127,7 @@ public class GridRectangle extends Rectangle
                         {
                             // Here we handle block with the backend
                             grid.getChildren().add(UiBlock);
+                            Controller.blocks.add(UiBlock);
                         }
                         success = true;                        
                     }
@@ -152,7 +153,7 @@ public class GridRectangle extends Rectangle
             
             setFill(col);
             rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)].setFill(col);
-            if (!blockType.equals("Section"))
+            if (!blockType.equals(UiSection.class.getSimpleName()))
             {
                 rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)+1].setFill(col);
                 rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].setFill(col);
@@ -169,7 +170,7 @@ public class GridRectangle extends Rectangle
         boolean blockUsedFlag = false;
         if (used || rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)].isUsed())
             blockUsedFlag = true;            
-        if ((!blockType.equals("Section")) && (!blockUsedFlag) && (rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)+1].isUsed() || rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].isUsed()))
+        if ((!blockType.equals(UiSection.class.getSimpleName())) && (!blockUsedFlag) && (rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)+1].isUsed() || rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].isUsed()))
             blockUsedFlag = true;
 
         return !blockUsedFlag;
@@ -189,7 +190,7 @@ public class GridRectangle extends Rectangle
     {
         used = true;
         rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)].setUsed(true);
-        if (!blockType.equals("Section"))
+        if (!blockType.equals(UiSection.class.getSimpleName()))
         {
             rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)+1].setUsed(true);
             rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].setUsed(true);
