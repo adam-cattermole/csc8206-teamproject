@@ -27,14 +27,14 @@ public class Controller implements Initializable {
     @FXML private ScrollPane scrollPane;
 
     public static List<UiBlock> blocks;
-    
+    private GridRectangle[][] rectangles;
     public final int GRID_HEIGHT = 50;
     public final int GRID_WIDTH = 50;
     public static final int CELL_SIZE = 30;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        GridRectangle[][] rectangles = new GridRectangle[GRID_WIDTH][GRID_HEIGHT];
+        /*GridRectangle[][]*/ rectangles = new GridRectangle[GRID_WIDTH][GRID_HEIGHT];
         blocks = new ArrayList<UiBlock>();
         for (int i = 0; i < GRID_WIDTH; i++) {
             for (int j = 0; j < GRID_HEIGHT; j++) {
@@ -91,12 +91,13 @@ public class Controller implements Initializable {
 
     @FXML private void onDeleteAction(ActionEvent event) 
     {
-        System.out.println(blocks.size());
         ArrayList<UiBlock> found = new ArrayList<UiBlock>();
         for (UiBlock b : blocks)
         {
             if (b.isSelected())
             {
+                //System.out.println(rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].isUsed());
+                rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
                 grid.getChildren().remove(b);
                 found.add(b);
             }

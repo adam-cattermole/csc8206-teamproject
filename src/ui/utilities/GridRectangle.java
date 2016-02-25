@@ -196,4 +196,18 @@ public class GridRectangle extends Rectangle
             rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].setUsed(true);
         }
     }
+    
+    public void freeUpSpace(String blockType)
+    {
+        used = false;
+        System.out.println(blockType);
+        rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)].setUsed(false);
+        
+        if (!blockType.equals(UiSection.class.getSimpleName()))
+        {
+            rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)+1].setUsed(false);
+            rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].setUsed(false);
+        }
+        
+    }
 }
