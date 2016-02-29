@@ -1,5 +1,7 @@
 package ui;
 
+import backend.Network;
+import backend.SimpleNetwork;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -8,9 +10,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import ui.utilities.*;
 import javafx.event.ActionEvent;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +23,19 @@ import ui.utilities.GridRectangle;
 
 public class Controller implements Initializable {
 
+    public static final int GRID_HEIGHT = 50;
+    public static final int GRID_WIDTH = 50;
+    public static final int CELL_SIZE = 30;
+
     @FXML private Group grid;
     @FXML private GridPane palette;
-
     @FXML private List<UiBlock> blockList;
-
     @FXML private ScrollPane scrollPane;
 
+
+    private Network network = new SimpleNetwork();
     public static List<UiBlock> blocks;
     private GridRectangle[][] rectangles;
-    public final int GRID_HEIGHT = 50;
-    public final int GRID_WIDTH = 50;
-    public static final int CELL_SIZE = 30;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -86,16 +91,12 @@ public class Controller implements Initializable {
                 event.consume();
             }
         });
-
     }
 
-    @FXML private void onDeleteAction(ActionEvent event) 
-    {
+    @FXML private void onDeleteAction(ActionEvent event) {
         ArrayList<UiBlock> found = new ArrayList<UiBlock>();
-        for (UiBlock b : blocks)
-        {
-            if (b.isSelected())
-            {
+        for (UiBlock b : blocks) {
+            if (b.isSelected()) {
                 //System.out.println(rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].isUsed());
                 rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
                 grid.getChildren().remove(b);
@@ -104,4 +105,32 @@ public class Controller implements Initializable {
         }
         blocks.removeAll(found);
     }
+
+
+    @FXML private void onLoadAction(ActionEvent event) {
+        // Must delete currently active network
+        for (UiBlock block: blocks) {
+            grid.getChildren().remove(block);
+        }
+        blocks.clear();
+    }
+
+    @FXML private void onSaveAction(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Save File");
+        fileChooser.showSaveDialog(grid.getScene().getWindow());
+
+        //TODO: Get file location from fileChooser and write network out
+    }
+
+
+    private void loadFromFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Network File");
+        fileChooser.showOpenDialog(grid.getScene().getWindow());
+        
+        //TODO: Get file location from fileChooser, create network and then visualise
+    }
+
+
 }

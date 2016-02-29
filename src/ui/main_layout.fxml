@@ -42,7 +42,11 @@
             </ArrayList>
         </fx:define>
     </GridPane>
-    <HBox GridPane.columnIndex="4" GridPane.rowIndex="1">
+    <HBox GridPane.columnIndex="0" GridPane.rowIndex="1"
+          spacing="20">
         <Button text="Delete" onAction="#onDeleteAction"/>
+        <Button text="Load" onAction="#onLoadAction"/>
+        <Button text="Save" onAction="#onSaveAction"/>
     </HBox>
+
 </GridPane>
