@@ -1,20 +1,28 @@
 package ui;
 
 import backend.Network;
+import backend.NetworkDeserializationException;
+import backend.NetworkSerializationException;
 import backend.SimpleNetwork;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import ui.utilities.*;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,42 +30,57 @@ import java.util.ResourceBundle;
 import ui.utilities.GridRectangle;
 
 public class Controller implements Initializable {
-
     public static final int GRID_HEIGHT = 50;
     public static final int GRID_WIDTH = 50;
     public static final int CELL_SIZE = 30;
 
     @FXML private Group grid;
     @FXML private GridPane palette;
-    @FXML private List<UiBlock> blockList;
+    @FXML private List<UiBlock> blockList; //list of blocks in the Pallet
     @FXML private ScrollPane scrollPane;
 
-
-    private Network network = new SimpleNetwork();
-    public static List<UiBlock> blocks;
-    private GridRectangle[][] rectangles;
+    private GridRectangle[][] rectangles = new GridRectangle[GRID_WIDTH][GRID_HEIGHT];
+    private UiNetwork uiNetwork;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        /*GridRectangle[][]*/ rectangles = new GridRectangle[GRID_WIDTH][GRID_HEIGHT];
-        blocks = new ArrayList<UiBlock>();
+		ObservableList<Node> children = grid.getChildren();
         for (int i = 0; i < GRID_WIDTH; i++) {
             for (int j = 0; j < GRID_HEIGHT; j++) {
-                GridRectangle r1 = new GridRectangle(i*CELL_SIZE, j*CELL_SIZE, CELL_SIZE, CELL_SIZE, grid, rectangles);
+                GridRectangle r1 = new GridRectangle(i*CELL_SIZE, j*CELL_SIZE, CELL_SIZE, CELL_SIZE, this);
                 rectangles[i][j] = r1;
-                grid.getChildren().add(r1);
-                //addGridListener(r1);
+                children.add(r1);
             }
         }
+        
+        uiNetwork = new UiNetwork(this);
 
-        System.out.println(grid.getChildren().size());
         palette.setVgap(5);
-
         palette.setPrefSize(60, 60);
         for (UiBlock b: blockList) {
             addPaletteListener(b);
         }
         scrollPane.setMaxSize(750, 750);
+    }
+    
+    /**
+     * Method to access the controller components.
+     * @return the ui grid component.
+     */
+    public Group getGrid() {
+    	return grid;
+    }
+    
+    public GridRectangle[][] getRectangles() {
+    	return rectangles;
+    }
+    
+    /**
+     * Method to access the controller components.
+     * @return the uiNetwork component.
+     */
+    public UiNetwork getUiNetwork() {
+    	return uiNetwork;
     }
 
     private void addPaletteListener(final ImageView source) {
@@ -94,43 +117,44 @@ public class Controller implements Initializable {
     }
 
     @FXML private void onDeleteAction(ActionEvent event) {
-        ArrayList<UiBlock> found = new ArrayList<UiBlock>();
-        for (UiBlock b : blocks) {
-            if (b.isSelected()) {
-                //System.out.println(rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].isUsed());
-                rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
-                grid.getChildren().remove(b);
-                found.add(b);
-            }
-        }
-        blocks.removeAll(found);
+    	uiNetwork.deleteUiBlocks(true);
     }
 
+    @FXML private void onLoadAction(ActionEvent event) {        
+    	//get a path from the user
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Network File");
+        File networkFile = fileChooser.showOpenDialog(grid.getScene().getWindow());
 
-    @FXML private void onLoadAction(ActionEvent event) {
-        // Must delete currently active network
-        for (UiBlock block: blocks) {
-            grid.getChildren().remove(block);
+        if (networkFile != null) {
+            try {
+            	FileInputStream inputStream = new FileInputStream(networkFile);
+            	UiNetwork networkFromFile = UiNetwork.load(this, inputStream);
+            	
+    	        // Must delete currently active network
+    	    	uiNetwork.deleteUiBlocks(false);
+    	    	uiNetwork = null;
+            	
+    	    	// and override with new network
+    			uiNetwork = networkFromFile;
+    		} catch (FileNotFoundException | NetworkDeserializationException e) {
+    			e.printStackTrace(); //TODO: show an error message to the user
+    		}	
         }
-        blocks.clear();
     }
 
     @FXML private void onSaveAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Save File");
-        fileChooser.showSaveDialog(grid.getScene().getWindow());
-
-        //TODO: Get file location from fileChooser and write network out
-    }
-
-
-    private void loadFromFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Network File");
-        fileChooser.showOpenDialog(grid.getScene().getWindow());
+        File networkFile = fileChooser.showSaveDialog(grid.getScene().getWindow());
         
-        //TODO: Get file location from fileChooser, create network and then visualise
+        if (networkFile != null) {
+            try {
+            	FileOutputStream outputStream = new FileOutputStream(networkFile);
+    			uiNetwork.save(outputStream);
+    		} catch (FileNotFoundException | NetworkSerializationException e) {
+    			e.printStackTrace(); //TODO: show an error message to the user
+    		}	
+        }
     }
-
-
 }

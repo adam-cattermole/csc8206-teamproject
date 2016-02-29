@@ -24,14 +24,18 @@ public class GridRectangle extends Rectangle
     boolean used = false;
     Group grid;
     GridRectangle[][] rectangles;
+    private Controller controller;
 
     
-    public GridRectangle(int x, int y, int width, int height, Group grid, GridRectangle[][] rectangles)
+    public GridRectangle(int x, int y, int width, int height, Controller controller)
     {
        super(x,y,width,height);
+       
+       this.controller = controller;
+       grid = controller.getGrid();
+       rectangles = controller.getRectangles();
+       
        addGridListener();
-       this.grid = grid;
-       this.rectangles = rectangles;
        setUpStyle();
     }
     
@@ -126,8 +130,7 @@ public class GridRectangle extends Rectangle
                         if (UiBlock != null)
                         {
                             // Here we handle block with the backend
-                            grid.getChildren().add(UiBlock);
-                            Controller.blocks.add(UiBlock);
+                        	controller.getUiNetwork().addUiBlock(UiBlock);
                         }
                         success = true;                        
                     }
