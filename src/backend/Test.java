@@ -1,4 +1,6 @@
 package backend;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.core.JsonGenerationException;
 
 import java.io.FileInputStream;
@@ -8,6 +10,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Test
 {
@@ -53,14 +56,17 @@ public class Test
 		b2.setDown(b1);*/
 		
 		System.out.println(network);
+		ObjectMapper jsonMapper = new ObjectMapper();
+		jsonMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		jsonMapper.writerWithDefaultPrettyPrinter().writeValue(System.out, network);
 
-		network.removeBlock(b2);
+		/*network.removeBlock(b2);
 		
 		Section s = network.makeSection();
 		b1.setUp(s);
 		s.setUp(p1);
 		
-		System.out.println(network);
+		System.out.println(network);*/
 		
 		
 		//b3.setSignalDown(new Signal());

@@ -1,6 +1,7 @@
 package backend;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -51,7 +52,7 @@ public class SimpleNetwork implements Network
 		return this;
 	}
 	
-	public Set<Block> getBlocks()
+	public Collection<Block> getBlocks()
 	{
 		return blocks;
 	}
