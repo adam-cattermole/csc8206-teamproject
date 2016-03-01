@@ -31,13 +31,19 @@ public class UiPointDown extends UiBlock {
     }
 
     @Override
+    /**
+     * Initially draw straight line
+     * first bezier curve draws from quarter to midpoint
+     * second from midpoint to three quarters
+     * line connects to end*/
     protected void draw() {
         GraphicsContext gc = getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(STROKE_SIZE);
         gc.strokeLine(0, HEIGHT*.75, WIDTH, HEIGHT*.75);
         gc.bezierCurveTo(WIDTH*.75, HEIGHT*.75, WIDTH*.5, HEIGHT*.75, WIDTH*.5, HEIGHT*.5);
-        gc.bezierCurveTo(WIDTH*.5, HEIGHT*.5, WIDTH*.5, HEIGHT*.25, 0, HEIGHT*.25);
+        gc.bezierCurveTo(WIDTH*.5, HEIGHT*.5, WIDTH*.5, HEIGHT*.25, WIDTH*.25, HEIGHT*.25);
+        gc.lineTo(0, HEIGHT*.25);
         gc.stroke();
     }
 }
