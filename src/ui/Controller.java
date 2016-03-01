@@ -49,6 +49,7 @@ public class Controller implements Initializable {
             }
         }
         
+        
         uiNetwork = new UiNetwork(this);
 
         palette.setVgap(5);

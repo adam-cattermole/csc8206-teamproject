@@ -50,6 +50,7 @@ public class UiNetwork {
         grid.getChildren().add(uiBlock);
 		uiBlocks.add(uiBlock);
 		
+		
 		//TODO: Here we will need to find the neighbours (based on coordinates of uiBlock) and add the Block from uiBlock to the SimpleNetwork backend.
 	}
 	
