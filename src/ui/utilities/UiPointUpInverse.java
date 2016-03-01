@@ -1,5 +1,7 @@
 package ui.utilities;
 
+import backend.Block;
+import backend.Point;
 import javafx.scene.image.Image;
 
 /**
@@ -16,5 +18,11 @@ public class UiPointUpInverse extends UiBlock {
 
     public UiPointUpInverse(double x, double y) {
         super(x, y, image);
+        block = new Point(Point.Orientation.UP);
+    }
+    
+    public UiPointUpInverse(double x, double y, Block block) {
+    	super(x, y, image);
+    	this.block = block;
     }
 }

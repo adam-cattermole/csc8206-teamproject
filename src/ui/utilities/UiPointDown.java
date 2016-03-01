@@ -1,5 +1,7 @@
 package ui.utilities;
 
+import backend.Block;
+import backend.Point;
 import javafx.scene.image.Image;
 
 /**
@@ -8,7 +10,6 @@ import javafx.scene.image.Image;
  */
 
 public class UiPointDown extends UiBlock {
-
     private static Image image = new Image("ui/resources/point_down.png");
 
     public UiPointDown() {
@@ -17,5 +18,11 @@ public class UiPointDown extends UiBlock {
 
     public UiPointDown(double x, double y) {
         super(x, y, image);
+        block = new Point(Point.Orientation.DOWN);
+    }
+    
+    public UiPointDown(double x, double y, Block block) {
+    	super(x, y, image);
+    	this.block = block;
     }
 }

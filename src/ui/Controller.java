@@ -1,9 +1,7 @@
 package ui;
 
-import backend.Network;
 import backend.NetworkDeserializationException;
 import backend.NetworkSerializationException;
-import backend.SimpleNetwork;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,13 +16,11 @@ import ui.utilities.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import ui.utilities.GridRectangle;
@@ -117,11 +113,10 @@ public class Controller implements Initializable {
     }
 
     @FXML private void onDeleteAction(ActionEvent event) {
-    	uiNetwork.deleteUiBlocks(true);
+    	uiNetwork.deleteUiBlocks(true); //true - delete selected elements only
     }
 
-    @FXML private void onLoadAction(ActionEvent event) {        
-    	//get a path from the user
+    @FXML private void onLoadAction(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Network File");
         File networkFile = fileChooser.showOpenDialog(grid.getScene().getWindow());
@@ -137,13 +132,16 @@ public class Controller implements Initializable {
             	
     	    	// and override with new network
     			uiNetwork = networkFromFile;
+    			
+    			//redraw network elements
+    			uiNetwork.refreshUi();
     		} catch (FileNotFoundException | NetworkDeserializationException e) {
-    			e.printStackTrace(); //TODO: show an error message to the user
-    		}	
+    			System.out.println(e.getMessage()); //TODO: show an error message to the user
+    		}
         }
     }
 
-    @FXML private void onSaveAction(ActionEvent event) {
+    @FXML private void onSaveAction(ActionEvent event) {   	
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Save File");
         File networkFile = fileChooser.showSaveDialog(grid.getScene().getWindow());
@@ -153,7 +151,7 @@ public class Controller implements Initializable {
             	FileOutputStream outputStream = new FileOutputStream(networkFile);
     			uiNetwork.save(outputStream);
     		} catch (FileNotFoundException | NetworkSerializationException e) {
-    			e.printStackTrace(); //TODO: show an error message to the user
+    			System.out.println(e.getMessage()); //TODO: show an error message to the user
     		}	
         }
     }

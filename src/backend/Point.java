@@ -4,13 +4,13 @@ import java.util.Set;
 
 public class Point extends Block
 {
-	enum Orientation
+	public enum Orientation
 	{
 		UP, // -<
 		DOWN // >-
 	}
 	
-	enum Setting
+	public enum Setting
 	{
 		PLUS, //selects the mainline
 		MINUS //selects the sideline

@@ -2,6 +2,7 @@ package ui.utilities;
 
 import java.io.IOException;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -11,18 +12,13 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import com.fasterxml.jackson.databind.node.IntNode;
 
 import backend.Block;
-import backend.BlockFactory;
-import backend.Direction;
-import backend.Point;
-import backend.Section;
-import backend.Signal;
 import javafx.event.EventHandler;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -46,7 +42,8 @@ import javafx.scene.paint.Color;
 @JsonSerialize(using=UiBlock.Serializer.class)
 @JsonDeserialize(using=UiBlock.Deserializer.class)
 public abstract class UiBlock extends ImageView {
-    boolean selected = false;
+    @JsonIgnore private boolean selected = false;
+    protected Block block;
     
     public UiBlock(Image image) {
         super(image);
@@ -90,9 +87,14 @@ public abstract class UiBlock extends ImageView {
             }
         });
     }
+    
     public boolean isSelected()
     {
         return selected;
+    }
+    
+    public String toString() {
+    	return (getClass().getSimpleName() + "[" + getX() + "," + getY() + "]: " + block);
     }
     
 	/**
@@ -100,11 +102,12 @@ public abstract class UiBlock extends ImageView {
 	 */
 	public static class Serializer extends JsonSerializer<UiBlock>
 	{
-		public void serialize(UiBlock block, JsonGenerator json, SerializerProvider provider)
+		public void serialize(UiBlock uiBlock, JsonGenerator json, SerializerProvider provider)
 		throws IOException, JsonProcessingException
 		{
-			json.writeNumberField("x", block.getX());
-			json.writeNumberField("y", block.getY());
+			json.writeNumberField("x", uiBlock.getX());
+			json.writeNumberField("y", uiBlock.getY());
+			json.writeObjectField("block", uiBlock.block);
 		}
 		
 		public void serializeWithType(UiBlock block, JsonGenerator json, SerializerProvider provider, TypeSerializer typeSerializer) 
@@ -121,7 +124,21 @@ public abstract class UiBlock extends ImageView {
 		public UiBlock deserialize(JsonParser parser, DeserializationContext context)
 		throws IOException, JsonProcessingException
 		{
-			return null;
+			ObjectMapper mapper = (ObjectMapper) parser.getCodec();
+			JsonNode node = mapper.readTree(parser);
+			
+			//invalid node
+			if (!(node.hasNonNull("uiBlockType") || node.hasNonNull("x") || node.hasNonNull("y") || node.hasNonNull("block")))
+			{
+				return null;
+			}
+			
+			String uiBlockType = node.get("uiBlockType").asText();
+			double x = node.get("x").asDouble();
+			double y = node.get("y").asDouble();
+			Block block = mapper.readValue(node.get("block").toString(), Block.class);
+			
+			return UiBlockFactory.getUiBlock(uiBlockType, block, x, y);
 		}
 	}
 }

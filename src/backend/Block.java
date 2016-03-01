@@ -177,7 +177,7 @@ public abstract class Block implements Comparable<Block>
 		{
 			//firstly serialize fields common to all Blocks
 			json.writeNumberField("id", block.id);
-			json.writeObjectField("direction", block.direction);
+			//json.writeObjectField("direction", block.direction);
 			
 			if (block.up != null)
 			{
@@ -214,7 +214,7 @@ public abstract class Block implements Comparable<Block>
 				}
 				
 				json.writeObjectField("orientation", p.getOrientation());
-				json.writeObjectField("setting", p.getSetting());
+				//json.writeObjectField("setting", p.getSetting());
 			}
 			
 			//serialize fields specific to Section if given block is a Section
@@ -253,7 +253,7 @@ public abstract class Block implements Comparable<Block>
 					(Integer) ((IntNode) node.get("id")).numberValue());
 			
 			//extract the direction
-			block.setDirection(Direction.valueOf(node.get("direction").asText()));
+			//block.setDirection(Direction.valueOf(node.get("direction").asText()));
 			
 			// Extract the up block
 			if (node.hasNonNull("up"))
@@ -316,7 +316,7 @@ public abstract class Block implements Comparable<Block>
 				p.setOrientation(Point.Orientation.valueOf(node.get("orientation").asText()));
 				
 				//extract setting
-				p.setSetting(Point.Setting.valueOf(node.get("setting").asText()));
+				//p.setSetting(Point.Setting.valueOf(node.get("setting").asText()));
 				
 				// Extract the sideline block
 				if (node.hasNonNull("sideline"))

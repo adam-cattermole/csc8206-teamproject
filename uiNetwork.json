@@ -1,0 +1,195 @@
+{
+  "uiBlocks" : [ {
+    "uiBlockType" : "UiSection",
+    "x" : 60.0,
+    "y" : 180.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 1,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 120.0,
+    "y" : 180.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 2,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiPointUp",
+    "x" : 180.0,
+    "y" : 150.0,
+    "block" : {
+      "blockType" : "Point",
+      "id" : 1,
+      "up" : null,
+      "down" : null,
+      "sideline" : null,
+      "orientation" : "UP"
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 240.0,
+    "y" : 150.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 3,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 240.0,
+    "y" : 180.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 4,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiPointDown",
+    "x" : 300.0,
+    "y" : 150.0,
+    "block" : {
+      "blockType" : "Point",
+      "id" : 2,
+      "up" : null,
+      "down" : null,
+      "sideline" : null,
+      "orientation" : "DOWN"
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 360.0,
+    "y" : 180.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 5,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiPointDownInverse",
+    "x" : 420.0,
+    "y" : 180.0,
+    "block" : {
+      "blockType" : "Point",
+      "id" : 3,
+      "up" : null,
+      "down" : null,
+      "sideline" : null,
+      "orientation" : "DOWN"
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 360.0,
+    "y" : 210.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 6,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiPointUp",
+    "x" : 300.0,
+    "y" : 210.0,
+    "block" : {
+      "blockType" : "Point",
+      "id" : 4,
+      "up" : null,
+      "down" : null,
+      "sideline" : null,
+      "orientation" : "UP"
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 240.0,
+    "y" : 240.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 7,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 180.0,
+    "y" : 240.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 8,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiPointUpInverse",
+    "x" : 120.0,
+    "y" : 210.0,
+    "block" : {
+      "blockType" : "Point",
+      "id" : 5,
+      "up" : null,
+      "down" : null,
+      "sideline" : null,
+      "orientation" : "UP"
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 60.0,
+    "y" : 210.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 9,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 180.0,
+    "y" : 210.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 10,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  }, {
+    "uiBlockType" : "UiSection",
+    "x" : 360.0,
+    "y" : 240.0,
+    "block" : {
+      "blockType" : "Section",
+      "id" : 11,
+      "up" : null,
+      "down" : null,
+      "signalDown" : null,
+      "signalUp" : null
+    }
+  } ]
+}

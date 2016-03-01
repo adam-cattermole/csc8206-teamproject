@@ -27,7 +27,7 @@ import ui.Controller;
  */
 public class UiNetwork {
 	@JsonIgnore private Network network = new SimpleNetwork();
-	private List<UiBlock> uiBlocks = new ArrayList<UiBlock>();
+	protected List<UiBlock> uiBlocks = new ArrayList<UiBlock>();
 	
 	@JsonIgnore private GridRectangle[][] rectangles;
 	@JsonIgnore private Group grid;
@@ -50,7 +50,7 @@ public class UiNetwork {
         grid.getChildren().add(uiBlock);
 		uiBlocks.add(uiBlock);
 		
-		//Here we will need to find the neighbours (based on coordinates of uiBlock) and add the Block from uiBlock to the SimpleNetwork backend.
+		//TODO: Here we will need to find the neighbours (based on coordinates of uiBlock) and add the Block from uiBlock to the SimpleNetwork backend.
 	}
 	
 	public void deleteUiBlocks(boolean selectedOnly) {
@@ -76,6 +76,11 @@ public class UiNetwork {
             
             uiBlocks.clear();
         }
+	}
+	
+	public void refreshUi() {
+		ObservableList<Node> children = controller.getGrid().getChildren();
+		children.addAll(uiBlocks);
 	}
 	
 	/**
@@ -109,5 +114,16 @@ public class UiNetwork {
 		} catch (IOException e) {
 			throw new NetworkSerializationException(e);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		for (UiBlock block : uiBlocks) {
+			sb.append(block.toString()).append("\n");
+		}
+		
+		return sb.toString();
 	}
 }
