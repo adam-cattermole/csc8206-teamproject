@@ -43,7 +43,7 @@ public class GridRectangle extends Rectangle
     {
         setStroke(Color.DARKBLUE);
         setStrokeType(StrokeType.INSIDE);
-        setStrokeWidth(0.5);
+        setStrokeWidth(0.2);
         setFill(Color.LIGHTGRAY);        
     }
     

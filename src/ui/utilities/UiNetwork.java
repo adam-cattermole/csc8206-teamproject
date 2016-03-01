@@ -62,7 +62,7 @@ public class UiNetwork {
         	
             for (UiBlock b : uiBlocks) {
                 if (b.isSelected()) {
-                    rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
+                    rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
                     children.remove(b);
                     found.add(b);
                 }
@@ -71,7 +71,7 @@ public class UiNetwork {
             uiBlocks.removeAll(found);
         } else {
             for (UiBlock b : uiBlocks) {
-                rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
+                rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
                 children.remove(b);
             }
             
