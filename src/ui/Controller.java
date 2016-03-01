@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -49,6 +50,7 @@ public class Controller implements Initializable {
             }
         }
         
+        
         uiNetwork = new UiNetwork(this);
 
         palette.setVgap(5);
@@ -79,7 +81,7 @@ public class Controller implements Initializable {
     	return uiNetwork;
     }
 
-    private void addPaletteListener(final ImageView source) {
+    private void addPaletteListener(final Canvas source) {
         source.setOnDragDetected(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
                 /* drag was detected, start drag-and-drop gesture*/

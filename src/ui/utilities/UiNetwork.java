@@ -53,8 +53,8 @@ public class UiNetwork {
         }
 	
 	public void addUiBlock(UiBlock uiBlock, boolean addToUiBlocks) {
-            int i = ((int) uiBlock.getX() / Controller.CELL_SIZE);
-            int j = ((int) uiBlock.getY() / Controller.CELL_SIZE);
+            int i = ((int) uiBlock.getLayoutX() / Controller.CELL_SIZE);
+            int j = ((int) uiBlock.getLayoutY() / Controller.CELL_SIZE);
             
             boolean isUiBlockSection = uiBlock.getClass().getSimpleName().equals(UiSection.class.getSimpleName());
             
@@ -288,7 +288,7 @@ public class UiNetwork {
         
         private boolean isNeighbourAligned(UiBlock block, UiBlock neighbour)
         {
-            if (block.getY() == neighbour.getY())
+            if (block.getLayoutY() == neighbour.getLayoutY())
                 return true;
             else
                 return false;
@@ -303,7 +303,7 @@ public class UiNetwork {
             for (UiBlock b : uiBlocks) {
                 if (b.isSelected()) {
                     network.removeBlock(b.block);
-                    rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
+                    rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
                     children.remove(b);
                     found.add(b);
                 }
@@ -312,7 +312,7 @@ public class UiNetwork {
             uiBlocks.removeAll(found);
         } else {
             for (UiBlock b : uiBlocks) {
-                rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
+                rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
                 children.remove(b);
                 network.removeBlock(b.block);
             }
@@ -323,7 +323,7 @@ public class UiNetwork {
 	
 	public void refreshUi() {
             for (UiBlock b : uiBlocks) {
-                rectangles[((int) b.getX() / Controller.CELL_SIZE)][((int)b.getY() / Controller.CELL_SIZE)].prepareForPlacement(b.getClass().getSimpleName(), b);
+                rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].prepareForPlacement(b.getClass().getSimpleName(), b);
                 addUiBlock(b, false);
             }
 	}
