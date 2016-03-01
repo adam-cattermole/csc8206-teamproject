@@ -22,6 +22,8 @@ import ui.Controller;
 public class GridRectangle extends Rectangle 
 {
     boolean used = false;
+    UiBlock block;
+    
     Group grid;
     GridRectangle[][] rectangles;
     private Controller controller;
@@ -52,7 +54,7 @@ public class GridRectangle extends Rectangle
         setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 /* data is dragged over the target */
-                System.out.println("onDragOver");
+                //System.out.println("onDragOver");
 
                 /* accept it only if it is  not dragged from the same node
                  * and if it has a string data */
@@ -69,7 +71,7 @@ public class GridRectangle extends Rectangle
         setOnDragEntered(new EventHandler <DragEvent>() {
             public void handle(DragEvent event) {
                 /* the drag-and-drop gesture entered the target */
-                System.out.println("onDragEntered");
+                //System.out.println("onDragEntered");
                 /* show to the user that it is an actual gesture target */
                 if (event.getGestureSource() != this &&
                         event.getDragboard().hasString()) {
@@ -106,7 +108,6 @@ public class GridRectangle extends Rectangle
                     }
                     else
                     {
-                        prepareForPlacement(type);
                         switch(type) 
                         {
                         case "UiSection":
@@ -129,6 +130,7 @@ public class GridRectangle extends Rectangle
                         }
                         if (UiBlock != null)
                         {
+                            prepareForPlacement(type, UiBlock);
                             // Here we handle block with the backend
                         	controller.getUiNetwork().addUiBlock(UiBlock);
                         }
@@ -179,18 +181,47 @@ public class GridRectangle extends Rectangle
         return !blockUsedFlag;
     }
     
+    /*
     private void setUsed(boolean isUsed)
     {
         this.used = isUsed;
     }
+    */
+    private void setUiBlock(UiBlock b)
+    {
+        this.block = b;
+    }
+    
+    public UiBlock getUiBlock()
+    {
+        return this.block;
+    }
     
     public boolean isUsed()
     {
-        return used;
+        if (block == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+        //return used;
     }
     
-    private void prepareForPlacement(String blockType)
+    protected void prepareForPlacement(String blockType, UiBlock block)
     {
+        this.block = block;
+        rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)].setUiBlock(block);
+        
+        if (!blockType.equals(UiSection.class.getSimpleName()))
+        {
+            rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)+1].setUiBlock(block);
+            rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].setUiBlock(block);
+        }
+        
+        /*
         used = true;
         rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)].setUsed(true);
         if (!blockType.equals(UiSection.class.getSimpleName()))
@@ -198,10 +229,21 @@ public class GridRectangle extends Rectangle
             rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)+1].setUsed(true);
             rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].setUsed(true);
         }
+        */
     }
     
     public void freeUpSpace(String blockType)
     {
+        this.block = null;
+        rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)].setUiBlock(null);
+        
+        if (!blockType.equals(UiSection.class.getSimpleName()))
+        {
+            rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)+1].setUiBlock(null);
+            rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].setUiBlock(null);
+        }
+        
+        /*
         used = false;
         System.out.println(blockType);
         rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)].setUsed(false);
@@ -211,6 +253,7 @@ public class GridRectangle extends Rectangle
             rectangles[((int) getX() / Controller.CELL_SIZE)+1][((int)getY() / Controller.CELL_SIZE)+1].setUsed(false);
             rectangles[((int) getX() / Controller.CELL_SIZE)][((int)getY() / Controller.CELL_SIZE)+1].setUsed(false);
         }
+        */
         
     }
 }

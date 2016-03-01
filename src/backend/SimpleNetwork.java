@@ -47,7 +47,7 @@ public class SimpleNetwork implements Network
 		Identifiers.addToBlockPool(block);
 		
 		//finally remove the block from blocks set
-		blocks.remove(block);
+		System.out.println("removed: " + blocks.remove(block));
 		
 		return this;
 	}

@@ -135,13 +135,19 @@ public class Controller implements Initializable {
     			
     			//redraw network elements
     			uiNetwork.refreshUi();
+                        
+                System.out.println(uiNetwork);
+                System.out.println(uiNetwork.network);
     		} catch (FileNotFoundException | NetworkDeserializationException e) {
     			System.out.println(e.getMessage()); //TODO: show an error message to the user
     		}
         }
     }
 
-    @FXML private void onSaveAction(ActionEvent event) {   	
+    @FXML private void onSaveAction(ActionEvent event) {
+        System.out.println(uiNetwork);
+        System.out.println(uiNetwork.network);
+        
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Save File");
         File networkFile = fileChooser.showSaveDialog(grid.getScene().getWindow());

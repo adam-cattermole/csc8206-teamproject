@@ -55,29 +55,29 @@ public abstract class Block implements Comparable<Block>
 		Identifiers.setMaxBlockID(this);
 	}
 	
-	protected int getID() {
+	public int getID() {
 		return id;
 	}
 	
-	protected Block getUp() {
+	public Block getUp() {
 		return up;
 	}
 	
-	protected Block getDown() {
+	public Block getDown() {
 		return down;
 	}
 	
-	protected void setUp(Block up)
+	public void setUp(Block up)
 	{
 		setUp(up, true);
 	}
 	
-	protected void setDown(Block down)
+	public void setDown(Block down)
 	{
 		setDown(down, true);
 	}
 	
-	protected void setUp(Block up, boolean reverse)
+	public void setUp(Block up, boolean reverse)
 	{	
 		if (this.up == null)
 		{	
@@ -93,7 +93,7 @@ public abstract class Block implements Comparable<Block>
 		}
 	}
 	
-	protected void setDown(Block down, boolean reverse)
+	public void setDown(Block down, boolean reverse)
 	{	
 		if (this.down == null)
 		{	
@@ -109,17 +109,17 @@ public abstract class Block implements Comparable<Block>
 		}
 	}
 	
-	protected void setDirection(Direction direction)
+	public void setDirection(Direction direction)
 	{
 		this.direction = direction;
 	}
 	
-	protected Direction getDirection()
+	public Direction getDirection()
 	{
 		return direction;
 	}
 	
-	protected void deleteBlock(Block block)
+	public void deleteBlock(Block block)
 	{	
 		if (down == block)
 		{
@@ -132,11 +132,11 @@ public abstract class Block implements Comparable<Block>
 		}
 	}
 	
-	protected Set<Block> getNeighbours()
+	public Set<Block> getNeighbours()
 	{
 		if (neighbours == null)
 		{
-			neighbours = new HashSet<Block>(3);
+			neighbours = new HashSet<>(3);
 		}
 		
 		//TODO don't clear and add elements every time, just add elements that were not added yet
