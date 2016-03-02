@@ -37,8 +37,7 @@ public class UiNetwork {
 	@JsonIgnore private GridRectangle[][] rectangles;
 	@JsonIgnore private Group grid;
 	@JsonIgnore private Controller controller;
-	
-	private EventHandler<MouseEvent> deleteBlockHandler;
+	@JsonIgnore private EventHandler<MouseEvent> deleteBlockHandler;
 	
 	public UiNetwork() {
 		deleteBlockHandler = (event) -> {			
