@@ -11,12 +11,8 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
@@ -38,25 +34,19 @@ import java.io.IOException;
 public abstract class UiBlock extends Canvas {
 
     @JsonIgnore protected static final int STROKE_SIZE = 2;
-    @JsonIgnore private boolean selected = false;
     protected Block block;
 
     abstract void draw();
     
     public UiBlock(double width, double height) {
         super(width, height);
-        init();
+        draw();
     }
 
     public UiBlock(double x, double y, double width, double height) {
         super(width, height);
         setLayoutX(x);
         setLayoutY(y);
-        init();
-    }
-    
-    private void init() {
-        addBlockListeners();
         draw();
     }
     
@@ -65,41 +55,6 @@ public abstract class UiBlock extends Canvas {
     	
         Tooltip t = new Tooltip(this.toString());
         Tooltip.install(this, t);
-    }
-    
-    private void addBlockListeners()
-    {
-        setOnMouseClicked(new EventHandler <MouseEvent>() 
-        {
-            public void handle(MouseEvent event) 
-            {
-                if (selected)
-                {
-                    setEffect(null);
-                    selected = false;
-                }
-                else
-                {
-                    int depth = 70; //Setting the uniform variable for the glow width and height 
-                    DropShadow borderGlow= new DropShadow();
-                    borderGlow.setOffsetY(0f);
-                    borderGlow.setOffsetX(0f);
-                    borderGlow.setColor(Color.RED);
-                    borderGlow.setWidth(depth);
-                    borderGlow.setHeight(depth);
-                    setEffect(borderGlow); //Apply the effect
-                    
-                    selected = true;
-                }
-                
-                event.consume();
-            }
-        });
-    }
-    
-    public boolean isSelected()
-    {
-        return selected;
     }
     
     public String toString() {

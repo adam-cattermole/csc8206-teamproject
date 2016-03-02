@@ -27,7 +27,6 @@ public class GridRectangle extends Rectangle
     Group grid;
     GridRectangle[][] rectangles;
     private Controller controller;
-
     
     public GridRectangle(int x, int y, int width, int height, Controller controller)
     {
@@ -75,6 +74,7 @@ public class GridRectangle extends Rectangle
                 /* show to the user that it is an actual gesture target */
                 if (event.getGestureSource() != this &&
                         event.getDragboard().hasString()) {
+                	
                     // Add colors to grid
                     highlight(event.getDragboard().getString(), Color.GREEN);
                 }

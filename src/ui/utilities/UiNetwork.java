@@ -21,6 +21,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import ui.Controller;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.event.EventHandler;
 
 /**
  * This class will hold and utilize the network from the backend.
@@ -35,7 +38,25 @@ public class UiNetwork {
 	@JsonIgnore private Group grid;
 	@JsonIgnore private Controller controller;
 	
-	public UiNetwork() {}
+	private EventHandler<MouseEvent> deleteBlockHandler;
+	
+	public UiNetwork() {
+		deleteBlockHandler = (event) -> {			
+    		if (event.getButton() == MouseButton.SECONDARY) {
+    			if (event.getSource() instanceof UiBlock) {
+    				UiBlock b = (UiBlock) event.getSource();
+    				
+    				//remove element from various places
+                    network.removeBlock(b.block);
+                    rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
+                    grid.getChildren().remove(b);
+                    uiBlocks.remove(b);
+    			}
+    		}
+    		
+    		event.consume();
+		};
+	}
 
 	public UiNetwork(Controller controller) {
 		//TODO: add null checks?
@@ -47,6 +68,7 @@ public class UiNetwork {
 	public void setUiBlocks(List<UiBlock> uiBlocks) {
 		this.uiBlocks = uiBlocks;
 		for (UiBlock b : uiBlocks) {
+			b.setOnMouseClicked(deleteBlockHandler);
 			network.addBlock(b.block);
 		}
 	}
@@ -63,6 +85,7 @@ public class UiNetwork {
         
     public void addUiBlock(UiBlock uiBlock) {
         addUiBlock(uiBlock, true);
+        uiBlock.setOnMouseClicked(deleteBlockHandler);
     }
 	
 	public void addUiBlock(UiBlock uiBlock, boolean addToUiBlocks) {
@@ -200,30 +223,15 @@ public class UiNetwork {
         else
             return false;
     }
-	
-	public void deleteUiBlocks(boolean selectedOnly) {
-        ObservableList<Node> children = controller.getGrid().getChildren();
-        
-        if (selectedOnly) {
-        	ArrayList<UiBlock> found = new ArrayList<UiBlock>();
-        	
-            for (UiBlock b : uiBlocks) {
-                if (b.isSelected()) {
-                    network.removeBlock(b.block);
-                    rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
-                    children.remove(b);
-                    found.add(b);
-                }
-            }
-            
-            uiBlocks.removeAll(found);
-        } else {
-            for (UiBlock b : uiBlocks) {
-                rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
-                children.remove(b);
-            }
+    
+    public void clear() {
+    	ObservableList<Node> children = controller.getGrid().getChildren();
+    	
+        for (UiBlock b : uiBlocks) {
+            rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
+            children.remove(b);
         }
-	}
+    }
 	
 	public void refreshUi() {		
         for (UiBlock b : uiBlocks) {

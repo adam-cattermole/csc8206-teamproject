@@ -26,25 +26,23 @@
     <GridPane fx:id="palette"
         GridPane.columnIndex="4" GridPane.rowIndex="0">
         <padding><Insets bottom="5"/></padding>
-        <UiSection fx:id="section" GridPane.columnIndex="0" GridPane.rowIndex="0"
-                   GridPane.rowSpan="2"/>
-        <UiPointUp fx:id="pointForward" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <UiPointUpInverse fx:id="pointForwardU" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <UiPointDown fx:id="pointBackward" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <UiPointDownInverse fx:id="pointBackwardU" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <UiSection fx:id="Pallet_UiSection" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.rowSpan="2"/>
+        <UiPointUp fx:id="Pallet_UiPointUp" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <UiPointUpInverse fx:id="Pallet_UiPointUpInverse" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <UiPointDown fx:id="Pallet_UiPointDown" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <UiPointDownInverse fx:id="Pallet_UiPointDownInverse" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
         <fx:define>
             <ArrayList fx:id="blockList">
-                <fx:reference source="section"/>
-                <fx:reference source="pointForward"/>
-                <fx:reference source="pointForwardU"/>
-                <fx:reference source="pointBackward"/>
-                <fx:reference source="pointBackwardU"/>
+                <fx:reference source="Pallet_UiSection"/>
+                <fx:reference source="Pallet_UiPointUp"/>
+                <fx:reference source="Pallet_UiPointUpInverse"/>
+                <fx:reference source="Pallet_UiPointDown"/>
+                <fx:reference source="Pallet_UiPointDownInverse"/>
             </ArrayList>
         </fx:define>
     </GridPane>
     <HBox GridPane.columnIndex="0" GridPane.rowIndex="1"
           spacing="20">
-        <Button text="Delete" onAction="#onDeleteAction"/>
         <Button text="Load" onAction="#onLoadAction"/>
         <Button text="Save" onAction="#onSaveAction"/>
         <Button text="Validate Network" onAction="#onValidateNetworkAction"/>

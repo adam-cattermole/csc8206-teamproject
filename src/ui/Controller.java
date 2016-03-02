@@ -49,14 +49,12 @@ public class Controller implements Initializable {
             }
         }
         
-        
         uiNetwork = new UiNetwork(this);
 
-        palette.setVgap(5);
-        palette.setPrefSize(60, 60);
         for (UiBlock b: blockList) {
             addPaletteListener(b);
         }
+        
         scrollPane.setMaxSize(750, 750);
     }
     
@@ -102,19 +100,10 @@ public class Controller implements Initializable {
         source.setOnDragDone(new EventHandler <DragEvent>() {
             public void handle(DragEvent event) {
                 /* the drag-and-drop gesture ended */
-                System.out.println("onDragDone");
-                /* if the data was successfully moved, clear it */
-                if (event.getTransferMode() == TransferMode.MOVE) {
-//                    source.setText("");
-                }
 
                 event.consume();
             }
         });
-    }
-
-    @FXML private void onDeleteAction(ActionEvent event) {
-    	uiNetwork.deleteUiBlocks(true); //true - delete selected elements only
     }
 
     @FXML private void onLoadAction(ActionEvent event) {
@@ -127,7 +116,7 @@ public class Controller implements Initializable {
             	FileInputStream inputStream = new FileInputStream(networkFile);
             	
     	        // Must delete currently active network from the frontend grid
-    	    	uiNetwork.deleteUiBlocks(false);
+    	    	uiNetwork.clear();
             	
     	    	// and override with new network
     			uiNetwork = UiNetwork.load(inputStream);
