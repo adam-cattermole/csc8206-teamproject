@@ -73,11 +73,27 @@ public class UiNetwork {
         
         UiBlock target = (isUiBlockSection ? null : uiBlock);
         
-        UiBlock leftNeighbourTop = rectangles[i-1][j].getUiBlock();
-        UiBlock leftNeighbourBottom = rectangles[i-1][j+1].getUiBlock();
+        UiBlock leftNeighbourTop = null;
+        UiBlock leftNeighbourBottom = null;
         
-        UiBlock rightNeighbourTop = rectangles[i+2][j].getUiBlock();
-        UiBlock rightNeighbourBottom = rectangles[i+2][j+1].getUiBlock();
+        UiBlock rightNeighbourTop = null;
+        UiBlock rightNeighbourBottom = null;
+        
+        if (i != 0) {
+        	leftNeighbourTop = rectangles[i-1][j].getUiBlock();
+        	
+        	if (j+1 < Controller.GRID_HEIGHT) {
+        		leftNeighbourBottom = rectangles[i-1][j+1].getUiBlock();
+        	}
+        }
+        
+        if (i+2 < Controller.GRID_WIDTH) {
+        	rightNeighbourTop = rectangles[i+2][j].getUiBlock();
+        	
+        	if (j+1 < Controller.GRID_HEIGHT) {
+        		rightNeighbourBottom = rectangles[i+2][j+1].getUiBlock();
+        	}
+        }
         
         if (isUiBlockSection) {
             if (leftNeighbourTop != null) {
