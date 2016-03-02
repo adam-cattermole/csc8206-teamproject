@@ -3,7 +3,6 @@ package ui.utilities;
 import backend.Block;
 import backend.Point;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -21,12 +20,12 @@ public class UiPointDownInverse extends UiBlock {
 
     public UiPointDownInverse(double x, double y) {
         super(x, y, WIDTH, HEIGHT);
-        block = new Point(Point.Orientation.DOWN);
+        setBlock(new Point(Point.Orientation.DOWN));
     }
     
     public UiPointDownInverse(double x, double y, Block block) {
     	super(x, y, WIDTH, HEIGHT);
-    	this.block = block;
+    	setBlock(block);
     }
 
     @Override
@@ -37,6 +36,7 @@ public class UiPointDownInverse extends UiBlock {
      * line connects to end*/
     protected void draw() {
         GraphicsContext gc = getGraphicsContext2D();
+        gc.beginPath();
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(STROKE_SIZE);
         gc.strokeLine(0, HEIGHT*.25, WIDTH, HEIGHT*.25);
@@ -44,5 +44,6 @@ public class UiPointDownInverse extends UiBlock {
         gc.bezierCurveTo(WIDTH*.5, HEIGHT*.5, WIDTH*.5, HEIGHT*.75, WIDTH*.25, HEIGHT*.75);
         gc.lineTo(0, HEIGHT*.75);
         gc.stroke();
+        gc.closePath();
     }
 }

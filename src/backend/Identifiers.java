@@ -19,6 +19,15 @@ public class Identifiers
 	private static int signalID = 0;
 	private static SortedSet<Integer> signalIDPool = new TreeSet<Integer>();
 	
+	public static void reset()
+	{
+		sectionID = pointID = signalID = 0;
+		
+		sectionIDPool.clear();
+		pointIDPool.clear();
+		signalIDPool.clear();
+	}
+	
 	public static int getSectionID()
 	{
 		if (!sectionIDPool.isEmpty())
@@ -88,13 +97,11 @@ public class Identifiers
 			if (id > sectionID)
 			{
 				sectionID = id;
-                                System.out.println("Set max section ID:" + id);
 			}
 		} else if (block instanceof Point) {
 			if (id > pointID)
 			{
 				pointID = id;
-                                System.out.println("Set max block ID:" + id);
 			}
 		}
 	}

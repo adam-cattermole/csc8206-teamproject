@@ -6,6 +6,12 @@ public class BlockFactory
 	static HashMap<Integer, Point> points = new HashMap<Integer, Point>();
 	static HashMap<Integer, Section> sections = new HashMap<Integer, Section>();
 	
+	public static void reset()
+	{
+		points.clear();
+		sections.clear();
+	}
+	
 	public static Block getBlock(String blockType)
 	{
 		if (blockType.equals("Section"))

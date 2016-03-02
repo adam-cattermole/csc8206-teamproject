@@ -47,6 +47,8 @@
         <Button text="Delete" onAction="#onDeleteAction"/>
         <Button text="Load" onAction="#onLoadAction"/>
         <Button text="Save" onAction="#onSaveAction"/>
+        <Button text="Validate Network" onAction="#onValidateNetworkAction"/>
+        <Button text="Dump" onAction="#onDumpAction"/>
     </HBox>
 
 </GridPane>

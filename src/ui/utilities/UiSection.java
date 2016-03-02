@@ -3,7 +3,6 @@ package ui.utilities;
 import backend.Block;
 import backend.Section;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -23,19 +22,21 @@ public class UiSection extends UiBlock {
 
     public UiSection(double x, double y) {
         super(x, y, WIDTH, HEIGHT);
-        block = new Section();
+        setBlock(new Section());
     }
     
     public UiSection(double x, double y, Block block) {
-    	super(x, y);
-    	this.block = block;
+    	super(x, y, WIDTH, HEIGHT);
+    	setBlock(block);
     }
 
     @Override
     protected void draw() {
         GraphicsContext gc = getGraphicsContext2D();
+        gc.beginPath();
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(STROKE_SIZE);
         gc.strokeLine(0, HEIGHT/2, WIDTH, HEIGHT/2);
+        gc.closePath();
     }
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -44,14 +45,26 @@ public abstract class UiBlock extends Canvas {
     
     public UiBlock(double width, double height) {
         super(width, height);
-        addBlockListeners();
-        draw();
+        init();
     }
 
     public UiBlock(double x, double y, double width, double height) {
-        this(width, height);
+        super(width, height);
         setLayoutX(x);
         setLayoutY(y);
+        init();
+    }
+    
+    private void init() {
+        addBlockListeners();
+        draw();
+    }
+    
+    protected void setBlock(Block block) {
+    	this.block = block;
+    	
+        Tooltip t = new Tooltip(this.toString());
+        Tooltip.install(this, t);
     }
     
     private void addBlockListeners()
@@ -60,8 +73,6 @@ public abstract class UiBlock extends Canvas {
         {
             public void handle(MouseEvent event) 
             {
-                System.out.println("onMouseClicked");
-                
                 if (selected)
                 {
                     setEffect(null);

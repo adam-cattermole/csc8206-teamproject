@@ -131,10 +131,9 @@ public class GridRectangle extends Rectangle
                         if (UiBlock != null)
                         {
                             prepareForPlacement(type, UiBlock);
-                            // Here we handle block with the backend
                         	controller.getUiNetwork().addUiBlock(UiBlock);
                         }
-                        success = true;                        
+                        success = true;           
                     }
                 }
                 /* let the source know whether the string was successfully

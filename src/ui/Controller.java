@@ -9,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -126,20 +125,16 @@ public class Controller implements Initializable {
         if (networkFile != null) {
             try {
             	FileInputStream inputStream = new FileInputStream(networkFile);
-            	UiNetwork networkFromFile = UiNetwork.load(this, inputStream);
             	
-    	        // Must delete currently active network
+    	        // Must delete currently active network from the frontend grid
     	    	uiNetwork.deleteUiBlocks(false);
-    	    	uiNetwork = null;
             	
     	    	// and override with new network
-    			uiNetwork = networkFromFile;
+    			uiNetwork = UiNetwork.load(inputStream);
+    			uiNetwork.setController(this);
     			
     			//redraw network elements
     			uiNetwork.refreshUi();
-                        
-                System.out.println(uiNetwork);
-                System.out.println(uiNetwork.network);
     		} catch (FileNotFoundException | NetworkDeserializationException e) {
     			System.out.println(e.getMessage()); //TODO: show an error message to the user
     		}
@@ -147,9 +142,6 @@ public class Controller implements Initializable {
     }
 
     @FXML private void onSaveAction(ActionEvent event) {
-        System.out.println(uiNetwork);
-        System.out.println(uiNetwork.network);
-        
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Save File");
         File networkFile = fileChooser.showSaveDialog(grid.getScene().getWindow());
@@ -162,5 +154,17 @@ public class Controller implements Initializable {
     			System.out.println(e.getMessage()); //TODO: show an error message to the user
     		}	
         }
+    }
+    
+    @FXML private void onValidateNetworkAction(ActionEvent event) {    	
+    	System.out.println("Network is " + (uiNetwork.getNetwork().isValid() ? "valid" : "invalid"));
+    }
+    
+    @FXML private void onDumpAction(ActionEvent event) {
+    	System.out.println("UiNetwork:");
+    	System.out.println(uiNetwork);
+    	
+    	System.out.println("\nNetwork: ");
+    	System.out.println(uiNetwork.getNetwork());
     }
 }

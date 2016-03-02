@@ -14,7 +14,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Railway Network");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setMaximized(true);
+        primaryStage.setMaximized(false);
         primaryStage.show();
     }
 

@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,11 +13,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SimpleNetwork implements Network
 {
-	private SortedSet<Block> blocks = new TreeSet<Block>();
+	private Set<Block> blocks = new HashSet<Block>();
 	
 	public SimpleNetwork()
 	{
-		
+		Identifiers.reset();
+		BlockFactory.reset();
 	}
 	
 	public SimpleNetwork addBlock(Block block)
@@ -47,7 +46,7 @@ public class SimpleNetwork implements Network
 		Identifiers.addToBlockPool(block);
 		
 		//finally remove the block from blocks set
-		System.out.println("removed: " + blocks.remove(block));
+		blocks.remove(block);
 		
 		return this;
 	}
