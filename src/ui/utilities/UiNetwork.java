@@ -48,7 +48,7 @@ public class UiNetwork {
     				
     				//remove element from various places
                     network.removeBlock(b.block);
-                    rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
+                    rectangles[((int) b.getLayoutX() / GridRectangles.CELL_SIZE)][((int)b.getLayoutY() / GridRectangles.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
                     grid.getChildren().remove(b);
                     uiBlocks.remove(b);
     			}
@@ -75,7 +75,7 @@ public class UiNetwork {
 	
 	public void setController(Controller controller) {
 		this.controller = controller;
-		rectangles = controller.getRectangles();
+		rectangles = controller.getGridRectangles().getRectangles();
 		grid = controller.getGrid();
 	}
 	
@@ -89,8 +89,8 @@ public class UiNetwork {
     }
 	
 	public void addUiBlock(UiBlock uiBlock, boolean addToUiBlocks) {
-        int i = ((int) uiBlock.getLayoutX() / Controller.CELL_SIZE);
-        int j = ((int) uiBlock.getLayoutY() / Controller.CELL_SIZE);
+        int i = ((int) uiBlock.getLayoutX() / GridRectangles.CELL_SIZE);
+        int j = ((int) uiBlock.getLayoutY() / GridRectangles.CELL_SIZE);
         
         boolean isUiBlockSection = uiBlock.getClass().getSimpleName().equals(UiSection.class.getSimpleName());
         
@@ -105,15 +105,15 @@ public class UiNetwork {
         if (i != 0) {
         	leftNeighbourTop = rectangles[i-1][j].getUiBlock();
         	
-        	if (j+1 < Controller.GRID_HEIGHT) {
+        	if (j+1 < GridRectangles.GRID_HEIGHT) {
         		leftNeighbourBottom = rectangles[i-1][j+1].getUiBlock();
         	}
         }
         
-        if (i+2 < Controller.GRID_WIDTH) {
+        if (i+2 < GridRectangles.GRID_WIDTH) {
         	rightNeighbourTop = rectangles[i+2][j].getUiBlock();
         	
-        	if (j+1 < Controller.GRID_HEIGHT) {
+        	if (j+1 < GridRectangles.GRID_HEIGHT) {
         		rightNeighbourBottom = rectangles[i+2][j+1].getUiBlock();
         	}
         }
@@ -228,14 +228,14 @@ public class UiNetwork {
     	ObservableList<Node> children = controller.getGrid().getChildren();
     	
         for (UiBlock b : uiBlocks) {
-            rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
+            rectangles[((int) b.getLayoutX() / GridRectangles.CELL_SIZE)][((int)b.getLayoutY() / GridRectangles.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
             children.remove(b);
         }
     }
 	
 	public void refreshUi() {		
         for (UiBlock b : uiBlocks) {
-            rectangles[((int) b.getLayoutX() / Controller.CELL_SIZE)][((int)b.getLayoutY() / Controller.CELL_SIZE)].prepareForPlacement(b.getClass().getSimpleName(), b);
+            rectangles[((int) b.getLayoutX() / GridRectangles.CELL_SIZE)][((int)b.getLayoutY() / GridRectangles.CELL_SIZE)].prepareForPlacement(b.getClass().getSimpleName(), b);
             addUiBlock(b, false);
         }
 	}

@@ -6,14 +6,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import ui.utilities.*;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 import java.io.File;
@@ -23,33 +21,22 @@ import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import ui.utilities.GridRectangle;
 
 public class Controller implements Initializable {
-    public static final int GRID_HEIGHT = 50;
-    public static final int GRID_WIDTH = 50;
-    public static final int CELL_SIZE = 30;
-
     @FXML private Group grid;
     @FXML private GridPane palette;
     @FXML private List<UiBlock> blockList; //list of blocks in the Pallet
     @FXML private ScrollPane scrollPane;
-
-    private GridRectangle[][] rectangles = new GridRectangle[GRID_WIDTH][GRID_HEIGHT];
+    
+    private GridRectangles gridRectangles;
     private UiNetwork uiNetwork;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-		ObservableList<Node> children = grid.getChildren();
-        for (int i = 0; i < GRID_WIDTH; i++) {
-            for (int j = 0; j < GRID_HEIGHT; j++) {
-                GridRectangle r1 = new GridRectangle(i*CELL_SIZE, j*CELL_SIZE, CELL_SIZE, CELL_SIZE, this);
-                rectangles[i][j] = r1;
-                children.add(r1);
-            }
-        }
-        
-        uiNetwork = new UiNetwork(this);
+    	gridRectangles = new GridRectangles(this);
+    	uiNetwork = new UiNetwork(this);
+    	
+    	grid.getChildren().add(gridRectangles);
 
         for (UiBlock b: blockList) {
             addPaletteListener(b);
@@ -66,8 +53,8 @@ public class Controller implements Initializable {
     	return grid;
     }
     
-    public GridRectangle[][] getRectangles() {
-    	return rectangles;
+    public GridRectangles getGridRectangles() {
+    	return gridRectangles;
     }
     
     /**
@@ -92,14 +79,6 @@ public class Controller implements Initializable {
                 System.out.println(type);
                 content.putString(type);
                 db.setContent(content);
-
-                event.consume();
-            }
-        });
-
-        source.setOnDragDone(new EventHandler <DragEvent>() {
-            public void handle(DragEvent event) {
-                /* the drag-and-drop gesture ended */
 
                 event.consume();
             }
