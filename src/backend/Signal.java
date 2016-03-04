@@ -10,7 +10,9 @@ public class Signal
 	private int id = 0;
 	private Setting setting = Setting.STOP;
 	
-	public Signal() {}
+	public Signal() {
+		id = Identifiers.getSignalID();
+	}
 	
 	public Signal(int id)
 	{
@@ -20,12 +22,6 @@ public class Signal
 	
 	public int getID()
 	{
-		//lazily get ID
-		if (id == 0)
-		{
-			this.id = Identifiers.getSignalID();
-		}
-		
 		return id; 
 	}
 	

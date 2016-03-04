@@ -55,8 +55,8 @@ public class RouteBuilder
 		private final List<Block> sequence;
 		private final Block start;
 		private final Block end;
-		private final List<Point> points = new ArrayList<Point>();
-		private final List<Signal> signals = new ArrayList<Signal>();
+		private final List<String> points = new ArrayList<String>();
+		private final List<String> signals = new ArrayList<String>();
 		
 		private Route(List<Block> path)
 		{
@@ -71,26 +71,10 @@ public class RouteBuilder
 			
 			sequence = path;//TODO Defensive copying; make programming easier too
 			
-			for (Block b : sequence) {
-				if (b instanceof Point) {
-					points.add((Point)b);
-				} else if (b instanceof Section) {
-					//((Section)b).getSignals();
-				}
-			}
-		}
-		
-		public List<Point> getPoints() {
-			return points;
 		}
 		
 		public String getId() {
 			return routeID;
-		}
-		
-		public List<Block> getRoute()
-		{
-			return sequence;
 		}
 		
 		public Block getStart()

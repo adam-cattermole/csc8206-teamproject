@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class Section extends Block
 {
-	protected Signal signalUp; //Signal on the right side of a section
-	protected Signal signalDown; //Signal on the left side of a section
+	protected Signal signalUp = new Signal(); //Signal on the right side of a section
+	protected Signal signalDown = new Signal(); //Signal on the left side of a section
 	
 	public Section()
 	{
@@ -41,24 +41,23 @@ public class Section extends Block
 	
 	public Signal getSignalUp()
 	{
-		if (signalUp == null &&
+		/*if (signalUp == null &&
 			up != null &&  //if next block is not null
 			(up instanceof Section || (up instanceof Point && ((Point)up).getOrientation() == Point.Orientation.DOWN))) //next block must either be a section, or be a >- Point
 		{
 			signalUp = new Signal();
-		}
+		}*/
 		return signalUp;
 	}
 	
 	public Signal getSignalDown()
 	{
-		if (signalDown == null &&
+		/*if (signalDown == null &&
 			down != null &&  //if previous block is not null
 			(down instanceof Section || (down instanceof Point && ((Point)down).getOrientation() == Point.Orientation.UP))) //prev block must either be a section, or be a -< Point
 		{
 			signalDown = new Signal();
-		}
-
+		}*/
 		return signalDown;
 	}
 	

@@ -14,14 +14,13 @@ public class UiRoute {
 	private final StringProperty conflicts;
 	
 	
-	
 	public UiRoute(Route route) {
 		routeID = new SimpleStringProperty(route.getId());
 		
 		source = new SimpleStringProperty(route.getStart().toString());
 		destination = new SimpleStringProperty(route.getEnd().toString());
 		
-		points = new SimpleStringProperty(route.getPoints().toString());
+		points = new SimpleStringProperty(route.toString());
 		
 		
 		signals = new SimpleStringProperty(route.getId());

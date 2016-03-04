@@ -75,6 +75,7 @@ public class UiNetwork {
 	
 	public void endBuildingRoute() {
 		Route route = routeBuilder.build();
+		
 		routes.add(route);
 		routeBuilder = null;
 	}
