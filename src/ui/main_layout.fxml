@@ -19,9 +19,6 @@
                     <MenuItem text="Exit" onAction="#onExitAction"/>
                 </items>
             </Menu>
-            <Menu text="Validation">
-                <MenuItem text="Validate" onAction="#onValidateNetworkAction"/>
-            </Menu>
         </menus>
     </MenuBar>
 <GridPane alignment="center" hgap="10" vgap="10">
