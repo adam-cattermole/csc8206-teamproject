@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
  */
 
 public class UiSection extends UiBlock {
-//    private static Image image = new Image("ui/resources/section.png");
 
     private static final int WIDTH = 60;
     private static final int HEIGHT = 30;
