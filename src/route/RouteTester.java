@@ -11,7 +11,7 @@ import route.RouteBuilder.Route;
 
 public class RouteTester
 {
-	Route r;
+	RouteBuilder.Route r;
 	RouteBuilder build = new RouteBuilder();
 	
 	public static void main(String args[])
@@ -27,7 +27,8 @@ public class RouteTester
 		test.r = test.build.build();
 		
 		System.out.println(test.r);
-		System.out.println(test.r.getRoute());
+                // Justas note - I commented this out because it was throwing error
+		//System.out.println(test.r.getRoute());
 		System.out.println(test.r.getStart());
 		System.out.println(test.r.getEnd());
 			
