@@ -5,6 +5,8 @@
  */
 package ui.utilities;
 
+import java.util.HashSet;
+import java.util.Set;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
@@ -15,7 +17,7 @@ import javafx.scene.shape.StrokeType;
  */
 public class GridRectangle extends Rectangle 
 {
-    boolean used = false;
+    //boolean used = false;
     UiBlock block;
     
     private GridRectangle[][] rectangles;
@@ -62,12 +64,60 @@ public class GridRectangle extends Rectangle
     protected boolean isPlacementValid(String blockType)
     {
         boolean blockUsedFlag = false;
-        if (used || rectangles[((int) getX() / GridRectangles.CELL_SIZE)+1][((int)getY() / GridRectangles.CELL_SIZE)].isUsed())
+        if (block != null || rectangles[((int) getX() / GridRectangles.CELL_SIZE)+1][((int)getY() / GridRectangles.CELL_SIZE)].isUsed())
             blockUsedFlag = true;            
         if ((!blockType.equals(UiSection.class.getSimpleName())) && (!blockUsedFlag) && (rectangles[((int) getX() / GridRectangles.CELL_SIZE)+1][((int)getY() / GridRectangles.CELL_SIZE)+1].isUsed() || rectangles[((int) getX() / GridRectangles.CELL_SIZE)][((int)getY() / GridRectangles.CELL_SIZE)+1].isUsed()))
             blockUsedFlag = true;
+        
+        // If point is placed, make sure there are no other points to left or right
+        if (!blockType.equals(UiSection.class.getSimpleName()) && !blockUsedFlag)
+        {
+            blockUsedFlag = havePointNeighbours();
+        }
 
         return !blockUsedFlag;
+    }
+    
+    private boolean havePointNeighbours()
+    {
+        boolean havePointNeighbour = false;
+        Set<UiBlock> set = new HashSet<UiBlock>();
+        UiBlock rightNeighbour1 = rectangles[((int) getX() / GridRectangles.CELL_SIZE)+2][((int)getY() / GridRectangles.CELL_SIZE)].getUiBlock();
+        UiBlock rightNeighbour2 = rectangles[((int) getX() / GridRectangles.CELL_SIZE)+2][((int)getY() / GridRectangles.CELL_SIZE)+1].getUiBlock();
+        
+        UiBlock leftNeighbour1 = rectangles[((int) getX() / GridRectangles.CELL_SIZE)-1][((int)getY() / GridRectangles.CELL_SIZE)].getUiBlock();
+        UiBlock leftNeighbour2 = rectangles[((int) getX() / GridRectangles.CELL_SIZE)-1][((int)getY() / GridRectangles.CELL_SIZE)+1].getUiBlock();
+        
+        if (rightNeighbour1 != null)
+        {
+            if (rightNeighbour1.getClass().getSimpleName().contains("Point"))
+            {
+                havePointNeighbour = true;
+            }
+        }
+        if (rightNeighbour2 != null)
+        {
+            if (rightNeighbour2.getClass().getSimpleName().contains("Point"))
+            {
+                havePointNeighbour = true;
+            }
+        }
+        
+        if (leftNeighbour1 != null)
+        {
+            if (leftNeighbour1.getClass().getSimpleName().contains("Point"))
+            {
+                havePointNeighbour = true;
+            }
+        }
+        if (leftNeighbour2 != null)
+        {
+            if (leftNeighbour2.getClass().getSimpleName().contains("Point"))
+            {
+                havePointNeighbour = true;
+            }
+        }
+        return havePointNeighbour;
     }
     
     private void setUiBlock(UiBlock b)
