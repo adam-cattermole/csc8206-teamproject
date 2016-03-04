@@ -12,17 +12,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import backend.BlockInvalidException;
 import backend.Network;
 import backend.NetworkDeserializationException;
 import backend.NetworkSerializationException;
 import backend.Point;
 import backend.SimpleNetwork;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import ui.Controller;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import route.RouteBuilder;
+import route.RouteBuilder.Route;
 import javafx.event.EventHandler;
 
 /**
@@ -31,6 +35,9 @@ import javafx.event.EventHandler;
  * @author kubatek94
  */
 public class UiNetwork {
+	@JsonIgnore public static String NETWORK_VALID = "Network is VALID";
+	@JsonIgnore public static String NETWORK_INVALID = "Network is INVALID";
+	
 	@JsonIgnore private Network network = new SimpleNetwork();
 	private List<UiBlock> uiBlocks = new ArrayList<UiBlock>();
 	
@@ -39,17 +46,15 @@ public class UiNetwork {
 	@JsonIgnore private Controller controller;
 	@JsonIgnore private EventHandler<MouseEvent> deleteBlockHandler;
 	
+	@JsonIgnore private RouteBuilder routeBuilder;
+	@JsonIgnore ObservableList<Route> routes = FXCollections.observableArrayList();
+	
 	public UiNetwork() {
 		deleteBlockHandler = (event) -> {			
     		if (event.getButton() == MouseButton.SECONDARY) {
     			if (event.getSource() instanceof UiBlock) {
     				UiBlock b = (UiBlock) event.getSource();
-    				
-    				//remove element from various places
-                    network.removeBlock(b.block);
-                    rectangles[((int) b.getLayoutX() / GridRectangles.CELL_SIZE)][((int)b.getLayoutY() / GridRectangles.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
-                    grid.getChildren().remove(b);
-                    uiBlocks.remove(b);
+    				removeUiBlock(b);
     			}
     		}
     		
@@ -62,6 +67,22 @@ public class UiNetwork {
 		this();
 		setController(controller);
 	}
+	
+	
+	public void startBuildingRoute() { 
+		routeBuilder = new RouteBuilder();
+	}
+	
+	public void endBuildingRoute() {
+		Route route = routeBuilder.build();
+		routes.add(route);
+		routeBuilder = null;
+	}
+	
+	public boolean isBuildingRoute() {
+		return routeBuilder != null;
+	}
+	
 	
 	@JsonProperty
 	public void setUiBlocks(List<UiBlock> uiBlocks) {
@@ -80,6 +101,15 @@ public class UiNetwork {
 	
 	public Network getNetwork() {
 		return network;
+	}
+	
+	public void removeUiBlock(UiBlock b) {
+		//remove element from various places
+        network.removeBlock(b.block);
+        rectangles[((int) b.getLayoutX() / GridRectangles.CELL_SIZE)][((int)b.getLayoutY() / GridRectangles.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
+        grid.getChildren().remove(b);
+        uiBlocks.remove(b);
+        revalidateNetwork();
 	}
         
     public void addUiBlock(UiBlock uiBlock) {
@@ -189,6 +219,17 @@ public class UiNetwork {
         if (addToUiBlocks) {
         	network.addBlock(uiBlock.block);
             uiBlocks.add(uiBlock);
+        }
+        
+        revalidateNetwork();
+	}
+	
+	private void revalidateNetwork() {
+        //revalidate the network
+        try {
+        	controller.setStatusText(network.isValid() ? NETWORK_VALID : NETWORK_INVALID);
+        } catch (BlockInvalidException e) {
+        	controller.setStatusText(NETWORK_INVALID + ": " + e.getBlock());
         }
 	}
         

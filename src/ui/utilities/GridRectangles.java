@@ -36,7 +36,7 @@ public class GridRectangles extends Group {
         setupListeners();
 	}
 	
-	private void setupListeners() {
+	private void setupListeners() {		
         setOnDragExited(event -> {
         	//remove highlight from last rectangle
         	rectangles[lastRectangleRow][lastRectangleCol].highlight(event.getDragboard().getString(), Color.LIGHTGRAY);
@@ -84,6 +84,7 @@ public class GridRectangles extends Group {
                 if (!rectangle.isPlacementValid(type))
                 {
                     System.out.println("Invalid placement!");
+                    success = false;
                 }
                 else
                 {

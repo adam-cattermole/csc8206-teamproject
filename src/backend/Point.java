@@ -160,6 +160,6 @@ public class Point extends Block
 			}
 		}
 		
-		return false;
+		return true;
 	}
 }

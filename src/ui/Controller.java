@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -22,11 +23,16 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.controlsfx.control.StatusBar;
+
 public class Controller implements Initializable {
     @FXML private Group grid;
     @FXML private GridPane palette;
     @FXML private List<UiBlock> blockList; //list of blocks in the Pallet
     @FXML private ScrollPane scrollPane;
+    @FXML private StatusBar statusBar;
+    @FXML private TableView<UiRoute> interlockTable;
+    
     
     private GridRectangles gridRectangles;
     private UiNetwork uiNetwork;
@@ -63,6 +69,10 @@ public class Controller implements Initializable {
      */
     public UiNetwork getUiNetwork() {
     	return uiNetwork;
+    }
+    
+    public void setStatusText(String text) {
+    	statusBar.setText(text);
     }
 
     private void addPaletteListener(final Canvas source) {
@@ -122,17 +132,5 @@ public class Controller implements Initializable {
     			System.out.println(e.getMessage()); //TODO: show an error message to the user
     		}	
         }
-    }
-    
-    @FXML private void onValidateNetworkAction(ActionEvent event) {    	
-    	System.out.println("Network is " + (uiNetwork.getNetwork().isValid() ? "valid" : "invalid"));
-    }
-    
-    @FXML private void onDumpAction(ActionEvent event) {
-    	System.out.println("UiNetwork:");
-    	System.out.println(uiNetwork);
-    	
-    	System.out.println("\nNetwork: ");
-    	System.out.println(uiNetwork.getNetwork());
     }
 }

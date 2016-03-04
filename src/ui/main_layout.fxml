@@ -14,11 +14,18 @@
 <?import javafx.scene.control.Button?>
 
 <?import java.net.URL?>
+
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
+
+<?import org.controlsfx.control.StatusBar?>
+
 <VBox fx:controller="ui.Controller"
         xmlns:fx="http://javafx.com/fxml">
     <MenuBar fx:id="menuBar">
@@ -71,11 +78,37 @@
             <Button text="Dump" onAction="#onDumpAction"/>
         </VBox> -->
     </GridPane>
-    <TableView fx:id="lockTable" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TableView fx:id="interlockTable" GridPane.columnIndex="0" GridPane.rowIndex="1">
+		<columns>
+			<TableColumn text="Route ID">
+				<cellValueFactory><PropertyValueFactory property="routeID"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Source">
+				<cellValueFactory><PropertyValueFactory property="source"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Destination">
+				<cellValueFactory><PropertyValueFactory property="destination"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Points">
+				<cellValueFactory><PropertyValueFactory property="points"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Signals">
+				<cellValueFactory><PropertyValueFactory property="signals"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Path">
+				<cellValueFactory><PropertyValueFactory property="path"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn text="Conflicts">
+				<cellValueFactory><PropertyValueFactory property="conflicts"/></cellValueFactory>
+			</TableColumn>
+		</columns>
+    </TableView>
 
-    <stylesheets>
+    <!--<stylesheets>
         <URL value="@styles.css"/>
-    </stylesheets>
+    </stylesheets>-->
 
 </GridPane>
+
+<StatusBar fx:id="statusBar" text="" />
 </VBox>

@@ -6,10 +6,13 @@ import backend.Block;
 import backend.SimpleNetwork;
 import backend.BlockFactory;
 
+import route.RouteBuilder;
+import route.RouteBuilder.Route;
+
 public class RouteTester
 {
 	Route r;
-	Route.RouteBuilder build = Route.getRouteBuilder();
+	RouteBuilder build = new RouteBuilder();
 	
 	public static void main(String args[])
 	{
