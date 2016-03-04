@@ -90,5 +90,5 @@ public interface Network {
 	 * Checks the networks validity according to rules we haven't really decided yet
 	 * @return True if the network is valid, False otherwise
 	 */
-	public boolean isValid();
+	public boolean isValid() throws BlockInvalidException;
 }

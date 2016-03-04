@@ -71,7 +71,7 @@ public class SimpleNetwork implements Network
 	}
 	
 	@JsonIgnore
-	public boolean isValid()
+	public boolean isValid() throws BlockInvalidException
 	{
 		Set<Block> traversed = traverse();
 		
@@ -121,7 +121,7 @@ public class SimpleNetwork implements Network
 		return traverse(root, new HashSet<Block>());
 	}*/
 	
-	private Set<Block> traverse()
+	private Set<Block> traverse() throws BlockInvalidException
 	{
 		Iterator<Block> iterator = blocks.iterator();
 		Set<Block> traversed = new HashSet<Block>();
@@ -135,12 +135,16 @@ public class SimpleNetwork implements Network
 		return traversed;
 	}
 	
-	private Set<Block> traverse(Block root, Set<Block> blocksDone)
+	private Set<Block> traverse(Block root, Set<Block> blocksDone) throws BlockInvalidException
 	{
 		//terminate
 		if (blocksDone.contains(root))
 		{
 			return blocksDone;
+		}
+		
+		if (!root.isValid()) {
+			throw new BlockInvalidException(root);
 		}
 		
 		blocksDone.add(root);
