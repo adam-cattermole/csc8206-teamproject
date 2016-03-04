@@ -11,6 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("main_layout.fxml"));
+        root.getStylesheets().add(Main.class.getResource("styles.css").toExternalForm());
 
         primaryStage.setTitle("Railway Network");
         primaryStage.setScene(new Scene(root));

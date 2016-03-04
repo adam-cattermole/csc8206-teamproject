@@ -2,11 +2,13 @@ package ui;
 
 import backend.NetworkDeserializationException;
 import backend.NetworkSerializationException;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
@@ -134,5 +136,9 @@ public class Controller implements Initializable {
     	
     	System.out.println("\nNetwork: ");
     	System.out.println(uiNetwork.getNetwork());
+    }
+
+    @FXML private void onExitAction(ActionEvent event) {
+        Platform.exit();
     }
 }
