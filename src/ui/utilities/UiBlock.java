@@ -11,8 +11,11 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Tooltip;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.io.IOException;
 
@@ -34,6 +37,7 @@ import java.io.IOException;
 public abstract class UiBlock extends Canvas {
 
     @JsonIgnore protected static final int STROKE_SIZE = 2;
+    @JsonIgnore protected Paint color = Color.BLACK;
     protected Block block;
 
     abstract void draw();

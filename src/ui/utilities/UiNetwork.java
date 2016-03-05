@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -20,11 +21,16 @@ import backend.Point;
 import backend.SimpleNetwork;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.effect.ColorInput;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.Shadow;
 import ui.Controller;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import route.RouteBuilder;
 import route.RouteBuilder.Route;
 import javafx.event.EventHandler;
@@ -44,39 +50,81 @@ public class UiNetwork {
 	@JsonIgnore private GridRectangle[][] rectangles;
 	@JsonIgnore private Group grid;
 	@JsonIgnore private Controller controller;
-	@JsonIgnore private EventHandler<MouseEvent> deleteBlockHandler;
+	
+	@JsonIgnore private EventHandler<MouseEvent> blockClickHandler;
+	@JsonIgnore private EventHandler<MouseEvent> blockMouseEnterHandler;
+	@JsonIgnore private EventHandler<MouseEvent> blockMouseExitHandler;
 	
 	@JsonIgnore private RouteBuilder routeBuilder;
-	@JsonIgnore ObservableList<Route> routes = FXCollections.observableArrayList();
+	@JsonIgnore private List<UiBlock> routeBlocks = new ArrayList<UiBlock>();
+	@JsonIgnore ObservableList<UiRoute> routes;
 	
 	public UiNetwork() {
-		deleteBlockHandler = (event) -> {			
-    		if (event.getButton() == MouseButton.SECONDARY) {
-    			if (event.getSource() instanceof UiBlock) {
-    				UiBlock b = (UiBlock) event.getSource();
-    				removeUiBlock(b);
-    			}
-    		}
+		blockClickHandler = (event) -> {
+			MouseButton button = event.getButton();
+			
+			if (event.getSource() instanceof UiBlock) {
+				UiBlock b = (UiBlock) event.getSource();
+				
+				//only allow right mouse click, if we aren't building route
+				if (isBuildingRoute()) {
+					if (button == MouseButton.PRIMARY) {
+						routeBlocks.add(b);
+						routeBuilder.addToRoute(b.block);
+						
+						Shadow s = new Shadow(1, Color.DODGERBLUE);
+						Glow g = new Glow(0.8);
+						
+						g.setInput(s);
+						b.setEffect(g);
+					}
+				} else {
+					if (button == MouseButton.SECONDARY) {
+		    			removeUiBlock(b);
+		    		}
+				}
+			}
     		
     		event.consume();
+		};
+		
+		blockMouseEnterHandler = (event) -> {
+			if (event.getSource() instanceof UiBlock) {
+				UiBlock b = (UiBlock) event.getSource();
+				
+				if (isBuildingRoute()) {
+					b.setCursor(Cursor.CROSSHAIR);
+				}
+			}
+		};
+		
+		blockMouseExitHandler = (event) -> {
+			if (event.getSource() instanceof UiBlock) {
+				UiBlock b = (UiBlock) event.getSource();
+				b.setCursor(Cursor.DEFAULT);
+			}
 		};
 	}
 
 	public UiNetwork(Controller controller) {
-		//TODO: add null checks?
 		this();
 		setController(controller);
 	}
-	
 	
 	public void startBuildingRoute() { 
 		routeBuilder = new RouteBuilder();
 	}
 	
 	public void endBuildingRoute() {
-		Route route = routeBuilder.build();
+		try {
+			Route route = routeBuilder.build();
+			routes.add(new UiRoute(route)); 	
+		} catch (IllegalArgumentException e) {}
 		
-		routes.add(route);
+		//remove highlights from the elements
+		routeBlocks.stream().forEach(b -> b.setEffect(null));
+		routeBlocks.clear();
+		
 		routeBuilder = null;
 	}
 	
@@ -89,7 +137,9 @@ public class UiNetwork {
 	public void setUiBlocks(List<UiBlock> uiBlocks) {
 		this.uiBlocks = uiBlocks;
 		for (UiBlock b : uiBlocks) {
-			b.setOnMouseClicked(deleteBlockHandler);
+			b.setOnMouseClicked(blockClickHandler);
+			b.setOnMouseEntered(blockMouseEnterHandler);
+			b.setOnMouseExited(blockMouseExitHandler);
 			network.addBlock(b.block);
 		}
 	}
@@ -98,6 +148,7 @@ public class UiNetwork {
 		this.controller = controller;
 		rectangles = controller.getGridRectangles().getRectangles();
 		grid = controller.getGrid();
+		routes = controller.getInterlockTable().getItems();
 	}
 	
 	public Network getNetwork() {
@@ -115,7 +166,9 @@ public class UiNetwork {
         
     public void addUiBlock(UiBlock uiBlock) {
         addUiBlock(uiBlock, true);
-        uiBlock.setOnMouseClicked(deleteBlockHandler);
+        uiBlock.setOnMouseClicked(blockClickHandler);
+		uiBlock.setOnMouseEntered(blockMouseEnterHandler);
+		uiBlock.setOnMouseExited(blockMouseExitHandler);
     }
 	
 	public void addUiBlock(UiBlock uiBlock, boolean addToUiBlocks) {

@@ -33,7 +33,7 @@ public class UiSection extends UiBlock {
     protected void draw() {
         GraphicsContext gc = getGraphicsContext2D();
         gc.beginPath();
-        gc.setStroke(Color.BLACK);
+        gc.setStroke(color);
         gc.setLineWidth(STROKE_SIZE);
         gc.strokeLine(0, HEIGHT/2, WIDTH, HEIGHT/2);
         gc.closePath();

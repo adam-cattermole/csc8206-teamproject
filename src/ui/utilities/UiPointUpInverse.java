@@ -37,7 +37,7 @@ public class UiPointUpInverse extends UiBlock {
     protected void draw() {
         GraphicsContext gc = getGraphicsContext2D();
         gc.beginPath();
-        gc.setStroke(Color.BLACK);
+        gc.setStroke(color);
         gc.setLineWidth(STROKE_SIZE);
         gc.strokeLine(0, HEIGHT*.25, WIDTH, HEIGHT*.25);
         gc.bezierCurveTo(WIDTH*.25, HEIGHT*.25, WIDTH*.5, HEIGHT*.25, WIDTH*.5, HEIGHT*.5);

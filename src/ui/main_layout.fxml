@@ -71,7 +71,7 @@
     <TableView fx:id="interlockTable" GridPane.columnIndex="0" GridPane.rowIndex="1">
 		<columns>
 			<TableColumn text="Route ID">
-				<cellValueFactory><PropertyValueFactory property="routeID"/></cellValueFactory>
+				<cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
 			</TableColumn>
 			<TableColumn text="Source">
 				<cellValueFactory><PropertyValueFactory property="source"/></cellValueFactory>

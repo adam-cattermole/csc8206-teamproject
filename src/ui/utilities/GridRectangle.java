@@ -81,7 +81,6 @@ public class GridRectangle extends Rectangle
     private boolean havePointNeighbours()
     {
         boolean havePointNeighbour = false;
-        Set<UiBlock> set = new HashSet<UiBlock>();
         UiBlock rightNeighbour1 = rectangles[((int) getX() / GridRectangles.CELL_SIZE)+2][((int)getY() / GridRectangles.CELL_SIZE)].getUiBlock();
         UiBlock rightNeighbour2 = rectangles[((int) getX() / GridRectangles.CELL_SIZE)+2][((int)getY() / GridRectangles.CELL_SIZE)+1].getUiBlock();
         

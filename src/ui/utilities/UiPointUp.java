@@ -38,7 +38,7 @@ public class UiPointUp extends UiBlock {
     protected void draw() {
         GraphicsContext gc = getGraphicsContext2D();
         gc.beginPath();
-        gc.setStroke(Color.BLACK);
+        gc.setStroke(color);
         gc.setLineWidth(STROKE_SIZE);
         gc.strokeLine(0, HEIGHT*.75, WIDTH, HEIGHT*.75);
         gc.bezierCurveTo(WIDTH*.25, HEIGHT*.75, WIDTH*.5, HEIGHT*.75, WIDTH*.5, HEIGHT*.5);

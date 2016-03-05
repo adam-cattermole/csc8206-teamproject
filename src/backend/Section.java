@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class Section extends Block
 {
-	protected Signal signalUp = new Signal(); //Signal on the right side of a section
 	protected Signal signalDown = new Signal(); //Signal on the left side of a section
+	protected Signal signalUp = new Signal(); //Signal on the right side of a section
 	
 	public Section()
 	{

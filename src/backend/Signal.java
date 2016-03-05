@@ -37,6 +37,6 @@ public class Signal
 	
 	public String toString()
 	{
-		return "s" + getID() + "-" + setting.toString();
+		return "s" + getID();
 	}
 }

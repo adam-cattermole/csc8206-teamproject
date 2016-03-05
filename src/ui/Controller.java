@@ -35,7 +35,6 @@ public class Controller implements Initializable {
     @FXML private StatusBar statusBar;
     @FXML private TableView<UiRoute> interlockTable;
     
-    
     private GridRectangles gridRectangles;
     private UiNetwork uiNetwork;
 
@@ -63,6 +62,10 @@ public class Controller implements Initializable {
     
     public GridRectangles getGridRectangles() {
     	return gridRectangles;
+    }
+    
+    public TableView<UiRoute> getInterlockTable() {
+    	return interlockTable;
     }
     
     /**

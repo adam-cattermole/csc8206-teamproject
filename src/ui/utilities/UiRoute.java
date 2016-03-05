@@ -1,11 +1,13 @@
 package ui.utilities;
 
+import java.util.stream.Collectors;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import route.RouteBuilder.Route;
 
 public class UiRoute {
-	private final StringProperty routeID;
+	private final StringProperty id;
 	private final StringProperty source;
 	private final StringProperty destination;
 	private final StringProperty points;
@@ -13,28 +15,50 @@ public class UiRoute {
 	private final StringProperty path;
 	private final StringProperty conflicts;
 	
-	
 	public UiRoute(Route route) {
-		routeID = new SimpleStringProperty(route.getId());
+		id = new SimpleStringProperty(route.getId());
 		
-		source = new SimpleStringProperty(route.getStart().toString());
-		destination = new SimpleStringProperty(route.getEnd().toString());
+		source = new SimpleStringProperty(route.getSource().toString());
+		destination = new SimpleStringProperty(route.getDestination().toString());
+			
+		points = new SimpleStringProperty(route.getPoints().stream().collect(Collectors.joining("; ")));
+		signals = new SimpleStringProperty(route.getSignals().stream().collect(Collectors.joining("; ")));
 		
-		points = new SimpleStringProperty(route.toString());
+		path = new SimpleStringProperty(
+				route.getPath()
+					.stream()
+					.map(b -> (b.getClass().getSimpleName().substring(0, 1).toLowerCase()) + b.getID())
+					.collect(Collectors.joining("; "))
+		);
 		
-		
-		signals = new SimpleStringProperty(route.getId());
-		path = new SimpleStringProperty(route.getId());
-		conflicts = new SimpleStringProperty(route.getId());
-		
+		conflicts = new SimpleStringProperty(route.getConflicts().stream().collect(Collectors.joining("; ")));
 	}
 	
-	public void setConflicts(String conflicts) {
-		
+	public String getId() {
+		return id.get();
 	}
 	
-	public String getRouteID(){
-		return routeID.get();
+	public String getSource() {
+		return source.get();
 	}
-
+	
+	public String getDestination() {
+		return destination.get();
+	}
+	
+	public String getPoints() {
+		return points.get();
+	}
+	
+	public String getSignals() {
+		return signals.get();
+	}
+	
+	public String getPath() {
+		return path.get();
+	}
+	
+	public String getConflicts() {
+		return conflicts.get();
+	}
 }
