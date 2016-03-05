@@ -42,6 +42,12 @@ public class UiPointDownInverse extends UiBlock {
         gc.bezierCurveTo(WIDTH*.5, HEIGHT*.5, WIDTH*.5, HEIGHT*.75, WIDTH*.25, HEIGHT*.75);
         gc.lineTo(0, HEIGHT*.75);
         gc.stroke();
+        
+        gc.setLineWidth(3);
+        gc.strokeLine(0, (HEIGHT*.25)+(HEIGHT*0.05), 0, (HEIGHT*.25)-(HEIGHT*0.05));
+        gc.strokeLine(0, (HEIGHT*.75)+(HEIGHT*0.05), 0, (HEIGHT*.75)-(HEIGHT*0.05));
+        gc.strokeLine(WIDTH, (HEIGHT*.25)+(HEIGHT*0.05), WIDTH, (HEIGHT*.25)-(HEIGHT*0.05));
+        
         gc.closePath();
     }
 }

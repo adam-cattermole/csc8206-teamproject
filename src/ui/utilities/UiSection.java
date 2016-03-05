@@ -37,7 +37,13 @@ public class UiSection extends UiBlock {
         gc.setStroke(color);
         gc.setLineWidth(STROKE_SIZE);
         gc.strokeLine(0, HEIGHT*.5, WIDTH, HEIGHT*.5);
+        
+        gc.setLineWidth(3);
+        gc.strokeLine(0, (HEIGHT*.5)+(HEIGHT*0.10), 0, (HEIGHT*.5)-(HEIGHT*0.10));
+        gc.strokeLine(WIDTH, (HEIGHT*.5)+(HEIGHT*0.10), WIDTH, (HEIGHT*.5)-(HEIGHT*0.10));
+        
         gc.closePath();
+        
         if (block != null) {
             gc.setLineWidth(0.5);
             gc.setTextAlign(TextAlignment.CENTER);
