@@ -78,8 +78,8 @@ public class RouteBuilder
 			id = "R" + ROUTE_NO++;
 			this.path = path;//TODO Defensive copying; make programming easier too
 			
-			startBlock = (Section) path.get(0);
-			endBlock = (Section) path.get(path.size() - 1);
+			startBlock = (Section) start;
+			endBlock = (Section) end;
 			
 			//detect the direction based on next block
 			if (startBlock.getUp().equals(path.get(1))) {
