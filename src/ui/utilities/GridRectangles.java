@@ -74,50 +74,76 @@ public class GridRectangles extends Group {
             boolean success = false;
             
             if (db.hasString()) {
-            	int row = xToRow(event.getX());
-            	int col = yToCol(event.getY());
-            	GridRectangle rectangle = rectangles[row][col];
+            	TransferMode mode = event.getAcceptedTransferMode();
             	
-                String type = db.getString();
-                UiBlock UiBlock;
-                
-                if (!rectangle.isPlacementValid(type))
-                {
-                    System.out.println("Invalid placement!");
-                    success = false;
-                }
-                else
-                {
+            	if (mode == TransferMode.COPY) {
+                	int row = xToRow(event.getX());
+                	int col = yToCol(event.getY());
+                	GridRectangle rectangle = rectangles[row][col];
+                	
+                    String type = db.getString();
+                    UiBlock UiBlock;
+                    
+                    if (!rectangle.isPlacementValid(type))
+                    {
+                        System.out.println("Invalid placement!");
+                        success = false;
+                    }
+                    else
+                    {
+                    	int x = rowToX(row);
+                    	int y = colToY(col);
+                    	
+                        switch(type) 
+                        {
+                        case "UiSection":
+                            UiBlock = new UiSection(x, y);
+                            break;
+                        case "UiPointUp":
+                            UiBlock = new UiPointUp(x, y);
+                            break;
+                        case "UiPointDown":
+                            UiBlock = new UiPointDown(x, y);
+                            break;
+                        case "UiPointUpInverse":
+                            UiBlock = new UiPointUpInverse(x, y);
+                            break;
+                        case "UiPointDownInverse":
+                            UiBlock = new UiPointDownInverse(x, y);
+                            break;
+                        default:
+                            UiBlock = null;
+                        }
+                        if (UiBlock != null)
+                        {
+                        	rectangle.prepareForPlacement(type, UiBlock);
+                        	controller.getUiNetwork().addUiBlock(UiBlock);
+                        }
+                        success = true;           
+                    }
+            	} else if (mode == TransferMode.MOVE) {
+            		UiBlock uiBlock = (UiBlock) event.getGestureSource();
+            		
+                	int row = xToRow(event.getX());
+                	int col = yToCol(event.getY());
+                	
                 	int x = rowToX(row);
                 	int y = colToY(col);
                 	
-                    switch(type) 
-                    {
-                    case "UiSection":
-                        UiBlock = new UiSection(x, y);
-                        break;
-                    case "UiPointUp":
-                        UiBlock = new UiPointUp(x, y);
-                        break;
-                    case "UiPointDown":
-                        UiBlock = new UiPointDown(x, y);
-                        break;
-                    case "UiPointUpInverse":
-                        UiBlock = new UiPointUpInverse(x, y);
-                        break;
-                    case "UiPointDownInverse":
-                        UiBlock = new UiPointDownInverse(x, y);
-                        break;
-                    default:
-                        UiBlock = null;
-                    }
-                    if (UiBlock != null)
-                    {
-                    	rectangle.prepareForPlacement(type, UiBlock);
-                    	controller.getUiNetwork().addUiBlock(UiBlock);
-                    }
-                    success = true;           
-                }
+                	rectangles[row][col].prepareForPlacement(uiBlock.getClass().getSimpleName(), uiBlock);
+                	
+                	if ((int)uiBlock.getLayoutX() == x && (int)uiBlock.getLayoutY() == y) {
+                		//block wasn't moved, so just add it back to UI
+            	        controller.getGrid().getChildren().add(uiBlock);
+                	} else {
+                		uiBlock.setLayoutX(x);
+                		uiBlock.setLayoutY(y);
+                		uiBlock.block.detach();
+                		controller.getUiNetwork().addUiBlock(uiBlock, false);	
+                	}
+            		
+            		success = true;
+            	}
             }
             
             event.setDropCompleted(success);

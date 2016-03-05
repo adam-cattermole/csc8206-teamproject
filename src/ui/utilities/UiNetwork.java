@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -19,17 +18,19 @@ import backend.NetworkDeserializationException;
 import backend.NetworkSerializationException;
 import backend.Point;
 import backend.SimpleNetwork;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.effect.ColorInput;
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.Shadow;
 import ui.Controller;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import route.RouteBuilder;
 import route.RouteBuilder.Route;
@@ -54,6 +55,8 @@ public class UiNetwork {
 	@JsonIgnore private EventHandler<MouseEvent> blockClickHandler;
 	@JsonIgnore private EventHandler<MouseEvent> blockMouseEnterHandler;
 	@JsonIgnore private EventHandler<MouseEvent> blockMouseExitHandler;
+	@JsonIgnore private EventHandler<MouseEvent> blockDragDetectedHandler;
+	@JsonIgnore private EventHandler<DragEvent> blockDragDoneHandler;
 	
 	@JsonIgnore private RouteBuilder routeBuilder;
 	@JsonIgnore private List<UiBlock> routeBlocks = new ArrayList<UiBlock>();
@@ -104,6 +107,31 @@ public class UiNetwork {
 				b.setCursor(Cursor.DEFAULT);
 			}
 		};
+		
+		blockDragDetectedHandler = (event) -> {
+			UiBlock block = (UiBlock) event.getSource();
+			Dragboard db = block.startDragAndDrop(TransferMode.MOVE);
+			ClipboardContent content = new ClipboardContent();
+			content.putString(block.getClass().getSimpleName());
+			db.setContent(content);
+			
+			//remove block from UI
+	        grid.getChildren().remove(block);
+	        rectangles[((int) block.getLayoutX() / GridRectangles.CELL_SIZE)][((int)block.getLayoutY() / GridRectangles.CELL_SIZE)].freeUpSpace(block.getClass().getSimpleName());
+			
+			event.consume();
+		};
+		
+		blockDragDoneHandler = (event) -> {
+			if (event.getTransferMode() != TransferMode.MOVE) {
+				//drag not successful, restore object
+				UiBlock block = (UiBlock) event.getSource();
+    	        grid.getChildren().add(block);
+    	        rectangles[((int) block.getLayoutX() / GridRectangles.CELL_SIZE)][((int)block.getLayoutY() / GridRectangles.CELL_SIZE)].prepareForPlacement(block.getClass().getSimpleName(), block);
+			}
+			
+			event.consume();
+		};
 	}
 
 	public UiNetwork(Controller controller) {
@@ -140,6 +168,8 @@ public class UiNetwork {
 			b.setOnMouseClicked(blockClickHandler);
 			b.setOnMouseEntered(blockMouseEnterHandler);
 			b.setOnMouseExited(blockMouseExitHandler);
+			b.setOnDragDetected(blockDragDetectedHandler);
+			b.setOnDragDone(blockDragDoneHandler);
 			network.addBlock(b.block);
 		}
 	}
@@ -169,6 +199,8 @@ public class UiNetwork {
         uiBlock.setOnMouseClicked(blockClickHandler);
 		uiBlock.setOnMouseEntered(blockMouseEnterHandler);
 		uiBlock.setOnMouseExited(blockMouseExitHandler);
+		uiBlock.setOnDragDetected(blockDragDetectedHandler);
+		uiBlock.setOnDragDone(blockDragDoneHandler);
     }
 	
 	public void addUiBlock(UiBlock uiBlock, boolean addToUiBlocks) {
@@ -200,6 +232,11 @@ public class UiNetwork {
         		rightNeighbourBottom = rectangles[i+2][j+1].getUiBlock();
         	}
         }
+        
+        System.out.println("Top left:" + leftNeighbourTop);
+        System.out.println("Top right:" + rightNeighbourTop);
+        System.out.println("Bottom right:" + rightNeighbourBottom);
+        System.out.println("Bottom left:" + leftNeighbourBottom);
         
         if (isUiBlockSection) {
             if (leftNeighbourTop != null) {

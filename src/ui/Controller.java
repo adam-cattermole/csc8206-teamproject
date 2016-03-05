@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
 import javafx.scene.input.*;
@@ -83,15 +82,11 @@ public class Controller implements Initializable {
     private void addPaletteListener(final Canvas source) {
         source.setOnDragDetected(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
-                /* drag was detected, start drag-and-drop gesture*/
-                System.out.println("onDragDetected");
-
                 /* allow any transfer mode */
-                Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+                Dragboard db = source.startDragAndDrop(TransferMode.COPY);
                 /* put a string on dragboard */
                 ClipboardContent content = new ClipboardContent();
                 String type = source.getClass().getSimpleName();
-                System.out.println(type);
                 content.putString(type);
                 db.setContent(content);
 

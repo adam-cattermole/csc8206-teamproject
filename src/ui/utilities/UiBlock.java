@@ -77,7 +77,7 @@ public abstract class UiBlock extends Canvas {
         hackTooltipStartTiming(t);
         Tooltip.install(this, t);
     }
-    
+
     public String toString() {
     	return (getClass().getSimpleName() + "[" + getLayoutX() + "," + getLayoutY() + "]: " + block);
     }

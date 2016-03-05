@@ -132,6 +132,18 @@ public abstract class Block implements Comparable<Block>
 		}
 	}
 	
+	public void detach() {
+		//get block neighbours
+		Set<Block> neighbours = getNeighbours();
+		
+		for (Block neighbour : neighbours)
+		{
+			//detach the block from its neighbours
+			neighbour.deleteBlock(this);
+			deleteBlock(neighbour);
+		}
+	}
+	
 	public Set<Block> getNeighbours()
 	{
 		if (neighbours == null)

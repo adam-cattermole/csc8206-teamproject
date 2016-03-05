@@ -33,14 +33,8 @@ public class SimpleNetwork implements Network
 	
 	public SimpleNetwork removeBlock(Block block)
 	{
-		//get block neighbours
-		Set<Block> neighbours = block.getNeighbours();
-		
-		for (Block neighbour : neighbours)
-		{
-			//detach the block from its neighbours
-			neighbour.deleteBlock(block);
-		}
+		//detach block from its neighbours
+		block.detach();
 		
 		//release the IDs held by the block
 		Identifiers.addToBlockPool(block);
