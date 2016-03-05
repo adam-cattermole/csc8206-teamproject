@@ -1,6 +1,8 @@
 package ui.utilities;
 
 import backend.Block;
+import backend.Point;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -12,12 +14,16 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 /**
  * Created by Adam Cattermole
@@ -64,13 +70,33 @@ public abstract class UiBlock extends Canvas {
     
     protected void setBlock(Block block) {
         this.block = block;
+        
+        String name = (block instanceof Point) ? ("Point " + block.getID()) : ("Block " + block.getID());
     	
-        Tooltip t = new Tooltip(this.toString());
+        Tooltip t = new Tooltip(name);
+        hackTooltipStartTiming(t);
         Tooltip.install(this, t);
     }
     
     public String toString() {
     	return (getClass().getSimpleName() + "[" + getLayoutX() + "," + getLayoutY() + "]: " + block);
+    }
+    
+    public static void hackTooltipStartTiming(Tooltip tooltip) {
+        try {
+            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            fieldBehavior.setAccessible(true);
+            Object objBehavior = fieldBehavior.get(tooltip);
+
+            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
+            fieldTimer.setAccessible(true);
+            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(50)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
 	/**

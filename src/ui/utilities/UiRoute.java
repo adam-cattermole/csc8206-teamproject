@@ -2,6 +2,7 @@ package ui.utilities;
 
 import java.util.stream.Collectors;
 
+import backend.Point;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import route.RouteBuilder.Route;
@@ -27,7 +28,7 @@ public class UiRoute {
 		path = new SimpleStringProperty(
 				route.getPath()
 					.stream()
-					.map(b -> (b.getClass().getSimpleName().substring(0, 1).toLowerCase()) + b.getID())
+					.map(b -> ((b instanceof Point) ? ("p" + b.getID()) : ("b" + b.getID())))
 					.collect(Collectors.joining("; "))
 		);
 		

@@ -52,6 +52,7 @@ public class RouteBuilder
 		private final String id;
 
 		private final List<Block> path;
+		private final List<Block> sequence;
 		private final Section startBlock;
 		private final Section endBlock;
 
@@ -77,7 +78,8 @@ public class RouteBuilder
 			}
 
 			id = "R" + ROUTE_NO++;
-			this.path = path;//TODO Defensive copying; make programming easier too
+			this.sequence = path;//TODO Defensive copying; make programming easier too
+			this.path = path.subList(1, path.size());
 			
 			startBlock = (Section) start;
 			endBlock = (Section) end;
@@ -98,6 +100,11 @@ public class RouteBuilder
 
 		public String getId() {
 			return id;
+		}
+		
+		public List<Block> getSequence()
+		{
+			return sequence;
 		}
 		
 		public List<Block> getPath()
@@ -146,7 +153,7 @@ public class RouteBuilder
 			List<String> sigSet = signals;
 			List<String> pointSet = points;
 			
-			List<Block> routeBlocks = path;
+			List<Block> routeBlocks = sequence;
 			
 			Point.Orientation routeDirection;
 			Block curr = routeBlocks.get(0);
