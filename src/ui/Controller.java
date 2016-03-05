@@ -119,7 +119,11 @@ public class Controller implements Initializable {
     			//redraw network elements
     			uiNetwork.refreshUi();
     		} catch (FileNotFoundException | NetworkDeserializationException e) {
-    			System.out.println(e.getMessage()); //TODO: show an error message to the user
+    			if (e instanceof NetworkDeserializationException) {
+    				((NetworkDeserializationException)e).getReason().printStackTrace();
+    			}
+    			
+    			//System.out.println(e.getMessage()); //TODO: show an error message to the user
     		}
         }
     }

@@ -128,10 +128,10 @@ public class UiNetwork {
 		routeBuilder = null;
 	}
 	
+	@JsonIgnore
 	public boolean isBuildingRoute() {
 		return routeBuilder != null;
 	}
-	
 	
 	@JsonProperty
 	public void setUiBlocks(List<UiBlock> uiBlocks) {
