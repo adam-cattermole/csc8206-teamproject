@@ -39,8 +39,58 @@ public class RouteTester
 		p2.setDown(b4);
 
 		b5.setUp(b6);
+		
+		
+		test.build.addToRoute(b1);
+		test.build.addToRoute(b2);
+		test.build.addToRoute(p1);
+		test.build.addToRoute(b4);
+		
+		test.r = test.build.build();
+		
+		
+		test.r.calculateSettings();
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
 
-		// TEST CASES DEFINED HERE
+
+		test.build = new RouteBuilder();
+		test.build.addToRoute(b1);
+		test.build.addToRoute(b2);
+		test.build.addToRoute(p1);
+		test.build.addToRoute(b3);
+		
+		test.r = test.build.build();
+		
+		
+		test.r.calculateSettings();
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		
+		
+		test.build = new RouteBuilder();
+		
+		test.build.addToRoute(b6);
+		test.build.addToRoute(b5);
+		test.build.addToRoute(p2);
+		test.build.addToRoute(b4);
+		
+		test.r = test.build.build();
+		
+		test.r.calculateSettings();
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		
+		
+		test.build = new RouteBuilder();
+		
+		test.build.addToRoute(b5);
+		test.build.addToRoute(p2);
+		test.build.addToRoute(b4);
+		
+		test.r = test.build.build();
+		
+		test.r.calculateSettings();
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		
+		/*// TEST CASES DEFINED HERE
 		// CASE 1
 		test.build.addToRoute(b1);
 		test.build.addToRoute(b2);
@@ -89,7 +139,7 @@ public class RouteTester
 		test.r = test.build.build();
 
 		s = (InterlockCalculator.calculateSettings(test.r));
-		System.out.println(s[0] + "||" + s[1] + "||" + s[2]);
+		System.out.println(s[0] + "||" + s[1] + "||" + s[2]);*/
 
 	}
 

@@ -85,7 +85,8 @@ public class RouteBuilder
 			endBlock = (Section) end;
 			
 			//detect the direction based on next block
-			if (startBlock.getUp() == path.get(1)) {
+
+			if (startBlock.getUp() != null && startBlock.getUp().equals(path.get(1))) {
 				//we are going in up direction
 				source = startBlock.getSignalUp();
 				destination = endBlock.getSignalUp();
@@ -153,14 +154,21 @@ public class RouteBuilder
 			List<String> sigSet = signals;
 			List<String> pointSet = points;
 			
-			List<Block> routeBlocks = sequence;
+			if(sigSet.size() != 0 || pointSet.size() != 0)
+			{
+				//Already calculated
+				return;
+			}
+			
+			List<Block> routeBlocks = sequence;		
 			
 			Point.Orientation routeDirection;
 			Block curr = routeBlocks.get(0);
 			Block next = routeBlocks.get(1);
 			Block prev;
+
 			
-			if(curr.getUp() == next)
+			if(curr.getUp() != null && curr.getUp().equals(next))
 			{
 				routeDirection = Point.Orientation.UP;
 				prev = curr.getDown();
@@ -177,13 +185,13 @@ public class RouteBuilder
 				{
 					if(routeDirection == Point.Orientation.UP)
 					{
-						sigSet.add(prev + ".UP, ");
-						//sigSet.add(((Section) prev).getSignalUp().toString());
+						//sigSet.add(prev + ".UP, ");
+						sigSet.add(((Section) prev).getSignalUp().toString());
 					}
 					else
 					{
-						sigSet.add(prev + ".DOWN, ");
-						//sigSet.add(((Section) prev).getSignalDown().toString());
+						//sigSet.add(prev + ".DOWN, ");
+						sigSet.add(((Section) prev).getSignalDown().toString());
 					}
 				}
 				else //prev is a Point
@@ -199,7 +207,7 @@ public class RouteBuilder
 						if(p.getOrientation() == routeDirection)
 						{
 							//Can be directed around
-							pointSet.add("p" + p.getID() + ":m");//TODO Check logic
+							pointSet.add("p" + p.getID() + ":m");
 						}
 					}
 				}
@@ -215,13 +223,13 @@ public class RouteBuilder
 				{
 					if(routeDirection == Point.Orientation.UP)
 					{
-						sigSet.add(curr + ".DOWN, ");
-						//sigSet.add(((Section) curr).getSignalDown().toString());
+						//sigSet.add(curr + ".DOWN, ");
+						sigSet.add(((Section) curr).getSignalDown().toString());
 					}
 					else
 					{
-						sigSet.add(curr+ ".UP");
-						//sigSet.add(((Section) curr).getSignalUp().toString());
+						//sigSet.add(curr+ ".UP");
+						sigSet.add(((Section) curr).getSignalUp().toString());
 					}
 				}
 				else
@@ -232,13 +240,13 @@ public class RouteBuilder
 						pointSet.add("p" + p.getID() + ":m");
 						if(routeDirection == Point.Orientation.UP)
 						{
-							sigSet.add(p.getUp() + ".DOWN, ");
-							//sigSet.add(((Section) p.getUp()).getSignalDown().toString());
+							//sigSet.add(p.getUp() + ".DOWN, ");
+							sigSet.add(((Section) p.getUp()).getSignalDown().toString());
 						}
 						else
 						{
-							sigSet.add(p.getDown() + ".UP, ");
-							//sigSet.add(((Section) p.getDown()).getSignalUp().toString());
+							//sigSet.add(p.getDown() + ".UP, ");
+							sigSet.add(((Section) p.getDown()).getSignalUp().toString());
 						}
 					}
 					else if(p.getSideline().equals(prev))
@@ -246,13 +254,13 @@ public class RouteBuilder
 						pointSet.add("p" + p.getID() + ":m");
 						if(routeDirection == Point.Orientation.UP)
 						{
-							sigSet.add(p.getDown() + ".UP ,");
-							//sigSet.add(((Section) p.getDown()).getSignalUp().toString());
+							//sigSet.add(p.getDown() + ".UP ,");
+							sigSet.add(((Section) p.getDown()).getSignalUp().toString());
 						}
 						else
 						{
-							sigSet.add(p.getUp() + ".DOWN, ");
-							//sigSet.add(((Section) p.getUp()).getSignalDown().toString());
+							//sigSet.add(p.getUp() + ".DOWN, ");
+							sigSet.add(((Section) p.getUp()).getSignalDown().toString());
 						}
 					}
 					else
@@ -261,18 +269,20 @@ public class RouteBuilder
 						
 						if(p.getOrientation() == Point.Orientation.UP)
 						{
-							sigSet.add(p.getSideline() + ".DOWN, ");
-							//sigSet.add(((Section) p.getSideline()).getSignalDown().toString());
+							//sigSet.add(p.getSideline() + ".DOWN, ");
+							sigSet.add(((Section) p.getSideline()).getSignalDown().toString());
 						}
 						else
 						{
-							sigSet.add(p.getSideline() + ".UP, ");
-							//sigSet.add(((Section) p.getSideline()).getSignalUp().toString());
+							//sigSet.add(p.getSideline() + ".UP, ");
+							sigSet.add(((Section) p.getSideline()).getSignalUp().toString());
 						}
 						
 					}
 				}
 			}
+			
+			
 			
 			if(routeDirection == Point.Orientation.UP)
 			{
@@ -280,11 +290,14 @@ public class RouteBuilder
 				curr = next;
 				next = curr.getUp();
 				
+				sigSet.add(((Section) curr).getSignalDown().toString());
+				
 				if(next != null)
 				{
 					if(next instanceof Section)
 					{
-						sigSet.add(next + ".DOWN");
+						//sigSet.add(next + ".DOWN");
+						sigSet.add(((Section) next).getSignalDown().toString());
 					}
 					else
 					{
@@ -293,10 +306,10 @@ public class RouteBuilder
 						if(p.getOrientation() == routeDirection)
 						{
 							//Cannot be diverted
-							sigSet.add(p.getSideline() + ".DOWN, ");
-							sigSet.add(p.getUp() + ".DOWN");
-							//sigSet.add(((Section) p.getSideline()).getSignalDown().toString());
-							//sigSet.add(((Section) p.getUp()).getSignalDown().toString());
+							//sigSet.add(p.getSideline() + ".DOWN, ");
+							//sigSet.add(p.getUp() + ".DOWN");
+							sigSet.add(((Section) p.getSideline()).getSignalDown().toString());
+							sigSet.add(((Section) p.getUp()).getSignalDown().toString());
 						}
 						else
 						{
@@ -318,12 +331,14 @@ public class RouteBuilder
 				curr = next;
 				next = curr.getDown();
 				
+				sigSet.add(((Section) curr).getSignalUp().toString());
+				
 				if(next != null)
 				{
 					if(next instanceof Section)
 					{
-						sigSet.add(next + ".UP");
-						//sigSet.add(((Section) next).getSignalUp().toString());
+						//sigSet.add(next + ".UP");
+						sigSet.add(((Section) next).getSignalUp().toString());
 					}
 					else
 					{
@@ -332,10 +347,10 @@ public class RouteBuilder
 						if(p.getOrientation() == routeDirection)
 						{
 							//Cannot be diverted
-							sigSet.add(p.getSideline() + ".UP, ");
-							sigSet.add(p.getDown() + "UP");
-							//sigSet.add(((Section) p.getSideline()).getSignalUp().toString());
-							//sigSet.add(((Section) p.getDown()).getSignalUp().toString());
+							//sigSet.add(p.getSideline() + ".UP, ");
+							//sigSet.add(p.getDown() + "UP");
+							sigSet.add(((Section) p.getSideline()).getSignalUp().toString());
+							sigSet.add(((Section) p.getDown()).getSignalUp().toString());
 						}
 						else
 						{
