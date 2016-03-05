@@ -85,7 +85,7 @@ public class RouteBuilder
 			endBlock = (Section) end;
 			
 			//detect the direction based on next block
-			if (startBlock.getUp().equals(path.get(1))) {
+			if (startBlock.getUp() == path.get(1)) {
 				//we are going in up direction
 				source = startBlock.getSignalUp();
 				destination = endBlock.getSignalUp();
@@ -160,7 +160,7 @@ public class RouteBuilder
 			Block next = routeBlocks.get(1);
 			Block prev;
 			
-			if(curr.getUp().equals(next))
+			if(curr.getUp() == next)
 			{
 				routeDirection = Point.Orientation.UP;
 				prev = curr.getDown();

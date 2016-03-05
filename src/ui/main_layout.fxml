@@ -70,7 +70,7 @@
     </GridPane>
     <TableView fx:id="interlockTable" GridPane.columnIndex="0" GridPane.rowIndex="1">
 		<columns>
-			<TableColumn text="Route ID">
+			<TableColumn text="ID">
 				<cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
 			</TableColumn>
 			<TableColumn text="Source">

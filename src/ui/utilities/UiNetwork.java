@@ -62,6 +62,8 @@ public class UiNetwork {
 	@JsonIgnore private List<UiBlock> routeBlocks = new ArrayList<UiBlock>();
 	@JsonIgnore ObservableList<UiRoute> routes;
 	
+	@JsonIgnore private boolean valid = false;
+	
 	public UiNetwork() {
 		blockClickHandler = (event) -> {
 			MouseButton button = event.getButton();
@@ -139,8 +141,10 @@ public class UiNetwork {
 		setController(controller);
 	}
 	
-	public void startBuildingRoute() { 
-		routeBuilder = new RouteBuilder();
+	public void startBuildingRoute() {
+		if (valid) {
+			routeBuilder = new RouteBuilder();
+		}
 	}
 	
 	public void endBuildingRoute() {
@@ -313,8 +317,10 @@ public class UiNetwork {
 	private void revalidateNetwork() {
         //revalidate the network
         try {
-        	controller.setStatusText(network.isValid() ? NETWORK_VALID : NETWORK_INVALID);
+        	valid = network.isValid();
+        	controller.setStatusText(valid ? NETWORK_VALID : NETWORK_INVALID);
         } catch (BlockInvalidException e) {
+        	valid = false;
         	controller.setStatusText(NETWORK_INVALID + ": " + e.getBlock());
         }
 	}
