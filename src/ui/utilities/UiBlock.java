@@ -49,9 +49,17 @@ public abstract class UiBlock extends Canvas {
         setLayoutY(y);
         draw();
     }
+
+    public UiBlock(double x, double y, double width, double height, Block block) {
+        super(width, height);
+        setLayoutX(x);
+        setLayoutY(y);
+        setBlock(block);
+        draw();
+    }
     
     protected void setBlock(Block block) {
-    	this.block = block;
+        this.block = block;
     	
         Tooltip t = new Tooltip(this.toString());
         Tooltip.install(this, t);

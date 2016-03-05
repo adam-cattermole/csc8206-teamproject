@@ -19,13 +19,11 @@ public class UiPointUpInverse extends UiBlock {
     }
 
     public UiPointUpInverse(double x, double y) {
-        super(x, y, WIDTH, HEIGHT);
-        setBlock(new Point(Point.Orientation.UP));
+        super(x, y, WIDTH, HEIGHT, new Point(Point.Orientation.UP));
     }
     
     public UiPointUpInverse(double x, double y, Block block) {
-    	super(x, y, WIDTH, HEIGHT);
-    	setBlock(block);
+    	super(x, y, WIDTH, HEIGHT, block);
     }
 
     @Override
