@@ -233,11 +233,6 @@ public class UiNetwork {
         	}
         }
         
-        System.out.println("Top left:" + leftNeighbourTop);
-        System.out.println("Top right:" + rightNeighbourTop);
-        System.out.println("Bottom right:" + rightNeighbourBottom);
-        System.out.println("Bottom left:" + leftNeighbourBottom);
-        
         if (isUiBlockSection) {
             if (leftNeighbourTop != null) {
                 target = leftNeighbourTop;
