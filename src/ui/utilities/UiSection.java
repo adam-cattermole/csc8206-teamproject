@@ -43,13 +43,14 @@ public class UiSection extends UiBlock {
             gc.setTextAlign(TextAlignment.CENTER);
             gc.setTextBaseline(VPos.CENTER);
             Section section = (Section) block;
-            Signal up = section.getSignalUp();
-            Signal down = section.getSignalDown();
-            if (up != null) {
-                gc.strokeText("s"+up.getID(), WIDTH*.25, HEIGHT*0.75);
+            
+            if (section.hasSignalUp()) {
+            	Signal up = section.getSignalUp();
+                gc.strokeText(up.toString(), WIDTH*.75, HEIGHT*0.20);
             }
-            if (down != null) {
-                gc.strokeText("s"+down.getID(), WIDTH*.75, HEIGHT*0.20);
+            if (section.hasSignalDown()) {
+            	Signal down = section.getSignalDown();
+                gc.strokeText(down.toString(), WIDTH*.25, HEIGHT*0.75);
             }
         }
     }
