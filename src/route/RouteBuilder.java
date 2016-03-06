@@ -198,7 +198,7 @@ public class RouteBuilder
 				{
 					Point p = (Point) prev;
 
-					if(p.getSideline().equals(next))
+					if(p.getSideline().equals(curr))
 					{
 						pointSet.add("p" + p.getID() + ":p");
 					}

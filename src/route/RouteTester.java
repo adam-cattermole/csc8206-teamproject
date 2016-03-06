@@ -1,7 +1,13 @@
 package route;
 
 import backend.SimpleNetwork;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 import backend.Network;
+import backend.NetworkDeserializationException;
 import backend.Point;
 import backend.Section;
 import route.RouteBuilder;
@@ -40,7 +46,6 @@ public class RouteTester
 
 		b5.setUp(b6);
 		
-		
 		test.build.addToRoute(b1);
 		test.build.addToRoute(b2);
 		test.build.addToRoute(p1);
@@ -90,57 +95,34 @@ public class RouteTester
 		test.r.calculateSettings();
 		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
 		
-		/*// TEST CASES DEFINED HERE
-		// CASE 1
-		test.build.addToRoute(b1);
-		test.build.addToRoute(b2);
-		test.build.addToRoute(p1);
-		test.build.addToRoute(b3);
-
-		String s[];
-
-		test.r = test.build.build();
-
-		s = (InterlockCalculator.calculateSettings(test.r));
-		System.out.println(s[0] + "||" + s[1] + "||" + s[2]);
-
-		// CASE 2
-		test.build.addToRoute(b1);
-		test.build.addToRoute(b2);
-		test.build.addToRoute(p1);
-		test.build.addToRoute(b4);
-
-		test.r = test.build.build();
-
-		s = (InterlockCalculator.calculateSettings(test.r));
-		System.out.println(s[0] + "||" + s[1] + "||" + s[2]);
-
-		// CASE 3
+		test.build = new RouteBuilder();
 		test.build.addToRoute(b2);
 		test.build.addToRoute(p1);
 		test.build.addToRoute(b4);
 		test.build.addToRoute(p2);
 		test.build.addToRoute(b5);
-
+		test.build.addToRoute(b6);
+		
 		test.r = test.build.build();
-
-		s = (InterlockCalculator.calculateSettings(test.r));
-		System.out.println(s[0] + "||" + s[1] + "||" + s[2]);
-
-		// CASE 3
-		test.build.addToRoute(b1);
+		
+		test.r.calculateSettings();
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		
+		
+		test.build = new RouteBuilder();
 		test.build.addToRoute(b2);
 		test.build.addToRoute(p1);
 		test.build.addToRoute(b3);
 		test.build.addToRoute(p2);
 		test.build.addToRoute(b5);
 		test.build.addToRoute(b6);
-
+		
 		test.r = test.build.build();
-
-		s = (InterlockCalculator.calculateSettings(test.r));
-		System.out.println(s[0] + "||" + s[1] + "||" + s[2]);*/
-
+		
+		test.r.calculateSettings();
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		
+	
 	}
 
 }
