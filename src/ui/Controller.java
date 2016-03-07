@@ -3,35 +3,31 @@ package ui;
 import backend.NetworkDeserializationException;
 import backend.NetworkSerializationException;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
-import ui.utilities.*;
-import javafx.event.ActionEvent;
+import org.controlsfx.control.StatusBar;
+import ui.utilities.GridRectangles;
+import ui.utilities.UiBlock;
+import ui.utilities.UiNetwork;
+import ui.utilities.UiRoute;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import org.controlsfx.control.StatusBar;
 
 public class Controller implements Initializable {
     @FXML private Group grid;
@@ -134,6 +130,11 @@ public class Controller implements Initializable {
     	alert.getDialogPane().setExpandableContent(expContent);
     	alert.getDialogPane().setExpanded(true);
     	alert.showAndWait();
+    }
+
+    @FXML private void onNewAction(ActionEvent event) {
+        uiNetwork.clear();
+        uiNetwork = new UiNetwork(this);
     }
 
     @FXML private void onLoadAction(ActionEvent event) {
