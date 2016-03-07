@@ -21,7 +21,6 @@ import backend.Signal;
  * Once the path has been completed, there is a build method
  * which then creates the Route itself, returning it.
  *
- * The RouteBuilder object resets after this build call
  */
 public class RouteBuilder
 {
@@ -151,7 +150,7 @@ public class RouteBuilder
 			Block end = path.get(path.size()-1);
 		
 			id = "R" + ROUTE_NO++;
-			this.sequence = path;//TODO Defensive copying; make programming easier too
+			this.sequence = path;
 			this.path = path.subList(1, path.size());
 			
 			startBlock = (Section) start;
@@ -162,13 +161,12 @@ public class RouteBuilder
 			if (startBlock.getUp() != null && startBlock.getUp().equals(path.get(1))) {
 				//we are going in up direction
 				source = startBlock.getSignalUp();
-				destination = endBlock.getSignalUp();
+				destination = endBlock.getSignalUp();				
 			} else {
 				//we are going in down direction
 				source = startBlock.getSignalDown();
 				destination = endBlock.getSignalDown();
-			}
-			
+			}			
 			calculateSettings();
 		}
 
@@ -444,6 +442,18 @@ public class RouteBuilder
 					}
 				}
 			}
+		}
+
+		public Point.Orientation getDirection()
+		{
+			if (startBlock.getUp() != null && startBlock.getUp().equals(path.get(1)))
+			{
+				return Point.Orientation.UP;
+			}
+			else 
+			{
+				return Point.Orientation.DOWN;
+			}			
 		}
 
 
