@@ -44,9 +44,87 @@ public class RouteBuilder
 
 	public Route build()
 	{
-		return new Route(path);
+		if(validateRoute(path))
+		{
+			return new Route(path);
+		}
+		else
+		{
+			System.out.println("Invalid route detected, creation prevented");
+			throw new IllegalArgumentException("Invalid Route: Creation prevented");
+		}
 	}
 
+	private boolean validateRoute(List<Block> rawPath)
+	{
+		Point.Orientation direction;
+		
+		if(rawPath.size() < 2)
+		{
+			return false;
+		}
+		
+		if (!(rawPath.get(0) instanceof Section && rawPath.get(rawPath.size() - 1)instanceof Section)) {
+			throw new IllegalArgumentException("First and last block of a route must be a section");
+		}
+		
+		if(rawPath.get(0).getUp() != null && rawPath.get(0).getUp().equals(rawPath.get(1)))
+		{
+			direction = Point.Orientation.UP;
+		}
+		else
+		{
+			direction = Point.Orientation.DOWN;
+		}
+		
+		for(int i = 0; i <= rawPath.size() - 2; i++)
+		{
+			Block a = rawPath.get(i);
+			Block b = rawPath.get(i + 1);
+			
+			if(direction == Point.Orientation.UP)
+			{
+				if(a instanceof Section)
+				{
+					if(a.getUp() == null || !(a.getUp().equals(b)))
+					{
+						return false;
+					}
+				}
+				else
+				{
+					Point p = (Point) a;
+					if(((p.getUp() == null || !(p.getUp().equals(b))) && 
+							(p.getSideline() == null || !(p.getSideline().equals(b) && p.getOrientation() == direction))))
+					{
+						return false;
+					}
+				}
+			}
+			else
+			{
+				if(a instanceof Section)
+				{
+					if(a.getDown() == null || !(a.getDown().equals(b)))
+					{
+						return false;
+					}
+				}
+				else
+				{
+					Point p = (Point) a;
+					if(((p.getDown() == null || !(p.getDown().equals(b))) && 
+							(p.getSideline() == null || !(p.getSideline().equals(b) && p.getOrientation() == direction))))
+					{
+						return false;
+					}
+				}
+			}
+			
+		}
+		return true;
+	}
+	
 	public class Route
 	{
 		private final String id;
@@ -65,18 +143,10 @@ public class RouteBuilder
 
 		private Route(List<Block> path)
 		{
-			if(path.size() < 2)
-			{
-				throw new IllegalArgumentException("Insufficient blocks for a route");
-			}
 			
 			Block start = path.get(0);
 			Block end = path.get(path.size()-1);
-			
-			if (!(start instanceof Section && end instanceof Section)) {
-				throw new IllegalArgumentException("First and last block of a route must be a section");
-			}
-
+		
 			id = "R" + ROUTE_NO++;
 			this.sequence = path;//TODO Defensive copying; make programming easier too
 			this.path = path.subList(1, path.size());
@@ -368,10 +438,6 @@ public class RouteBuilder
 			}
 		}
 
-		public boolean validateRoute()
-		{
-			//validate route based on conflicts
-			return true;
-		}
+		
 	}
 }
