@@ -1,7 +1,10 @@
 package route;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import backend.Block;
 import backend.Point;
@@ -139,7 +142,7 @@ public class RouteBuilder
 
 		private final List<String> points = new ArrayList<String>();
 		private final List<String> signals = new ArrayList<String>();
-		private final List<String> conflicts = new ArrayList<String>();
+		private final Set<String> conflicts = new TreeSet<String>();
 
 		private Route(List<Block> path)
 		{
@@ -213,9 +216,14 @@ public class RouteBuilder
 			return signals;
 		}
 		
-		public List<String> getConflicts()
+		public Set<String> getConflicts()
 		{
 			return conflicts;
+		}
+		
+		public boolean addConflict(String conflictingRoute)
+		{
+			return conflicts.add(conflictingRoute);
 		}
 		
 		public void calculateSettings()
@@ -437,6 +445,7 @@ public class RouteBuilder
 				}
 			}
 		}
+
 
 		
 	}

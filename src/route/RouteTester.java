@@ -5,6 +5,8 @@ import backend.SimpleNetwork;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import backend.Network;
 import backend.NetworkDeserializationException;
@@ -23,6 +25,8 @@ public class RouteTester
 		RouteTester test = new RouteTester();
 
 		Network network = new SimpleNetwork();
+		
+		List<Route> routes = new ArrayList<Route>();
 
 		Section b1 = network.makeSection();
 		Section b2 = network.makeSection();
@@ -52,10 +56,10 @@ public class RouteTester
 		test.build.addToRoute(b4);
 		
 		test.r = test.build.build();
-		
+		routes.add(test.r);
 		
 		test.r.calculateSettings();
-		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints() + ", " + test.r.getSequence());
 
 
 		test.build = new RouteBuilder();
@@ -65,10 +69,10 @@ public class RouteTester
 		test.build.addToRoute(b3);
 		
 		test.r = test.build.build();
-		
+		routes.add(test.r);
 		
 		test.r.calculateSettings();
-		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints() + ", " + test.r.getSequence());
 		
 		
 		test.build = new RouteBuilder();
@@ -79,9 +83,10 @@ public class RouteTester
 		test.build.addToRoute(b4);
 		
 		test.r = test.build.build();
+		routes.add(test.r);
 		
 		test.r.calculateSettings();
-		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints() + ", " + test.r.getSequence());
 		
 		
 		test.build = new RouteBuilder();
@@ -91,9 +96,10 @@ public class RouteTester
 		test.build.addToRoute(b4);
 		
 		test.r = test.build.build();
+		routes.add(test.r);
 		
 		test.r.calculateSettings();
-		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints() + ", " + test.r.getSequence());
 		
 		test.build = new RouteBuilder();
 		test.build.addToRoute(b2);
@@ -104,9 +110,10 @@ public class RouteTester
 		test.build.addToRoute(b6);
 		
 		test.r = test.build.build();
+		routes.add(test.r);
 		
 		test.r.calculateSettings();
-		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints() + ", " + test.r.getSequence());
 		
 		
 		test.build = new RouteBuilder();
@@ -118,9 +125,23 @@ public class RouteTester
 		test.build.addToRoute(b6);
 		
 		test.r = test.build.build();
+		routes.add(test.r);
 		
 		test.r.calculateSettings();
-		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints());
+		System.out.println(test.r.getId() + ": " + test.r.getSignals() + ", " + test.r.getPoints() + ", " + test.r.getSequence());
+		
+		
+		List<String> confs = RouteConflictDetector.calculateConflicts(routes);
+		confs = RouteConflictDetector.calculateConflicts(routes);
+		confs = RouteConflictDetector.calculateConflicts(routes);
+		confs = RouteConflictDetector.calculateConflicts(routes);
+		
+		System.out.println(confs);
+		
+		for(int i = 0; i < routes.size(); i ++)
+		{
+			System.out.println(routes.get(i).getConflicts());
+		}
 		
 	
 	}
