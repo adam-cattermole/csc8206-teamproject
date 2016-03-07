@@ -1,7 +1,6 @@
 package route;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -127,7 +126,7 @@ public class RouteBuilder
 		return true;
 	}
 	
-	public class Route
+	public class Route implements Observable<Route>
 	{
 		private final String id;
 
@@ -141,11 +140,11 @@ public class RouteBuilder
 
 		private final List<String> points = new ArrayList<String>();
 		private final List<String> signals = new ArrayList<String>();
-		private final Set<String> conflicts = new TreeSet<String>();
+		private Set<String> conflicts = new TreeSet<String>();
+		private final List<ChangeListener<Route>> listeners = new ArrayList<ChangeListener<Route>>();
 
 		private Route(List<Block> path)
 		{
-			
 			Block start = path.get(0);
 			Block end = path.get(path.size()-1);
 		
@@ -219,9 +218,10 @@ public class RouteBuilder
 			return conflicts;
 		}
 		
-		public boolean addConflict(String conflictingRoute)
+		public void setConflicts(Set<String> conflicts)
 		{
-			return conflicts.add(conflictingRoute);
+			this.conflicts = conflicts;
+			listeners.stream().forEach(listener -> listener.onChange(this));
 		}
 		
 		public void calculateSettings()
@@ -456,7 +456,14 @@ public class RouteBuilder
 			}			
 		}
 
+		@Override
+		public void addChangeListener(ChangeListener<Route> listener) {
+			listeners.add(listener);
+		}
 
-		
+		@Override
+		public void removeChangeListener(ChangeListener<Route> listener) {
+			listeners.remove(listener);
+		}
 	}
 }

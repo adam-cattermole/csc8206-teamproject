@@ -15,8 +15,10 @@ public class UiRoute {
 	private final StringProperty signals;
 	private final StringProperty path;
 	private final StringProperty conflicts;
+	private final Route route;
 	
 	public UiRoute(Route route) {
+		this.route = route;
 		id = new SimpleStringProperty(route.getId());
 		
 		source = new SimpleStringProperty(route.getSource().toString());
@@ -32,7 +34,11 @@ public class UiRoute {
 					.collect(Collectors.joining("; "))
 		);
 		
-		conflicts = new SimpleStringProperty(route.getConflicts().stream().collect(Collectors.joining("; ")));
+		conflicts = new SimpleStringProperty();
+		
+		route.addChangeListener(r -> {
+			conflicts.setValue(r.getConflicts().stream().collect(Collectors.joining("; ")));
+		});
 	}
 	
 	public String getId() {
@@ -61,5 +67,9 @@ public class UiRoute {
 	
 	public String getConflicts() {
 		return conflicts.get();
+	}
+	
+	public Route getRoute() {
+		return route;
 	}
 }

@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -35,6 +36,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import route.RouteBuilder;
 import route.RouteBuilder.Route;
+import route.RouteConflictDetector;
 import javafx.event.EventHandler;
 
 /**
@@ -151,7 +153,11 @@ public class UiNetwork {
 	public void endBuildingRoute() {
 		try {
 			Route route = routeBuilder.build();
-			routes.add(new UiRoute(route)); 	
+			routes.add(new UiRoute(route));
+			
+			//calculate conflicts
+			List<Route> rs = routes.stream().map(r -> r.getRoute()).collect(Collectors.toList());
+			RouteConflictDetector.calculateConflicts(rs);
 		} catch (IllegalArgumentException e) {}
 		
 		//remove highlights from the elements
