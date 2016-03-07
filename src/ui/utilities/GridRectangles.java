@@ -8,6 +8,10 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import ui.Controller;
 
+/**
+ * Specifies the grid configuration and holds all the members of the grid
+ * @author Jakub Gawron
+ */
 public class GridRectangles extends Group {
     public static final int GRID_HEIGHT = 50;
     public static final int GRID_WIDTH = 50;
@@ -19,6 +23,10 @@ public class GridRectangles extends Group {
 	private int lastRectangleRow = 0;
 	private int lastRectangleCol = 0;
 	
+        /**
+         * Constructor of the GridRectangles class. It creates rectangles which will be part of the grid and assigns event listeners
+         * @param controller Reference to the controller object
+         */
 	public GridRectangles(Controller controller) {
 		this.controller = controller;
 		this.rectangles = new GridRectangle[GRID_WIDTH][GRID_HEIGHT];
@@ -36,6 +44,9 @@ public class GridRectangles extends Group {
         setupListeners();
 	}
 	
+        /**
+         * Used to attach GridRectangle to a event listener which supports drag & drop functionality
+         */
 	private void setupListeners() {		
         setOnDragExited(event -> {
         	//remove highlight from last rectangle
@@ -151,26 +162,54 @@ public class GridRectangles extends Group {
         });
 	}
 	
+        /**
+         * Convert row X index to pixel coordinate
+         * @param row row number which will be converted to coordinate
+         * @return integer which represents x coordinate of a rectangle 
+         */
 	public static int rowToX(int row) {
 		return row * CELL_SIZE;
 	}
 	
+        /**
+         * Convert row Y index to pixel coordinate
+         * @param col column number which will be converted to coordinate
+         * @return integer which represents y coordinate of a rectangle 
+         */
 	public static int colToY(int col) {
 		return col * CELL_SIZE;
 	}
 	
+        /**
+         * Convert X coordinate in to a index value
+         * @param x x coordinate which will be converted to index
+         * @return index of x coordinate
+         */
 	public static int xToRow(double x) {
 		return ((int) x) / CELL_SIZE;
 	}
 	
+        /**
+         * Convert Y coordinate in to a index value
+         * @param y y coordinate which will be converted to index
+         * @return index of y coordinate
+         */
 	public static int yToCol(double y) {
 		return ((int) y) / CELL_SIZE;
 	}
 	
+        /**
+         * Get all rectangles of the grid
+         * @return 2D array of GridRectangles
+         */
 	public GridRectangle[][] getRectangles() {
 		return rectangles;
 	}
 	
+        /**
+         * Get controller associated with the grid
+         * @return controller which is used to display the grid
+         */
 	public Controller getController() {
 		return controller;
 	}

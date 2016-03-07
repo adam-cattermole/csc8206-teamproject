@@ -34,7 +34,7 @@ public class Signal
 	{
 		return setting;
 	}
-	
+	@Override
 	public String toString()
 	{
 		return "s" + getID();

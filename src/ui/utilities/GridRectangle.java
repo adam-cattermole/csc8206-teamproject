@@ -5,23 +5,28 @@
  */
 package ui.utilities;
 
-import java.util.HashSet;
-import java.util.Set;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeType;
 
 /**
- *
- * @author b0428165
+ * GridRectangle class is used to represent every rectangle on the grid. 
+ * 
+ * @author Justas Miknys
  */
 public class GridRectangle extends Rectangle 
 {
-    //boolean used = false;
-    UiBlock block;
-    
+    UiBlock block;    
     private GridRectangle[][] rectangles;
     
+    /**
+     * Constructor of the GridRectangle class
+     * @param x                 the x-coordinate of the rectangle position
+     * @param y                 the y-coordinate of the rectangle position
+     * @param width             specifies the width of rectangle
+     * @param height            specifies the height of rectangle
+     * @param gridRectangles    a reference to the GridRectangles class which holds all the rectangles
+     */
     public GridRectangle(int x, int y, int width, int height, GridRectangles gridRectangles)
     {
        super(x,y,width,height);
@@ -29,6 +34,9 @@ public class GridRectangle extends Rectangle
        setUpStyle();
     }
     
+    /**
+     * Sets up the 'default' style for a rectangle
+     */
     private void setUpStyle()
     {
         setStroke(Color.DARKBLUE);
@@ -36,16 +44,23 @@ public class GridRectangle extends Rectangle
         setStrokeWidth(0.2);
         setFill(Color.LIGHTGRAY);        
     }
-            
+    
+    /**
+     * Used to highlight a rectangle background either in green or red color depending on the validity of placement
+     * @param blockType String which specifies the type of block the rectangle holds
+     * @param col       The color that will be used to fill the background
+     */
     protected void highlight(String blockType, Color col)
     {
         try
         {
+            
             if (Color.GREEN == col)
             {
                 if (!isPlacementValid(blockType))
                     col = Color.RED;
             }
+            
             
             setFill(col);
             rectangles[((int) getX() / GridRectangles.CELL_SIZE)+1][((int)getY() / GridRectangles.CELL_SIZE)].setFill(col);
@@ -61,6 +76,11 @@ public class GridRectangle extends Rectangle
         }
     }
     
+    /**
+     * Checks if the placement that user made is valid, enforces some of the valid network assumptions
+     * @param blockType String which specifies the type of block the rectangle holds
+     * @return true if the placement is allowed, false if it's not valid
+     */
     protected boolean isPlacementValid(String blockType)
     {
         boolean blockUsedFlag = false;
@@ -78,6 +98,10 @@ public class GridRectangle extends Rectangle
         return !blockUsedFlag;
     }
     
+    /**
+     * Checks if a GridRectangle object has any neighbours which are of type Point
+     * @return true if there are adjacent neighbours of type Point
+     */
     private boolean havePointNeighbours()
     {
         boolean havePointNeighbour = false;
@@ -119,21 +143,38 @@ public class GridRectangle extends Rectangle
         return havePointNeighbour;
     }
     
+    /**
+     * Connect GridRectangle with a UiBlock object which is going to be displayed on this rectangle
+     * @param b reference to the object which is displayed on a rectangle
+     */
     private void setUiBlock(UiBlock b)
     {
         this.block = b;
     }
     
+    /**
+     * Used to get the block which is displayed on the rectangle
+     * @return return the block which is displayed on the rectangle
+     */
     public UiBlock getUiBlock()
     {
         return this.block;
     }
     
+    /**
+     * Checks if the rectangle is used to display a Block
+     * @return true if a block is drawn on top of rectangle
+     */
     public boolean isUsed()
     {
         return block != null;
     }
     
+    /**
+     * Method used to set the variables of all the rectangles which will be involved in a placement, and make sure all of them reference to the same object
+     * @param blockType Type of the block that is going to be placed
+     * @param block     Reference to the black which will be placed
+     */
     protected void prepareForPlacement(String blockType, UiBlock block)
     {
         this.block = block;
@@ -146,6 +187,10 @@ public class GridRectangle extends Rectangle
         }
     }
     
+    /**
+     * Used when a block is deleted from the grid, to update all the rectangles so they don't hold references to deleted object
+     * @param blockType Type of the block that is going to be deleted
+     */
     public void freeUpSpace(String blockType)
     {
         this.block = null;
