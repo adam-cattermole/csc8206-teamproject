@@ -61,25 +61,25 @@
     </GridPane>
     <TableView fx:id="interlockTable" GridPane.columnIndex="0" GridPane.rowIndex="1">
 		<columns>
-			<TableColumn text="ID">
+			<TableColumn prefWidth="60" text="ID">
 				<cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Source">
+			<TableColumn prefWidth="82.5" text="Source">
 				<cellValueFactory><PropertyValueFactory property="source"/></cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Destination">
+			<TableColumn prefWidth="82.5" text="Destination">
 				<cellValueFactory><PropertyValueFactory property="destination"/></cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Points">
+			<TableColumn prefWidth="125" text="Points">
 				<cellValueFactory><PropertyValueFactory property="points"/></cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Signals">
+			<TableColumn prefWidth="140" text="Signals">
 				<cellValueFactory><PropertyValueFactory property="signals"/></cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Path">
+			<TableColumn prefWidth="140" text="Path">
 				<cellValueFactory><PropertyValueFactory property="path"/></cellValueFactory>
 			</TableColumn>
-			<TableColumn text="Conflicts">
+			<TableColumn prefWidth="120" text="Conflicts">
 				<cellValueFactory><PropertyValueFactory property="conflicts"/></cellValueFactory>
 			</TableColumn>
 		</columns>
