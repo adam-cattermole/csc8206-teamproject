@@ -51,7 +51,8 @@ public class Controller implements Initializable {
             addPaletteListener(b);
         }
         
-        scrollPane.setMaxSize(750, 750);
+        //scrollPane.setMaxSize(750, 750);
+        interlockTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
     
     /**

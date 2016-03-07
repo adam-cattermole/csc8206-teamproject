@@ -9,8 +9,7 @@
 <?import ui.utilities.*?>
 <?import java.util.ArrayList?>
 
-<VBox fx:controller="ui.Controller"
-      xmlns:fx="http://javafx.com/fxml">
+<VBox fx:controller="ui.Controller" xmlns:fx="http://javafx.com/fxml">
     <MenuBar>
         <menus>
             <Menu text="File">
@@ -24,18 +23,12 @@
             </Menu>
         </menus>
     </MenuBar>
-<GridPane alignment="center" hgap="10" vgap="10">
+    
+<GridPane hgap="10" vgap="10">
     <padding><Insets top="25" right="25" bottom="25" left="25"/></padding>
-    <ScrollPane fx:id="scrollPane">
-        <content>
-            <Group fx:id="grid"
-                GridPane.columnIndex="0" GridPane.rowIndex="0"
-                GridPane.columnSpan="3">
-            </Group>
-        </content>
-    </ScrollPane>
+
     <GridPane fx:id="palette"
-        GridPane.columnIndex="4" GridPane.rowIndex="0">
+        GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.rowSpan="1">
         <padding><Insets bottom="5"/></padding>
         <UiSection fx:id="Pallet_UiSection" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.rowSpan="2"/>
         <UiPointUp fx:id="Pallet_UiPointUp" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
@@ -51,17 +44,34 @@
                 <fx:reference source="Pallet_UiPointDownInverse"/>
             </ArrayList>
         </fx:define>
-        <!--<VBox GridPane.columnIndex="0" GridPane.rowIndex="6"
-              spacing="10">
-            <Button text="Load" onAction="#onLoadAction"/>
-            <Button text="Save" onAction="#onSaveAction"/>
-            <Button text="Validate Network" onAction="#onValidateNetworkAction"/>
-            <Button text="Dump" onAction="#onDumpAction"/>
-        </VBox> -->
     </GridPane>
-    <TableView fx:id="interlockTable" GridPane.columnIndex="0" GridPane.rowIndex="1">
+    
+    <ScrollPane GridPane.hgrow="always" GridPane.vgrow="always" fx:id="scrollPane" GridPane.columnSpan="4" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.rowSpan="2">
+        <content>
+            <Group fx:id="grid"></Group>
+        </content>
+    </ScrollPane>
+    
+    <TableView fx:id="journeyTable" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2" GridPane.rowSpan="2">
 		<columns>
-			<TableColumn prefWidth="60" text="ID">
+			<TableColumn prefWidth="90" text="Journey ID">
+				<cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn prefWidth="75" text="Source">
+				<cellValueFactory><PropertyValueFactory property="source"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn prefWidth="85" text="Destination">
+				<cellValueFactory><PropertyValueFactory property="destination"/></cellValueFactory>
+			</TableColumn>
+			<TableColumn prefWidth="100" text="Routes">
+				<cellValueFactory><PropertyValueFactory property="points"/></cellValueFactory>
+			</TableColumn>
+		</columns>
+    </TableView>
+    
+    <TableView fx:id="interlockTable" GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.rowIndex="2" GridPane.rowSpan="2">
+		<columns>
+			<TableColumn prefWidth="90" text="Route ID">
 				<cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
 			</TableColumn>
 			<TableColumn prefWidth="82.5" text="Source">
@@ -79,15 +89,11 @@
 			<TableColumn prefWidth="140" text="Path">
 				<cellValueFactory><PropertyValueFactory property="path"/></cellValueFactory>
 			</TableColumn>
-			<TableColumn prefWidth="120" text="Conflicts">
+			<TableColumn prefWidth="100" text="Conflicts">
 				<cellValueFactory><PropertyValueFactory property="conflicts"/></cellValueFactory>
 			</TableColumn>
 		</columns>
     </TableView>
-
-    <!--<stylesheets>
-        <URL value="@styles.css"/>
-    </stylesheets>-->
 
 </GridPane>
 
