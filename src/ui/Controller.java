@@ -13,14 +13,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import org.controlsfx.control.StatusBar;
+
+import ui.utilities.CtrlKeyListener;
 import ui.utilities.GridRectangles;
 import ui.utilities.UiBlock;
+import ui.utilities.UiJourney;
 import ui.utilities.UiNetwork;
 import ui.utilities.UiRoute;
 
@@ -28,6 +32,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class Controller implements Initializable {
     @FXML private Group grid;
@@ -36,14 +42,24 @@ public class Controller implements Initializable {
     @FXML private ScrollPane scrollPane;
     @FXML private StatusBar statusBar;
     @FXML private TableView<UiRoute> interlockTable;
+    @FXML private TableView<UiJourney> journeysTable;
     
     private GridRectangles gridRectangles;
     private UiNetwork uiNetwork;
+    private JourneysController journeysController;
+    
+    private EventHandler<MouseEvent> focusEnableHandler;
+    private EventHandler<KeyEvent> ctrlDownHandler;
+    private EventHandler<KeyEvent> ctrlUpHandler;
+    
+    private boolean controlCanChangeFocus = true;
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void initialize(URL location, ResourceBundle resources) {
     	gridRectangles = new GridRectangles(this);
     	uiNetwork = new UiNetwork(this);
+    	journeysController = new JourneysController(this);
     	
     	grid.getChildren().add(gridRectangles);
 
@@ -51,8 +67,60 @@ public class Controller implements Initializable {
             addPaletteListener(b);
         }
         
-        //scrollPane.setMaxSize(750, 750);
-        interlockTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        focusEnableHandler = (e) -> {
+        	if (controlCanChangeFocus) {
+        		((Control)e.getSource()).requestFocus();
+        	}
+        };
+        
+        ctrlDownHandler = (e) -> {
+        	if (e.isControlDown()) {
+        		controlCanChangeFocus = false;
+        		
+            	Control control = (Control) e.getSource();
+            	Object userData = control.getUserData();
+            	
+            	if (userData instanceof Supplier) {
+            		CtrlKeyListener listener = ((Supplier<CtrlKeyListener>) userData).get();
+            		if (listener != null) {
+            			listener.onCtrlDown();
+            		}
+            	}
+        	}
+        };
+        
+        ctrlUpHandler = (e) -> {
+        	if (!e.isControlDown()) {
+        		controlCanChangeFocus = true;
+        		
+            	Control control = (Control) e.getSource();
+            	Object userData = control.getUserData();
+            	
+            	if (userData instanceof Supplier) {
+            		CtrlKeyListener listener = ((Supplier<CtrlKeyListener>) userData).get();
+            		if (listener != null) {
+            			listener.onCtrlUp();
+            		}
+            	}
+        	}
+        };
+        
+        Supplier<CtrlKeyListener> uiNetworkSupplier = () -> {
+        	return getUiNetwork();
+        };
+        
+        Supplier<CtrlKeyListener> journeysControllerSupplier = () -> {
+        	return getJourneysController();
+        };
+        
+        scrollPane.setUserData(uiNetworkSupplier);
+        interlockTable.setUserData(journeysControllerSupplier);
+        
+        Stream.of(scrollPane, interlockTable, journeysTable).forEach(control -> {
+        	control.setOnMouseEntered(focusEnableHandler);
+        	control.setOnKeyPressed(ctrlDownHandler);
+        	control.setOnKeyReleased(ctrlUpHandler);
+        });
     }
     
     /**
@@ -69,6 +137,14 @@ public class Controller implements Initializable {
     
     public TableView<UiRoute> getInterlockTable() {
     	return interlockTable;
+    }
+    
+    public TableView<UiJourney> getJourneysTable() {
+    	return journeysTable;
+    }
+    
+    public JourneysController getJourneysController() {
+    	return journeysController;
     }
     
     /**
@@ -135,6 +211,7 @@ public class Controller implements Initializable {
 
     @FXML private void onNewAction(ActionEvent event) {
         uiNetwork.clear();
+    	journeysController.clear();
         uiNetwork = new UiNetwork(this);
     }
 
@@ -149,6 +226,9 @@ public class Controller implements Initializable {
             	
     	        // Must delete currently active network from the frontend grid
     	    	uiNetwork.clear();
+    	    	
+    	    	//also clear the journeys
+    	    	journeysController.clear();
             	
     	    	// and override with new network
     			uiNetwork = UiNetwork.load(inputStream);

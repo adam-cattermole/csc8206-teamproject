@@ -53,6 +53,10 @@ public class JourneyBuilder
 	
 	private boolean validPath(List<Route> path)
 	{
+		if (path.size() < 1) {
+			return false;
+		}
+		
 		for(int i = 0; i < path.size() - 1; i++)
 		{
 			Route a = path.get(i);
@@ -88,7 +92,7 @@ public class JourneyBuilder
 		public Journey(List<Route> routes)
 		{
 			sequence = routes;
-			ID = "J" + Journey_ID;
+			ID = "J" + Journey_ID++;
 		}
 
 		public List<Route> getRoutes()

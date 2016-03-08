@@ -44,7 +44,7 @@ import javafx.event.EventHandler;
  * It implements custom serializer/deserializer to store the locations of each UiBlock in the output.
  * @author kubatek94
  */
-public class UiNetwork {
+public class UiNetwork implements CtrlKeyListener {
 	@JsonIgnore public static String NETWORK_VALID = "Network is VALID";
 	@JsonIgnore public static String NETWORK_INVALID = "Network is INVALID";
 	
@@ -99,7 +99,7 @@ public class UiNetwork {
 		blockMouseEnterHandler = (event) -> {
 			if (event.getSource() instanceof UiBlock) {
 				UiBlock b = (UiBlock) event.getSource();
-				
+
 				if (isBuildingRoute()) {
 					b.setCursor(Cursor.CROSSHAIR);
 				}
@@ -142,29 +142,6 @@ public class UiNetwork {
 	public UiNetwork(Controller controller) {
 		this();
 		setController(controller);
-	}
-	
-	public void startBuildingRoute() {
-		if (valid) {
-			routeBuilder = new RouteBuilder();
-		}
-	}
-	
-	public void endBuildingRoute() {
-		try {
-			Route route = routeBuilder.build();
-			routes.add(new UiRoute(route));
-			
-			//calculate conflicts
-			List<Route> rs = routes.stream().map(r -> r.getRoute()).collect(Collectors.toList());
-			RouteConflictDetector.calculateConflicts(rs);
-		} catch (IllegalArgumentException e) {}
-		
-		//remove highlights from the elements
-		routeBlocks.stream().forEach(b -> b.setEffect(null));
-		routeBlocks.clear();
-		
-		routeBuilder = null;
 	}
 	
 	@JsonIgnore
@@ -370,6 +347,8 @@ public class UiNetwork {
             rectangles[((int) b.getLayoutX() / GridRectangles.CELL_SIZE)][((int)b.getLayoutY() / GridRectangles.CELL_SIZE)].freeUpSpace(b.getClass().getSimpleName());
             children.remove(b);
         }
+        
+        routes.clear();
     }
 	
 	public void refreshUi() {		
@@ -419,5 +398,32 @@ public class UiNetwork {
 		}
 		
 		return sb.toString();
+	}
+
+	@Override
+	public void onCtrlDown() {
+		if (valid && !isBuildingRoute()) {
+			routeBuilder = new RouteBuilder();
+		}
+	}
+
+	@Override
+	public void onCtrlUp() {
+		if (isBuildingRoute()) {
+			try {
+				Route route = routeBuilder.build();
+				routes.add(new UiRoute(route));
+				
+				//calculate conflicts
+				List<Route> rs = routes.stream().map(r -> r.getRoute()).collect(Collectors.toList());
+				RouteConflictDetector.calculateConflicts(rs);
+			} catch (IllegalArgumentException e) {}
+			
+			//remove highlights from the elements
+			routeBlocks.stream().forEach(b -> b.setEffect(null));
+			routeBlocks.clear();
+			
+			routeBuilder = null;	
+		}
 	}
 }
