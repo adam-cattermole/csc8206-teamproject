@@ -2,6 +2,9 @@ package backend;
 
 import java.util.Arrays;
 
+import utilities.Change;
+import utilities.ChangeType;
+
 public class Section extends Block
 {
 	protected Signal signalDown = new Signal(); //Signal on the left side of a section
@@ -20,12 +23,14 @@ public class Section extends Block
 	public Section setSignalUp(Signal signalUp)
 	{
 		this.signalUp = signalUp;
+		listeners.stream().forEach(listener -> listener.onChange(new Change<Block>(this, ChangeType.CHANGED)));
 		return this;
 	}
 	
 	public Section setSignalDown(Signal signalDown)
 	{
 		this.signalDown = signalDown;
+		listeners.stream().forEach(listener -> listener.onChange(new Change<Block>(this, ChangeType.CHANGED)));
 		return this;
 	}
 	
@@ -74,23 +79,6 @@ public class Section extends Block
 	public String toString()
 	{
 		return "Section[" + super.toString() + "]";
-	}
-	
-	public int compareTo(Block b)
-	{
-		if (getID() > b.getID())
-		{
-			return +1;
-		} else if (getID() < b.getID()) {
-			return -1;
-		} else {
-			if (b instanceof Section)
-			{
-				return 0;
-			} else {
-				return +1;
-			}
-		}
 	}
 	
 	@Override

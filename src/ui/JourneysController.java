@@ -1,5 +1,6 @@
 package ui;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewFocusModel;
@@ -15,14 +16,16 @@ public class JourneysController implements CtrlKeyListener {
 	private TableView<UiJourney> journeysTable;
 	private TableView<UiRoute> routesTable;
 	private JourneyBuilder journeyBuilder;
-	
+	private final ObservableList<UiJourney> journeys;
 	private final TableViewSelectionModel<UiRoute> journeySelectionModel;
 	private final TableViewFocusModel<UiRoute> focusModel;
+	//private final ChangeListener<Route> blockChangeListener;
 	
 	public JourneysController(Controller controller) {
 		this.controller = controller;
 		journeysTable = this.controller.getJourneysTable();
 		routesTable = this.controller.getInterlockTable();
+		journeys = journeysTable.getItems();
 		
 		journeySelectionModel = routesTable.getSelectionModel();
 		focusModel = routesTable.getFocusModel();
@@ -65,14 +68,23 @@ public class JourneysController implements CtrlKeyListener {
 		if (isBuildingJourney()) {
 			try {
 				Journey journey = journeyBuilder.build();
-				journeysTable.getItems().add(new UiJourney(journey));
+				UiJourney uiJourney = new UiJourney(journey);
+				
+				uiJourney.addChangeListener(change -> {
+					if (change.wasRemoved()) {
+						//remove journey
+						journeys.remove(change.getElement());
+					}
+				});
+				
+				journeys.add(uiJourney);
 			} catch (IllegalArgumentException e) {}
-			
-			journeyBuilder = null;
-			try {
-				journeySelectionModel.clearSelection();
-			} catch (Exception e) {}
-			routesTable.setFocusModel(null);	
 		}
+		
+		journeyBuilder = null;
+		try {
+			journeySelectionModel.clearSelection();
+		} catch (Exception e) {}
+		routesTable.setFocusModel(null);
 	}
 }

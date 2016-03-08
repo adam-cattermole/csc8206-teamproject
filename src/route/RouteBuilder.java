@@ -9,6 +9,10 @@ import backend.Block;
 import backend.Point;
 import backend.Section;
 import backend.Signal;
+import utilities.Change;
+import utilities.ChangeListener;
+import utilities.ChangeType;
+import utilities.Observable;
 
 /**
  *
@@ -141,7 +145,9 @@ public class RouteBuilder
 		private final List<String> points = new ArrayList<String>();
 		private final List<String> signals = new ArrayList<String>();
 		private Set<String> conflicts = new TreeSet<String>();
+		
 		private final List<ChangeListener<Route>> listeners = new ArrayList<ChangeListener<Route>>();
+		private final ChangeListener<Block> blockChangeListener;
 
 		private Route(List<Block> path)
 		{
@@ -156,7 +162,6 @@ public class RouteBuilder
 			endBlock = (Section) end;
 			
 			//detect the direction based on next block
-
 			if (startBlock.getUp() != null && startBlock.getUp().equals(path.get(1))) {
 				//we are going in up direction
 				source = startBlock.getSignalUp();
@@ -165,7 +170,18 @@ public class RouteBuilder
 				//we are going in down direction
 				source = startBlock.getSignalDown();
 				destination = endBlock.getSignalDown();
-			}			
+			}
+			
+			//define listener for a change in any block in this route
+			blockChangeListener = (change) -> {
+				if (change.wasRemoved()) {
+					listeners.stream().forEach(listener -> listener.onChange(new Change<Route>(this, ChangeType.REMOVED)));
+				}
+			};
+			
+			//add listener to each block in this route
+			path.stream().forEach(b -> b.addChangeListener(blockChangeListener));
+				
 			calculateSettings();
 		}
 
@@ -221,7 +237,7 @@ public class RouteBuilder
 		public void setConflicts(Set<String> conflicts)
 		{
 			this.conflicts = conflicts;
-			listeners.stream().forEach(listener -> listener.onChange(this));
+			listeners.stream().forEach(listener -> listener.onChange(new Change<Route>(this, ChangeType.CHANGED)));
 		}
 		
 		public void calculateSettings()

@@ -31,6 +31,7 @@ public class RouteConflictDetector
 		
 		for (Route r : routes)
 		{
+			r.getConflicts().clear();
 			routeConflicts.put(r.getId(), r.getConflicts());
 		}
 		

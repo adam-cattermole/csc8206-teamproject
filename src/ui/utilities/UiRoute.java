@@ -1,13 +1,19 @@
 package ui.utilities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import backend.Point;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import route.RouteBuilder.Route;
+import utilities.Change;
+import utilities.ChangeListener;
+import utilities.ChangeType;
+import utilities.Observable;
 
-public class UiRoute {
+public class UiRoute implements Observable<UiRoute> {
 	private final StringProperty id;
 	private final StringProperty source;
 	private final StringProperty destination;
@@ -16,6 +22,8 @@ public class UiRoute {
 	private final StringProperty path;
 	private final StringProperty conflicts;
 	private final Route route;
+	
+	private final List<ChangeListener<UiRoute>> listeners = new ArrayList<ChangeListener<UiRoute>>();
 	
 	public UiRoute(Route route) {
 		this.route = route;
@@ -37,7 +45,11 @@ public class UiRoute {
 		conflicts = new SimpleStringProperty();
 		
 		route.addChangeListener(r -> {
-			conflicts.setValue(r.getConflicts().stream().collect(Collectors.joining("; ")));
+			if (r.wasChanged()) {
+				conflicts.setValue(r.getElement().getConflicts().stream().collect(Collectors.joining("; ")));
+			} else if (r.wasRemoved()) {
+				listeners.stream().forEach(listener -> listener.onChange(new Change<UiRoute>(this, ChangeType.REMOVED)));
+			}
 		});
 	}
 	
@@ -71,5 +83,15 @@ public class UiRoute {
 	
 	public Route getRoute() {
 		return route;
+	}
+
+	@Override
+	public void addChangeListener(ChangeListener<UiRoute> listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removeChangeListener(ChangeListener<UiRoute> listener) {
+		listeners.remove(listener);
 	}
 }

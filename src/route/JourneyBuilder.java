@@ -3,8 +3,13 @@ package route;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.Block;
 import backend.Signal;
 import route.RouteBuilder.Route;
+import utilities.Change;
+import utilities.ChangeListener;
+import utilities.ChangeType;
+import utilities.Observable;
 
 public class JourneyBuilder
 {
@@ -77,22 +82,33 @@ public class JourneyBuilder
 		return true;
 	}
 		
-	public class Journey
+	public class Journey implements Observable<Journey>
 	{
-		
 		private List<Route> sequence;
 		private final String ID;
+		
+		private final ChangeListener<Route> routeChangeListener;
+		private final List<ChangeListener<Journey>> listeners = new ArrayList<ChangeListener<Journey>>();
 
-		public Journey()
+		/*public Journey()
 		{
-			ID = "J" + Journey_ID++;
-			sequence = new ArrayList<Route>();
-		}
+			this(new ArrayList<Route>());
+		}*/
 
 		public Journey(List<Route> routes)
 		{
 			sequence = routes;
 			ID = "J" + Journey_ID++;
+			
+			routeChangeListener = (change) -> {
+				if (change.wasRemoved()) {
+					listeners.stream().forEach(listener -> listener.onChange(new Change<Journey>(this, ChangeType.REMOVED)));
+				}
+			};
+			
+			sequence.stream().forEach(route -> {
+				route.addChangeListener(routeChangeListener);
+			});
 		}
 
 		public List<Route> getRoutes()
@@ -113,6 +129,16 @@ public class JourneyBuilder
 		public Signal getDestinationSignal()
 		{
 			return sequence.get(sequence.size() - 1).getDestination();
+		}
+
+		@Override
+		public void addChangeListener(ChangeListener<Journey> listener) {
+			listeners.add(listener);
+		}
+
+		@Override
+		public void removeChangeListener(ChangeListener<Journey> listener) {
+			listeners.remove(listener);
 		}
 	}
 }

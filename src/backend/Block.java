@@ -1,6 +1,8 @@
 package backend;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -18,6 +20,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.node.IntNode;
 
+import utilities.Change;
+import utilities.ChangeListener;
+import utilities.ChangeType;
+import utilities.Observable;
+
 /**
  * Top level abstract class for Blocks, components of a network
  * Allows for abstraction of components in networks
@@ -32,7 +39,7 @@ import com.fasterxml.jackson.databind.node.IntNode;
 })
 @JsonSerialize(using=Block.Serializer.class)
 @JsonDeserialize(using=Block.Deserializer.class)
-public abstract class Block implements Comparable<Block>
+public abstract class Block implements Observable<Block>
 {
 	protected final int id;
 	protected Block up;
@@ -40,6 +47,8 @@ public abstract class Block implements Comparable<Block>
 	
 	protected Set<Block> neighbours;
 	protected Direction direction = Direction.UP;
+	
+	protected final List<ChangeListener<Block>> listeners = new ArrayList<ChangeListener<Block>>();
 	
 	protected Block(int id)
 	{
@@ -82,13 +91,11 @@ public abstract class Block implements Comparable<Block>
 		if (this.up == null)
 		{	
 			this.up = up;
+			listeners.stream().forEach(listener -> listener.onChange(new Change<Block>(this, ChangeType.CHANGED)));
+			
 			if (reverse)
 			{
 				up.setDown(this, false);
-			} else {
-				if (this instanceof Section) {
-					((Section)this).getSignalUp();
-				}	
 			}
 		}
 	}
@@ -98,13 +105,11 @@ public abstract class Block implements Comparable<Block>
 		if (this.down == null)
 		{	
 			this.down = down;
+			listeners.stream().forEach(listener -> listener.onChange(new Change<Block>(this, ChangeType.CHANGED)));
+			
 			if (reverse)
 			{
 				down.setUp(this, false);
-			} else {
-				if (this instanceof Section) {
-					((Section)this).getSignalDown();
-				}
 			}
 		}
 	}
@@ -112,6 +117,7 @@ public abstract class Block implements Comparable<Block>
 	public void setDirection(Direction direction)
 	{
 		this.direction = direction;
+		listeners.stream().forEach(listener -> listener.onChange(new Change<Block>(this, ChangeType.CHANGED)));
 	}
 	
 	public Direction getDirection()
@@ -120,7 +126,7 @@ public abstract class Block implements Comparable<Block>
 	}
 	
 	public void deleteBlock(Block block)
-	{	
+	{
 		if (down == block)
 		{
 			down = null;
@@ -130,6 +136,8 @@ public abstract class Block implements Comparable<Block>
 		{
 			up = null;
 		}
+		
+		listeners.stream().forEach(listener -> listener.onChange(new Change<Block>(this, ChangeType.CHANGED)));
 	}
 	
 	public void detach() {
@@ -142,6 +150,8 @@ public abstract class Block implements Comparable<Block>
 			neighbour.deleteBlock(this);
 			deleteBlock(neighbour);
 		}
+		
+		listeners.stream().forEach(listener -> listener.onChange(new Change<Block>(this, ChangeType.REMOVED)));
 	}
 	
 	public Set<Block> getNeighbours()
@@ -177,6 +187,17 @@ public abstract class Block implements Comparable<Block>
 	 * @return true if the block is valid according to the rules, false otherwise
 	 */
 	public abstract boolean isValid();
+	
+	
+	@Override
+	public void addChangeListener(ChangeListener<Block> listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removeChangeListener(ChangeListener<Block> listener) {
+		listeners.remove(listener);
+	}
 	
 	
 	/**

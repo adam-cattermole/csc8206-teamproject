@@ -2,6 +2,9 @@ package backend;
 import java.util.Arrays;
 import java.util.Set;
 
+import utilities.Change;
+import utilities.ChangeType;
+
 public class Point extends Block
 {
 	public enum Orientation
@@ -46,6 +49,8 @@ public class Point extends Block
 	public void setSideline(Block sideline)
 	{
 		this.sideline = sideline;
+		//listeners.stream().forEach(listener -> listener.onChange(this));
+		
 		if (orientation == Orientation.UP)
 		{
 			sideline.setDown(this, false);
@@ -67,12 +72,14 @@ public class Point extends Block
 	public Point setOrientation(Orientation orientation)
 	{
 		this.orientation = orientation;
+		listeners.stream().forEach(listener -> listener.onChange(new Change<Block>(this, ChangeType.CHANGED)));
 		return this;
 	}
 	
 	public Point setSetting(Setting setting)
 	{
 		this.setting = setting;
+		listeners.stream().forEach(listener -> listener.onChange(new Change<Block>(this, ChangeType.CHANGED)));
 		return this;
 	}
 	
@@ -106,23 +113,6 @@ public class Point extends Block
 	public String toString()
 	{
 		return "Point[" + super.toString() + "]";
-	}
-	
-	public int compareTo(Block b)
-	{
-		if (getID() > b.getID())
-		{
-			return +1;
-		} else if (getID() < b.getID()) {
-			return -1;
-		} else {
-			if (b instanceof Point)
-			{
-				return 0;
-			} else {
-				return +1;
-			}
-		}
 	}
 	
 	@Override

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -412,11 +411,23 @@ public class UiNetwork implements CtrlKeyListener {
 		if (isBuildingRoute()) {
 			try {
 				Route route = routeBuilder.build();
-				routes.add(new UiRoute(route));
+				
+				UiRoute uiRoute = new UiRoute(route);
+				
+				uiRoute.addChangeListener(change -> {
+					if (change.wasRemoved()) {
+						//remove route
+						routes.remove(change.getElement());
+						
+						//and now recalculate the conflicts
+						RouteConflictDetector.calculateConflicts(routes.stream().map(r -> r.getRoute()).collect(Collectors.toList()));
+					}
+				});
+				
+				routes.add(uiRoute);
 				
 				//calculate conflicts
-				List<Route> rs = routes.stream().map(r -> r.getRoute()).collect(Collectors.toList());
-				RouteConflictDetector.calculateConflicts(rs);
+				RouteConflictDetector.calculateConflicts(routes.stream().map(r -> r.getRoute()).collect(Collectors.toList()));
 			} catch (IllegalArgumentException e) {}
 			
 			//remove highlights from the elements
