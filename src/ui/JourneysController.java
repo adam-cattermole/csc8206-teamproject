@@ -2,7 +2,7 @@ package ui;
 
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
-//import javafx.scene.control.TableView.TableViewFocusModel;
+import javafx.scene.control.TableView.TableViewFocusModel;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import route.JourneyBuilder;
 import route.JourneyBuilder.Journey;
@@ -17,7 +17,7 @@ public class JourneysController implements CtrlKeyListener {
 	private JourneyBuilder journeyBuilder;
 	
 	private final TableViewSelectionModel<UiRoute> journeySelectionModel;
-	//private final TableViewFocusModel<UiRoute> focusModel;
+	private final TableViewFocusModel<UiRoute> focusModel;
 	
 	public JourneysController(Controller controller) {
 		this.controller = controller;
@@ -25,7 +25,7 @@ public class JourneysController implements CtrlKeyListener {
 		routesTable = this.controller.getInterlockTable();
 		
 		journeySelectionModel = routesTable.getSelectionModel();
-		//focusModel = routesTable.getFocusModel();
+		focusModel = routesTable.getFocusModel();
 		
         journeySelectionModel.setSelectionMode(SelectionMode.MULTIPLE);
         journeySelectionModel.selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {        	
@@ -36,7 +36,7 @@ public class JourneysController implements CtrlKeyListener {
         
         routesTable.setEditable(false);
         routesTable.getColumns().stream().forEach(col -> col.setSortable(false));
-        //routesTable.setFocusModel(null);
+        routesTable.setFocusModel(null);
 	}
 	
 	public void clear() {
@@ -52,7 +52,7 @@ public class JourneysController implements CtrlKeyListener {
 		//start building journey
 		if (!isBuildingJourney()) {
 			journeyBuilder = new JourneyBuilder();
-			//routesTable.setFocusModel(focusModel);
+			routesTable.setFocusModel(focusModel);
 			try {
 				journeySelectionModel.clearSelection();
 			} catch (Exception e) {}
@@ -71,6 +71,6 @@ public class JourneysController implements CtrlKeyListener {
 		try {
 			journeySelectionModel.clearSelection();
 		} catch (Exception e) {}
-		//routesTable.setFocusModel(null);
+		routesTable.setFocusModel(null);
 	}
 }
