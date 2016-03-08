@@ -453,7 +453,7 @@ public class RouteBuilder
 			else 
 			{
 				return Point.Orientation.DOWN;
-			}			
+			}
 		}
 
 		@Override

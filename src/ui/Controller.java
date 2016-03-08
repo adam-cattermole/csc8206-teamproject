@@ -53,6 +53,8 @@ public class Controller implements Initializable {
     private EventHandler<KeyEvent> ctrlUpHandler;
     
     private boolean controlCanChangeFocus = true;
+    private Control focusedControl;
+    private Control enteredControl;
 
     @SuppressWarnings("unchecked")
 	@Override
@@ -69,8 +71,11 @@ public class Controller implements Initializable {
         
         focusEnableHandler = (e) -> {
         	if (controlCanChangeFocus) {
-        		((Control)e.getSource()).requestFocus();
+        		focusedControl = (Control) e.getSource();
+        		focusedControl.requestFocus();
         	}
+        	
+        	enteredControl = (Control) e.getSource();
         };
         
         ctrlDownHandler = (e) -> {
@@ -86,21 +91,26 @@ public class Controller implements Initializable {
             			listener.onCtrlDown();
             		}
             	}
+            	
+            	focusedControl = control;
         	}
         };
         
         ctrlUpHandler = (e) -> {
         	if (!e.isControlDown()) {
         		controlCanChangeFocus = true;
-        		
-            	Control control = (Control) e.getSource();
-            	Object userData = control.getUserData();
+            	Object userData = focusedControl.getUserData();
             	
             	if (userData instanceof Supplier) {
             		CtrlKeyListener listener = ((Supplier<CtrlKeyListener>) userData).get();
             		if (listener != null) {
             			listener.onCtrlUp();
             		}
+            	}
+            	
+            	if (focusedControl != enteredControl && enteredControl != null) {
+            		focusedControl = enteredControl;
+            		focusedControl.requestFocus();
             	}
         	}
         };

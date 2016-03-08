@@ -62,15 +62,17 @@ public class JourneysController implements CtrlKeyListener {
 	@Override
 	public void onCtrlUp() {
 		//end building journey
-		try {
-			Journey journey = journeyBuilder.build();
-			journeysTable.getItems().add(new UiJourney(journey));
-		} catch (IllegalArgumentException e) {}
-		
-		journeyBuilder = null;
-		try {
-			journeySelectionModel.clearSelection();
-		} catch (Exception e) {}
-		routesTable.setFocusModel(null);
+		if (isBuildingJourney()) {
+			try {
+				Journey journey = journeyBuilder.build();
+				journeysTable.getItems().add(new UiJourney(journey));
+			} catch (IllegalArgumentException e) {}
+			
+			journeyBuilder = null;
+			try {
+				journeySelectionModel.clearSelection();
+			} catch (Exception e) {}
+			routesTable.setFocusModel(null);	
+		}
 	}
 }
