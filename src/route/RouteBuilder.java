@@ -446,7 +446,7 @@ public class RouteBuilder
 
 		public Point.Orientation getDirection()
 		{
-			if (startBlock.getUp() != null && startBlock.getUp().equals(path.get(1)))
+			if (startBlock.getUp() != null && startBlock.getUp().equals(sequence.get(1)))
 			{
 				return Point.Orientation.UP;
 			}
