@@ -426,4 +426,9 @@ public class UiNetwork implements CtrlKeyListener {
 			routeBuilder = null;	
 		}
 	}
+	
+	public boolean getValidity()
+	{
+		return valid;
+	}
 }

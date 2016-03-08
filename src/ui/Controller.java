@@ -31,6 +31,7 @@ import ui.utilities.UiRoute;
 import java.io.*;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -191,6 +192,7 @@ public class Controller implements Initializable {
     	alert.setHeaderText(null);
     	alert.setContentText(content);
 
+    	
     	// Create expandable Exception.
     	StringWriter sw = new StringWriter();
     	PrintWriter pw = new PrintWriter(sw);
@@ -253,6 +255,24 @@ public class Controller implements Initializable {
     }
 
     @FXML private void onSaveAction(ActionEvent event) {
+    	
+    	//Check network validity
+    	//If invalid, show warning dialog
+    	//Otherwise, continue
+    	
+    	if(!uiNetwork.getValidity())
+    	{
+        	Alert alert = new Alert(AlertType.CONFIRMATION);
+        	alert.setTitle("Network Invalid");
+        	alert.setHeaderText("The Network you are trying to save is invalid. Are you sure you wish to save?");
+        	
+        	Optional<ButtonType> result = alert.showAndWait();
+        	if (result.get() != ButtonType.OK)
+        	{
+        		return;
+        	}
+    	}
+    	
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Save File");
         File networkFile = fileChooser.showSaveDialog(grid.getScene().getWindow());
