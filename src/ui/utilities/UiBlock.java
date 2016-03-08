@@ -18,6 +18,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.Shadow;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
@@ -44,6 +46,7 @@ public abstract class UiBlock extends Canvas {
 
     @JsonIgnore protected static final int STROKE_SIZE = 2;
     @JsonIgnore protected Paint color = Color.BLACK;
+    @JsonIgnore protected Glow highlightEffect = new Glow(0.8);
     protected Block block;
 
     abstract void draw();
@@ -51,6 +54,7 @@ public abstract class UiBlock extends Canvas {
     public UiBlock(double width, double height) {
         super(width, height);
         draw();
+        highlightEffect.setInput(new Shadow(1, Color.DODGERBLUE));
     }
 
     public UiBlock(double x, double y, double width, double height) {
@@ -58,6 +62,7 @@ public abstract class UiBlock extends Canvas {
         setLayoutX(x);
         setLayoutY(y);
         draw();
+        highlightEffect.setInput(new Shadow(1, Color.DODGERBLUE));
     }
 
     public UiBlock(double x, double y, double width, double height, Block block) {
@@ -66,6 +71,7 @@ public abstract class UiBlock extends Canvas {
         setLayoutY(y);
         setBlock(block);
         draw();
+        highlightEffect.setInput(new Shadow(1, Color.DODGERBLUE));
     }
     
     protected void setBlock(Block block) {
@@ -80,6 +86,14 @@ public abstract class UiBlock extends Canvas {
 
     public String toString() {
     	return (getClass().getSimpleName() + "[" + getLayoutX() + "," + getLayoutY() + "]: " + block);
+    }
+    
+    public void setHighlight(boolean highlight) {
+    	if (highlight) {
+			super.setEffect(highlightEffect);
+    	} else {
+    		super.setEffect(null);
+    	}
     }
     
     public static void hackTooltipStartTiming(Tooltip tooltip) {

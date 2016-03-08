@@ -13,6 +13,8 @@ import utilities.ChangeType;
 import utilities.Observable;
 
 public class UiJourney implements Observable<UiJourney> {
+	private List<UiRoute> uiRoutes;
+	
 	private final StringProperty id;
 	private final StringProperty source;
 	private final StringProperty destination;
@@ -48,6 +50,20 @@ public class UiJourney implements Observable<UiJourney> {
 	
 	public String getRoutes() {
 		return routes.get();
+	}
+	
+	public void setHighlight(boolean highlight) {
+		if (uiRoutes != null) {
+			uiRoutes.stream().forEach(r -> r.setHighlight(highlight));
+		}
+	}
+	
+	public void setUiRoutes(List<UiRoute> routes) {
+		uiRoutes = routes;
+	}
+	
+	public List<UiRoute> getUiRoutes() {
+		return uiRoutes;
 	}
 
 	@Override

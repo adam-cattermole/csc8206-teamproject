@@ -3,7 +3,6 @@ package route;
 import java.util.ArrayList;
 import java.util.List;
 
-import backend.Block;
 import backend.Signal;
 import route.RouteBuilder.Route;
 import utilities.Change;
@@ -13,7 +12,7 @@ import utilities.Observable;
 
 public class JourneyBuilder
 {
-	private static int Journey_ID = 0;
+	private static int Journey_ID = 1;
 	private List<Route> path;
 	
 	public JourneyBuilder()
@@ -89,11 +88,6 @@ public class JourneyBuilder
 		
 		private final ChangeListener<Route> routeChangeListener;
 		private final List<ChangeListener<Journey>> listeners = new ArrayList<ChangeListener<Journey>>();
-
-		/*public Journey()
-		{
-			this(new ArrayList<Route>());
-		}*/
 
 		public Journey(List<Route> routes)
 		{

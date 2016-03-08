@@ -1,9 +1,11 @@
 package ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableView.TableViewFocusModel;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import route.JourneyBuilder;
 import route.JourneyBuilder.Journey;
@@ -17,9 +19,10 @@ public class JourneysController implements CtrlKeyListener {
 	private TableView<UiRoute> routesTable;
 	private JourneyBuilder journeyBuilder;
 	private final ObservableList<UiJourney> journeys;
-	private final TableViewSelectionModel<UiRoute> journeySelectionModel;
-	private final TableViewFocusModel<UiRoute> focusModel;
-	//private final ChangeListener<Route> blockChangeListener;
+	private final TableViewSelectionModel<UiRoute> routeSelectionModel;
+	private final TableViewSelectionModel<UiJourney> journeySelectionModel;
+	
+	private List<UiRoute> journeyRoutes;
 	
 	public JourneysController(Controller controller) {
 		this.controller = controller;
@@ -27,19 +30,67 @@ public class JourneysController implements CtrlKeyListener {
 		routesTable = this.controller.getInterlockTable();
 		journeys = journeysTable.getItems();
 		
-		journeySelectionModel = routesTable.getSelectionModel();
-		focusModel = routesTable.getFocusModel();
+		routeSelectionModel = routesTable.getSelectionModel();
+		journeySelectionModel = journeysTable.getSelectionModel();
 		
-        journeySelectionModel.setSelectionMode(SelectionMode.MULTIPLE);
-        journeySelectionModel.selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {        	
-        	if (newSelection != null && oldSelection != newSelection && isBuildingJourney()) {
-        		journeyBuilder.addToJourney(newSelection.getRoute());
+        routeSelectionModel.selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {        	
+        	if (newSelection != null && oldSelection != newSelection) {
+        		if (isBuildingJourney()) {
+        			journeyBuilder.addToJourney(newSelection.getRoute());
+        			journeyRoutes.add(newSelection);
+        			
+                	routeSelectionModel.getSelectedItems().stream().forEach(uiRoute -> {
+                		uiRoute.setHighlight(true);
+                	});
+        		} else {
+            		if (oldSelection != null) {
+            			oldSelection.setHighlight(false);
+            		}
+            		newSelection.setHighlight(true);
+        		}
         	}
+        });
+        
+        journeySelectionModel.selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        	if (newSelection != null && oldSelection != newSelection) {
+        		if (oldSelection != null) {
+        			oldSelection.setHighlight(false);
+        		}
+        		
+        		newSelection.setHighlight(true);
+        	}
+        });
+        
+        
+        routesTable.focusedProperty().addListener(change -> {
+        	if (!routesTable.isFocused()) {
+            	routeSelectionModel.getSelectedItems().stream().forEach(uiRoute -> {
+            		uiRoute.setHighlight(false);
+            	});	
+        	}
+        	
+			try {
+				routeSelectionModel.clearSelection();
+			} catch (Exception e) {}
+        });
+        
+        journeysTable.focusedProperty().addListener(change -> {
+        	if (!journeysTable.isFocused()) {
+            	journeySelectionModel.getSelectedItems().stream().forEach(uiJourney -> {
+            		uiJourney.setHighlight(false);
+            	});	
+        	}
+        	
+			try {
+				journeySelectionModel.clearSelection();
+			} catch (Exception e) {}
         });
         
         routesTable.setEditable(false);
         routesTable.getColumns().stream().forEach(col -> col.setSortable(false));
-        routesTable.setFocusModel(null);
+        journeysTable.setEditable(false);
+        journeysTable.getColumns().stream().forEach(col -> col.setSortable(false));
+        routeSelectionModel.setSelectionMode(SelectionMode.SINGLE);
 	}
 	
 	public void clear() {
@@ -55,10 +106,15 @@ public class JourneysController implements CtrlKeyListener {
 		//start building journey
 		if (!isBuildingJourney()) {
 			journeyBuilder = new JourneyBuilder();
-			routesTable.setFocusModel(focusModel);
+			journeyRoutes = new ArrayList<UiRoute>();
+			
 			try {
-				journeySelectionModel.clearSelection();
+            	routeSelectionModel.getSelectedItems().stream().forEach(uiRoute -> {
+            		uiRoute.setHighlight(false);
+            	});
+				routeSelectionModel.clearSelection();
 			} catch (Exception e) {}
+			routeSelectionModel.setSelectionMode(SelectionMode.MULTIPLE);
 		}
 	}
 
@@ -70,6 +126,8 @@ public class JourneysController implements CtrlKeyListener {
 				Journey journey = journeyBuilder.build();
 				UiJourney uiJourney = new UiJourney(journey);
 				
+				uiJourney.setUiRoutes(journeyRoutes);
+				
 				uiJourney.addChangeListener(change -> {
 					if (change.wasRemoved()) {
 						//remove journey
@@ -77,14 +135,20 @@ public class JourneysController implements CtrlKeyListener {
 					}
 				});
 				
+            	routeSelectionModel.getSelectedItems().stream().forEach(uiRoute -> {
+            		uiRoute.setHighlight(false);
+            	});
 				journeys.add(uiJourney);
 			} catch (IllegalArgumentException e) {}
 		}
 		
 		journeyBuilder = null;
+		journeyRoutes = null;
+		
 		try {
-			journeySelectionModel.clearSelection();
+			routeSelectionModel.clearSelection();
 		} catch (Exception e) {}
-		routesTable.setFocusModel(null);
+		//routesTable.setFocusModel(null);
+		routeSelectionModel.setSelectionMode(SelectionMode.SINGLE);
 	}
 }

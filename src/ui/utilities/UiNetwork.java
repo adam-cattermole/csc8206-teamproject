@@ -23,8 +23,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.effect.Glow;
-import javafx.scene.effect.Shadow;
 import ui.Controller;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -32,7 +30,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.paint.Color;
 import route.RouteBuilder;
 import route.RouteBuilder.Route;
 import route.RouteConflictDetector;
@@ -61,7 +58,7 @@ public class UiNetwork implements CtrlKeyListener {
 	@JsonIgnore private EventHandler<DragEvent> blockDragDoneHandler;
 	
 	@JsonIgnore private RouteBuilder routeBuilder;
-	@JsonIgnore private List<UiBlock> routeBlocks = new ArrayList<UiBlock>();
+	@JsonIgnore private List<UiBlock> routeBlocks;
 	@JsonIgnore ObservableList<UiRoute> routes;
 	
 	@JsonIgnore private boolean valid = false;
@@ -79,11 +76,7 @@ public class UiNetwork implements CtrlKeyListener {
 						routeBlocks.add(b);
 						routeBuilder.addToRoute(b.block);
 						
-						Shadow s = new Shadow(1, Color.DODGERBLUE);
-						Glow g = new Glow(0.8);
-						
-						g.setInput(s);
-						b.setEffect(g);
+						b.setHighlight(true);
 					}
 				} else {
 					if (button == MouseButton.SECONDARY) {
@@ -403,6 +396,7 @@ public class UiNetwork implements CtrlKeyListener {
 	public void onCtrlDown() {
 		if (valid && !isBuildingRoute()) {
 			routeBuilder = new RouteBuilder();
+			routeBlocks = new ArrayList<UiBlock>();
 		}
 	}
 
@@ -413,6 +407,7 @@ public class UiNetwork implements CtrlKeyListener {
 				Route route = routeBuilder.build();
 				
 				UiRoute uiRoute = new UiRoute(route);
+				uiRoute.setUiBlocks(routeBlocks);
 				
 				uiRoute.addChangeListener(change -> {
 					if (change.wasRemoved()) {
@@ -431,10 +426,10 @@ public class UiNetwork implements CtrlKeyListener {
 			} catch (IllegalArgumentException e) {}
 			
 			//remove highlights from the elements
-			routeBlocks.stream().forEach(b -> b.setEffect(null));
-			routeBlocks.clear();
+			routeBlocks.stream().forEach(b -> b.setHighlight(false));
 			
-			routeBuilder = null;	
+			routeBuilder = null;
+			routeBlocks = null;
 		}
 	}
 	

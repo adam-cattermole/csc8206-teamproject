@@ -14,6 +14,8 @@ import utilities.ChangeType;
 import utilities.Observable;
 
 public class UiRoute implements Observable<UiRoute> {
+	private List<UiBlock> uiBlocks;
+	
 	private final StringProperty id;
 	private final StringProperty source;
 	private final StringProperty destination;
@@ -83,6 +85,20 @@ public class UiRoute implements Observable<UiRoute> {
 	
 	public Route getRoute() {
 		return route;
+	}
+	
+	public void setHighlight(boolean highlight) {
+		if (uiBlocks != null) {
+			uiBlocks.stream().forEach(b -> b.setHighlight(highlight));
+		}
+	}
+	
+	public void setUiBlocks(List<UiBlock> blocks) {
+		uiBlocks = blocks;
+	}
+	
+	public List<UiBlock> getUiBlocks() {
+		return uiBlocks;
 	}
 
 	@Override
