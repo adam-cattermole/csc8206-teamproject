@@ -433,6 +433,7 @@ public class UiNetwork implements CtrlKeyListener {
 		}
 	}
 	
+	@JsonIgnore
 	public boolean getValidity()
 	{
 		return valid;
