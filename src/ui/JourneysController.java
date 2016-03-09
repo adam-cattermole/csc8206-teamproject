@@ -65,7 +65,9 @@ public class JourneysController implements CtrlKeyListener {
         routesTable.focusedProperty().addListener(change -> {
         	if (!routesTable.isFocused()) {
             	routeSelectionModel.getSelectedItems().stream().forEach(uiRoute -> {
-            		uiRoute.setHighlight(false);
+            		if (uiRoute != null) {
+            			uiRoute.setHighlight(false);
+            		}
             	});	
         	}
         	
