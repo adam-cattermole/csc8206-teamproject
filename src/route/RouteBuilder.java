@@ -174,7 +174,7 @@ public class RouteBuilder
 			
 			//define listener for a change in any block in this route
 			blockChangeListener = (change) -> {
-				if (change.wasRemoved()) {
+				/*if (change.wasRemoved())*/ {
 					listeners.stream().forEach(listener -> listener.onChange(new Change<Route>(this, ChangeType.REMOVED)));
 				}
 			};
